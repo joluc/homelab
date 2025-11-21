@@ -1,0 +1,56 @@
+jaeger:
+  # Use OpenSearch as storage backend
+  storage:
+    type: opensearch
+    opensearch:
+      host: opensearch-cluster-master.observability.svc.cluster.local
+      port: 9200
+      scheme: http
+
+  # Jaeger Query (UI)
+  query:
+    enabled: true
+
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+      hosts:
+        - jaeger.joluc.de
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  # Jaeger Collector
+  collector:
+    enabled: true
+
+    # Run on VPS (edge-compute node)
+    nodeSelector:
+      node_role: edge-compute
+
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+
+  # Jaeger Agent (DaemonSet on all nodes)
+  agent:
+    enabled: true
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 128Mi

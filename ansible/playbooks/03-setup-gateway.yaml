@@ -1,0 +1,100 @@
+---
+- name: Setup Gateway Node (Caddy)
+  hosts: gateways
+  become: true
+  vars:
+    # Email is defined in group_vars/secret.yaml
+    target_upstreams: "{{ groups['control_plane'] | map('extract', hostvars, ['ansible_host']) | list }}"
+    # Add subdomains here as you deploy services
+    subdomains:
+      - analytics
+      - app
+      - argocd
+      - auth
+      - backstage
+      - dash
+      - dns
+      - docs
+      - grafana
+      - ha
+      - home
+      - jaeger
+      - mc
+      - movies
+      - n8n
+      - notes
+      - opensearch
+      - perses
+      - photos
+      - portal
+      - prometheus
+      - pyroscope
+      - sentry
+      - status
+      - unifi
+      - vault
+      - wol
+
+  tasks:
+    - name: Install dependencies
+      apt:
+        name:
+          - debian-keyring
+          - debian-archive-keyring
+          - apt-transport-https
+          - curl
+        state: present
+        update_cache: yes
+
+    - name: Add Caddy GPG key
+      apt_key:
+        url: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+        state: present
+        keyring: /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+
+    - name: Add Caddy repository
+      apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/caddy-stable-archive-keyring.gpg] https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main"
+        state: present
+        filename: caddy-stable
+
+    - name: Install Caddy
+      apt:
+        name: caddy
+        state: present
+        update_cache: yes
+
+    - name: Enable IP Forwarding (for VPN/Routing)
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: yes
+        state: present
+        reload: yes
+
+    - name: Configure Caddyfile
+      copy:
+        dest: /etc/caddy/Caddyfile
+        content: |
+          {
+              email {{ email }}
+          }
+
+          {% for sub in subdomains %}
+          {{ sub }}.joluc.de {
+              reverse_proxy http://{{ target_upstreams[0] }}:80 {
+                  header_up Host {host}
+                  header_up X-Real-IP {remote_host}
+                  header_up X-Forwarded-For {remote_host}
+                  header_up X-Forwarded-Proto {scheme}
+              }
+          }
+          {% endfor %}
+      notify: Reload Caddy
+
+  handlers:
+    - name: Reload Caddy
+      service:
+        name: caddy
+        state: reloaded
+        enabled: yes

@@ -1,0 +1,31 @@
+pyroscope:
+  # Run on VPS (edge-compute node)
+  nodeSelector:
+    node_role: edge-compute
+
+  # Persistence for profiles
+  persistence:
+    enabled: true
+    storageClassName: local-path
+    size: 20Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: pyroscope.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi

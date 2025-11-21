@@ -1,0 +1,9 @@
+apiVersion: v2
+name: home-assistant
+version: 1.0.0
+description: Home Assistant home automation platform
+
+dependencies:
+  - name: home-assistant
+    version: 13.4.2
+    repository: https://pajikos.github.io/home-assistant-helm-chart

@@ -1,0 +1,51 @@
+# Argo CD Configuration
+
+argo-cd:
+  server:
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+      hosts:
+        - argocd.joluc.de
+
+  # Config Management
+  configs:
+    params:
+      server.insecure: true # Terminate TLS at ingress
+    cm:
+      # Create accounts if needed, e.g.
+      # accounts.alice: apiKey, login
+      timeout.reconciliation: "180s"
+
+  # High Availability (optional, keep default single replica for homelab to save resources)
+  controller:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+
+  repoServer:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+
+  server:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi

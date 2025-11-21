@@ -1,0 +1,9 @@
+apiVersion: v2
+name: traefik
+version: 1.0.0
+description: Traefik ingress controller for K3s homelab
+
+dependencies:
+  - name: traefik
+    version: 32.1.1
+    repository: https://traefik.github.io/charts

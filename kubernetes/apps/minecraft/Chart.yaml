@@ -1,0 +1,9 @@
+apiVersion: v2
+name: minecraft
+version: 1.0.0
+description: Minecraft Paper server
+
+dependencies:
+  - name: minecraft
+    version: 4.23.2
+    repository: https://itzg.github.io/minecraft-server-charts

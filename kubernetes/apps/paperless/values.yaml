@@ -1,0 +1,46 @@
+paperless:
+  # Persistence for documents
+  persistence:
+    data:
+      enabled: true
+      storageClass: local-path
+      size: 20Gi
+    media:
+      enabled: true
+      storageClass: local-path
+      size: 50Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: docs.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # PostgreSQL database
+  postgresql:
+    enabled: false
+
+  # Redis for task queue
+  redis:
+    enabled: true
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+  env:
+    PAPERLESS_DBHOST: postgresql.database.svc.cluster.local
+    PAPERLESS_DBUser: paperless
+    PAPERLESS_DBPASS: paperless
+    PAPERLESS_DBNAME: paperless

@@ -1,0 +1,7 @@
+apiVersion: v2
+name: homarr
+version: 1.0.0
+description: Homarr customizable dashboard
+
+# Note: Homarr doesn't have an official Helm chart yet
+# This is a custom chart that wraps the Docker image

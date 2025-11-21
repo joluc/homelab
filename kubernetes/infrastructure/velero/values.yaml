@@ -1,0 +1,40 @@
+velero:
+  # Backup to MinIO (S3-compatible)
+  configuration:
+    backupStorageLocation:
+    - name: default
+      provider: aws
+      bucket: velero
+      config:
+        region: minio
+        s3ForcePathStyle: "true"
+        s3Url: http://minio.default.svc.cluster.local:9000
+
+    # No volume snapshots for now
+    volumeSnapshotLocation: []
+
+  # Credentials for MinIO
+  credentials:
+    useSecret: true
+    secretContents:
+      cloud: |
+        [default]
+        aws_access_key_id = minio
+        aws_secret_access_key = minio123
+
+  # Schedule daily backups at 2 AM
+  schedules:
+    daily:
+      schedule: "0 2 * * *"
+      template:
+        ttl: "720h"  # 30 days
+        includedNamespaces:
+        - "*"
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi

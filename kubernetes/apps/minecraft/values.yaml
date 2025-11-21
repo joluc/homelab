@@ -1,0 +1,42 @@
+minecraft:
+  # Run on VPS (edge-compute node)
+  nodeSelector:
+    node_role: edge-compute
+
+  # Minecraft server type
+  minecraftServer:
+    eula: "TRUE"
+    version: "LATEST"
+    type: "PAPER"
+    difficulty: normal
+    maxPlayers: 20
+    motd: "joluc.de Homelab Server"
+    pvp: true
+    onlineMode: true
+    memory: 3G
+
+  # Persistence for world data
+  persistence:
+    dataDir:
+      enabled: true
+      storageClass: local-path
+      size: 10Gi
+
+  # Service with LoadBalancer
+  minecraftService:
+    type: LoadBalancer
+    loadBalancerIP: 10.0.10.25
+    port: 25565
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 3Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+
+  # Backups with Velero
+  podAnnotations:
+    backup.velero.io/backup-volumes: datadir

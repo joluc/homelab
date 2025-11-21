@@ -1,0 +1,33 @@
+vaultwarden:
+  # Persistence for vault data
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 5Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: vault.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+  # Environment variables
+  env:
+    DOMAIN: https://vault.joluc.de
+    SIGNUPS_ALLOWED: "false"  # Disable after initial setup
+    WEBSOCKET_ENABLED: "true"

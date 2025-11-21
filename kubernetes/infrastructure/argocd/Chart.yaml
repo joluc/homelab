@@ -1,0 +1,9 @@
+apiVersion: v2
+name: argocd
+version: 1.0.0
+description: Argo CD GitOps Operator
+
+dependencies:
+  - name: argo-cd
+    version: 5.51.6 # Stable version
+    repository: https://argoproj.github.io/argo-helm

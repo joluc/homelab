@@ -1,0 +1,80 @@
+kube-prometheus-stack:
+  prometheus:
+    prometheusSpec:
+      retention: 15d
+
+      # Storage for Prometheus data
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: local-path
+            resources:
+              requests:
+                storage: 50Gi
+
+      # Resource limits
+      resources:
+        requests:
+          cpu: 500m
+          memory: 2Gi
+        limits:
+          cpu: 2000m
+          memory: 4Gi
+
+      # Thanos sidecar for long-term storage
+      thanos:
+        image: quay.io/thanos/thanos:v0.37.1
+        objectStorageConfig:
+          name: thanos-objstore-config
+          key: objstore.yml
+
+  grafana:
+    enabled: true
+
+    # Ingress configuration
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+      hosts:
+        - grafana.joluc.de
+
+    # Persistence for dashboards
+    persistence:
+      enabled: true
+      storageClassName: local-path
+      size: 10Gi
+
+    # Resource limits
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+    # Admin credentials (change these!)
+    adminPassword: admin
+
+  # Alertmanager configuration
+  alertmanager:
+    enabled: true
+
+    alertmanagerSpec:
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: local-path
+            resources:
+              requests:
+                storage: 5Gi
+
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi

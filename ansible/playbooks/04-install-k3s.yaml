@@ -1,0 +1,16 @@
+---
+- name: Install K3s on Cloud Control Plane
+  hosts: control_plane
+  become: true
+  tasks:
+    - name: Install K3s Server (With Default Traefik)
+      shell: curl -sfL https://get.k3s.io | sh -s - server --write-kubeconfig-mode 644
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Wait for K3s to be ready
+      command: k3s kubectl get nodes
+      register: nodes
+      until: nodes.rc == 0
+      retries: 30
+      delay: 2

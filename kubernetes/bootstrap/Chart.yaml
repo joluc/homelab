@@ -1,0 +1,6 @@
+apiVersion: v2
+name: bootstrap
+version: 1.0.0
+description: App of Apps Bootstrap for Argo CD configuration
+
+# No external dependencies, this just defines ApplicationSets

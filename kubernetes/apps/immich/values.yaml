@@ -1,0 +1,56 @@
+immich:
+  # Run on VPS (edge-compute node) for better performance
+  nodeSelector:
+    node_role: edge-compute
+
+  # Persistence for photos and videos
+  persistence:
+    library:
+      enabled: true
+      storageClass: local-path
+      size: 100Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: photos.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # PostgreSQL database
+  postgresql:
+    enabled: true
+    persistence:
+      enabled: true
+      storageClass: local-path
+      size: 10Gi
+
+  # Redis for caching
+  redis:
+    enabled: true
+
+  # Resource limits
+  server:
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+
+  # Machine learning (CPU-based transcoding on VPS)
+  machineLearning:
+    enabled: true
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 2Gi

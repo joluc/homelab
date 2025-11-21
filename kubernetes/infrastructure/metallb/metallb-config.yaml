@@ -1,0 +1,20 @@
+# Apply this after MetalLB is installed
+# kubectl apply -f metallb-config.yaml
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: ingress-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 10.0.10.100-10.0.10.110
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: ingress-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - ingress-pool

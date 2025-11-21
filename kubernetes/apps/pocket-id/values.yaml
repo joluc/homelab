@@ -1,0 +1,31 @@
+pocket-id:
+  # Persistence for database
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 1Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: auth.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # Resource limits (very lightweight!)
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+  # Environment variables
+  env:
+    PUBLIC_APP_URL: https://auth.joluc.de

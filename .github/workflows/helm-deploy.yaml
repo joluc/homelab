@@ -1,0 +1,30 @@
+# Deploy Services
+name: Deploy Services
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'kubernetes/**'
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'latest'
+
+      - name: Lint Charts
+        run: |
+          for dir in kubernetes/*/*/; do
+            if [ -f "$dir/Chart.yaml" ]; then
+              echo "Linting $dir..."
+              helm lint "$dir"
+            fi
+          done

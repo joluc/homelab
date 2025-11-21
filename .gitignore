@@ -1,0 +1,17 @@
+# Secrets
+**/secret.yaml
+!**/secret.yaml.example
+
+# Docs (need to review before publishing)
+docs/
+
+# Helm
+**/charts/
+**/Chart.lock
+
+# Backups
+*.bak
+
+# OS
+.DS_Store
+

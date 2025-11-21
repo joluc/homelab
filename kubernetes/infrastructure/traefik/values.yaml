@@ -1,0 +1,45 @@
+traefik:
+  # HTTP only - Caddy on VPS handles HTTPS
+  ports:
+    web:
+      port: 80
+      exposedPort: 80
+    # No websecure port - Caddy handles TLS
+
+  # Service configuration with MetalLB
+  service:
+    type: LoadBalancer
+    spec:
+      loadBalancerIP: 10.0.10.100
+
+  # Enable dashboard
+  ingressRoute:
+    dashboard:
+      enabled: true
+      matchRule: Host(`traefik.joluc.de`)
+      entryPoints: ["web"]
+
+  # Resource limits for homelab
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+  # Trust forwarded headers from Caddy
+  additionalArguments:
+    - "--entrypoints.web.forwardedHeaders.trustedIPs=10.0.0.0/8,100.0.0.0/8"
+    - "--entrypoints.web.proxyProtocol.trustedIPs=10.0.0.0/8"
+
+  # Enable access logs
+  logs:
+    access:
+      enabled: true
+
+  # Persistence for Traefik data
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 1Gi

@@ -1,0 +1,9 @@
+apiVersion: v2
+name: backstage
+version: 1.0.0
+description: Backstage Developer Portal
+
+dependencies:
+  - name: backstage
+    version: 1.15.0 # Check for latest version, using a recent stable one as placeholder
+    repository: https://backstage.github.io/charts

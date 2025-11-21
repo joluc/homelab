@@ -1,0 +1,13 @@
+all:
+  children:
+    gateways:
+      hosts:
+        gateway-01:
+          ansible_host: "{{ gateway_ip }}"
+    control_plane:
+      hosts:
+        control-01:
+          ansible_host: "{{ control_plane_ip }}"
+    workers:
+      hosts:
+        # Raspberry Pis will be added here later

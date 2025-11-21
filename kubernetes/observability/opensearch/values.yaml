@@ -1,0 +1,42 @@
+opensearch:
+  # Single node cluster for homelab
+  singleNode: true
+
+  # Run on VPS (edge-compute node)
+  nodeSelector:
+    node_role: edge-compute
+
+  # Persistence for data
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 50Gi
+
+  # Resource limits (RAM heavy!)
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 3Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+
+  # JVM heap size
+  opensearchJavaOpts: "-Xms2g -Xmx2g"
+
+  # Security disabled for simplicity (internal only)
+  config:
+    opensearch.yml: |
+      plugins.security.disabled: true
+
+  # Ingress for OpenSearch Dashboards
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: opensearch.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix

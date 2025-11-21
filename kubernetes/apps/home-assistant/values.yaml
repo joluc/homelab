@@ -1,0 +1,37 @@
+home-assistant:
+  # Use host network for Wake-on-LAN and device discovery
+  hostNetwork: true
+
+  # Persistence for configuration
+  persistence:
+    config:
+      enabled: true
+      storageClass: local-path
+      size: 5Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: ha.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+  # Enable Prometheus metrics
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true

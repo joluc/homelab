@@ -1,0 +1,32 @@
+---
+- name: Install Argo CD and Bootstrap Cluster
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    project_root: "{{ playbook_dir }}/../.."
+  tasks:
+    - name: Add Argo CD Helm repository
+      command: helm repo add argo https://argoproj.github.io/argo-helm
+      register: repo_add
+      changed_when: "'has been added' in repo_add.stdout"
+
+    - name: Update Helm repositories
+      command: helm repo update
+
+    - name: Update Argo CD Chart dependencies
+      command: helm dependency update {{ project_root }}/kubernetes/infrastructure/argocd
+
+    - name: Install Argo CD
+      command: >
+        helm upgrade --install argocd {{ project_root }}/kubernetes/infrastructure/argocd
+        --namespace argocd
+        --create-namespace
+        --values {{ project_root }}/kubernetes/infrastructure/argocd/values.yaml
+        --wait
+
+    - name: Deploy Bootstrap ApplicationSet
+      command: >
+        helm upgrade --install bootstrap {{ project_root }}/kubernetes/bootstrap
+        --namespace argocd
+        --values {{ project_root }}/kubernetes/bootstrap/values.yaml

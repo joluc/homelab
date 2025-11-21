@@ -1,0 +1,9 @@
+apiVersion: v2
+name: opensearch
+version: 1.0.0
+description: OpenSearch for logs and traces storage
+
+dependencies:
+  - name: opensearch
+    version: 2.27.1
+    repository: https://opensearch-project.github.io/helm-charts

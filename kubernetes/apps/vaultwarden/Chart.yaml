@@ -1,0 +1,9 @@
+apiVersion: v2
+name: vaultwarden
+version: 1.0.0
+description: Vaultwarden self-hosted Bitwarden server
+
+dependencies:
+  - name: vaultwarden
+    version: 0.24.0
+    repository: https://gissilabs.github.io/charts

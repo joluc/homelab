@@ -1,0 +1,9 @@
+apiVersion: v2
+name: pocket-id
+version: 1.0.0
+description: Pocket ID lightweight SSO and identity provider
+
+dependencies:
+  - name: pocket-id
+    version: 0.3.0
+    repository: https://stonith404.github.io/pocket-id

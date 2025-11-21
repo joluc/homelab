@@ -1,0 +1,9 @@
+apiVersion: v2
+name: hedgedoc
+version: 1.0.0
+description: HedgeDoc collaborative markdown editor
+
+dependencies:
+  - name: hedgedoc
+    version: 1.2.0
+    repository: https://nicholaswilde.github.io/helm-charts

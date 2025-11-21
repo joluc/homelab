@@ -1,0 +1,45 @@
+postgresql:
+  global:
+    postgresql:
+      auth:
+        postgresPassword: "postgres-password-change-me"
+        # We will create users/dbs via initdb scripts or manually
+        # Ideally, use a job or init script.
+        # For simplicity in homelab, we can use initdbScripts
+
+  primary:
+    persistence:
+      enabled: true
+      size: 20Gi
+      storageClass: local-path
+
+    initdb:
+      scripts:
+        init.sql: |
+          CREATE DATABASE backstage;
+          CREATE USER backstage WITH ENCRYPTED PASSWORD 'backstage';
+          GRANT ALL PRIVILEGES ON DATABASE backstage TO backstage;
+          -- Grant schema usage for Backstage (it needs to create tables)
+          \c backstage
+          GRANT ALL ON SCHEMA public TO backstage;
+
+          CREATE DATABASE hedgedoc;
+          CREATE USER hedgedoc WITH ENCRYPTED PASSWORD 'hedgedoc';
+          GRANT ALL PRIVILEGES ON DATABASE hedgedoc TO hedgedoc;
+
+          CREATE DATABASE paperless;
+          CREATE USER paperless WITH ENCRYPTED PASSWORD 'paperless';
+          GRANT ALL PRIVILEGES ON DATABASE paperless TO paperless;
+
+          -- Immich is skipped for now as discussed (potential extension requirements)
+
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
+
+  # Disable internal metrics for now to save resources, or enable if needed
+  metrics:
+    enabled: true

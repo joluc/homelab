@@ -1,0 +1,34 @@
+n8n:
+  # Persistence for workflows
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 5Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: n8n.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+  # Environment variables
+  env:
+    N8N_HOST: n8n.joluc.de
+    N8N_PROTOCOL: https
+    WEBHOOK_URL: https://n8n.joluc.de
+    GENERIC_TIMEZONE: Europe/Berlin

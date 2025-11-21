@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+
+  "kubernetes": {
+    "fileMatch": ["kubernetes/.+/Chart\\.yaml$"]
+  },
+
+  "helm-values": {
+    "fileMatch": ["kubernetes/.+/values\\.yaml$"]
+  },
+
+  "packageRules": [
+    {
+      "matchDatasources": ["helm"],
+      "groupName": "Helm charts",
+      "schedule": ["every weekend"],
+      "automerge": false,
+      "labels": ["dependencies", "helm"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "groupName": "Docker images",
+      "schedule": ["every weekend"],
+      "automerge": false,
+      "labels": ["dependencies", "docker"]
+    }
+  ],
+
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2
+}
