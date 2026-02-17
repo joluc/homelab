@@ -14,6 +14,8 @@ spec:
         revision: {{ $.Values.targetRevision }}
         directories:
           - path: {{ .path }}/*
+          - path: {{ .path }}/_*
+            exclude: true
   template:
     metadata:
       name: '{{ `{{ .path.basename }}` }}'
