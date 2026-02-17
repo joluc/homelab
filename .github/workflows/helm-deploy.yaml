@@ -1,7 +1,9 @@
-# Deploy Services
-name: Deploy Services
+name: Helm Lint
 
 on:
+  pull_request:
+    paths:
+      - 'kubernetes/**'
   push:
     branches:
       - main
@@ -9,7 +11,7 @@ on:
       - 'kubernetes/**'
 
 jobs:
-  lint-test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,9 +24,26 @@ jobs:
 
       - name: Lint Charts
         run: |
+          FAILED=0
           for dir in kubernetes/*/*/; do
+            # Skip disabled charts (prefixed with _)
+            if [[ "$(basename "$dir")" == _* ]]; then
+              echo "Skipping disabled: $dir"
+              continue
+            fi
+
             if [ -f "$dir/Chart.yaml" ]; then
               echo "Linting $dir..."
-              helm lint "$dir"
+
+              # Update dependencies if Chart.yaml has dependencies
+              if grep -q "dependencies:" "$dir/Chart.yaml"; then
+                helm dependency update "$dir" 2>/dev/null || true
+              fi
+
+              if ! helm lint "$dir"; then
+                FAILED=1
+              fi
             fi
           done
+
+          exit $FAILED
