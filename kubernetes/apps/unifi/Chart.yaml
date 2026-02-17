@@ -2,8 +2,3 @@ apiVersion: v2
 name: unifi
 version: 1.0.0
 description: UniFi Controller for network management
-
-dependencies:
-  - name: unifi
-    version: 0.2.0
-    repository: https://k8s-at-home.com/charts/

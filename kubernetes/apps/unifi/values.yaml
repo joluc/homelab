@@ -1,27 +1,24 @@
-unifi:
-  image:
-    repository: linuxserver/unifi-controller
-    tag: latest
+image:
+  repository: linuxserver/unifi-controller
+  tag: latest
 
-  ingress:
-    main:
-      enabled: true
-      ingressClassName: traefik
-      hosts:
-        - host: unifi.joluc.de
-          paths:
-            - path: /
+ingress:
+  enabled: true
+  host: unifi.joluc.de
 
-  persistence:
-    config:
-      enabled: true
-      storageClass: local-path
-      size: 10Gi
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 10Gi
 
-  resources:
-    requests:
-      memory: 512Mi
-      cpu: 200m
-    limits:
-      memory: 1Gi
-      cpu: 500m
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 200m
+  limits:
+    memory: 1Gi
+    cpu: 500m
+
+env:
+  PUID: "1000"
+  PGID: "1000"
