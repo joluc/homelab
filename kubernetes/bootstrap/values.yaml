@@ -4,17 +4,13 @@
 repoURL: https://github.com/joluc/homelab.git
 targetRevision: main
 
-# Directories to scan
+# Directories to scan - each app deploys to its own namespace (using app name)
 applications:
   - name: infrastructure
     path: kubernetes/infrastructure
-    namespace: argocd # ApplicationSet runs in argocd namespace
   - name: observability
     path: kubernetes/observability
-    namespace: argocd
   - name: database
     path: kubernetes/infrastructure/database
-    namespace: argocd
   - name: apps
     path: kubernetes/apps
-    namespace: argocd
