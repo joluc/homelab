@@ -1,27 +1,20 @@
-dashy:
-  image:
-    repository: lissy93/dashy
-    tag: latest
+image:
+  repository: lissy93/dashy
+  tag: latest
 
-  ingress:
-    main:
-      enabled: true
-      ingressClassName: traefik
-      hosts:
-        - host: dash.joluc.de
-          paths:
-            - path: /
+ingress:
+  enabled: true
+  host: dash.joluc.de
 
-  persistence:
-    config:
-      enabled: true
-      storageClass: local-path
-      size: 1Gi
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 1Gi
 
-  resources:
-    requests:
-      memory: 150Mi
-      cpu: 100m
-    limits:
-      memory: 300Mi
-      cpu: 200m
+resources:
+  requests:
+    memory: 150Mi
+    cpu: 100m
+  limits:
+    memory: 300Mi
+    cpu: 200m

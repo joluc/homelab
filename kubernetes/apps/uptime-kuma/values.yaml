@@ -1,27 +1,20 @@
-uptime-kuma:
-  image:
-    repository: louislam/uptime-kuma
-    tag: latest
+image:
+  repository: louislam/uptime-kuma
+  tag: "1"
 
-  ingress:
-    main:
-      enabled: true
-      ingressClassName: traefik
-      hosts:
-        - host: status.joluc.de
-          paths:
-            - path: /
+ingress:
+  enabled: true
+  host: status.joluc.de
 
-  persistence:
-    data:
-      enabled: true
-      storageClass: local-path
-      size: 5Gi
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 5Gi
 
-  resources:
-    requests:
-      memory: 256Mi
-      cpu: 100m
-    limits:
-      memory: 512Mi
-      cpu: 200m
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+    cpu: 200m

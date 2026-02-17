@@ -1,31 +1,23 @@
-pocket-id:
-  # Persistence for database
-  persistence:
-    enabled: true
-    storageClass: local-path
-    size: 1Gi
+image:
+  repository: stonith404/pocket-id
+  tag: latest
 
-  # Ingress configuration
-  ingress:
-    enabled: true
-    ingressClassName: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-    hosts:
-      - host: auth.joluc.de
-        paths:
-          - path: /
-            pathType: Prefix
+ingress:
+  enabled: true
+  host: auth.joluc.de
 
-  # Resource limits (very lightweight!)
-  resources:
-    requests:
-      cpu: 50m
-      memory: 64Mi
-    limits:
-      cpu: 200m
-      memory: 128Mi
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 1Gi
 
-  # Environment variables
-  env:
-    PUBLIC_APP_URL: https://auth.joluc.de
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+env:
+  PUBLIC_APP_URL: https://auth.joluc.de

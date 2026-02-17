@@ -2,8 +2,3 @@ apiVersion: v2
 name: dashy
 version: 1.0.0
 description: Dashy customizable dashboard
-
-dependencies:
-  - name: dashy
-    version: 2.1.0
-    repository: https://k8s-at-home.com/charts/

@@ -1,60 +1,25 @@
-adguard-home:
-  # Service with MetalLB for DNS
-  service:
-    main:
-      type: LoadBalancer
-      loadBalancerIP: 10.0.10.53
-      ports:
-        http:
-          port: 3000
-    dns-tcp:
-      enabled: true
-      type: LoadBalancer
-      loadBalancerIP: 10.0.10.53
-      ports:
-        dns-tcp:
-          enabled: true
-          port: 53
-          protocol: TCP
-    dns-udp:
-      enabled: true
-      type: LoadBalancer
-      loadBalancerIP: 10.0.10.53
-      ports:
-        dns-udp:
-          enabled: true
-          port: 53
-          protocol: UDP
+image:
+  repository: adguard/adguardhome
+  tag: latest
 
-  # Persistence for configuration
-  persistence:
-    config:
-      enabled: true
-      storageClass: local-path
-      size: 1Gi
-    data:
-      enabled: true
-      storageClass: local-path
-      size: 5Gi
+ingress:
+  enabled: true
+  host: dns.joluc.de
 
-  # Ingress for web UI
-  ingress:
-    main:
-      enabled: true
-      ingressClassName: traefik
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-      hosts:
-        - host: dns.joluc.de
-          paths:
-            - path: /
-              pathType: Prefix
+persistence:
+  config:
+    enabled: true
+    storageClass: local-path
+    size: 1Gi
+  data:
+    enabled: true
+    storageClass: local-path
+    size: 5Gi
 
-  # Resource limits
-  resources:
-    requests:
-      cpu: 50m
-      memory: 128Mi
-    limits:
-      cpu: 200m
-      memory: 256Mi
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi

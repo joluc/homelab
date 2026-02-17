@@ -2,8 +2,3 @@ apiVersion: v2
 name: adguard-home
 version: 1.0.0
 description: AdGuard Home DNS ad blocker
-
-dependencies:
-  - name: adguard-home
-    version: 5.5.2
-    repository: https://k8s-at-home.com/charts
