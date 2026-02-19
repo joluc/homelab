@@ -1,0 +1,25 @@
+redis:
+  auth:
+    enabled: true
+    password: "" # will be overriden in homelab-secrets
+
+  master:
+    persistence:
+      enabled: true
+      storageClass: standard
+      size: 5Gi
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+
+  replica:
+    replicaCount: 0  # Single node for homelab to save resources
+
+  # Disable metrics for now to save resources
+  metrics:
+    enabled: false

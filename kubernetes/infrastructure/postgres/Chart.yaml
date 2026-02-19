@@ -1,0 +1,9 @@
+apiVersion: v2
+name: postgresql
+version: 1.0.0
+description: Shared PostgreSQL Config
+
+dependencies:
+  - name: postgresql
+    version: 18.3.0
+    repository: https://charts.bitnami.com/bitnami

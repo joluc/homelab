@@ -1,0 +1,29 @@
+postgresql:
+  global:
+    postgresql:
+      auth:
+        postgresPassword: "" # will be overriden in homelab-secrets
+        database: "homelab"
+        # We will create users/dbs via initdb scripts or manually
+        # For simplicity in homelab, we can use initdbScripts
+
+  primary:
+    persistence:
+      enabled: true
+      size: 20Gi
+      storageClass: standard
+
+    # initdb scripts extracted to secrets repo
+    initdb:
+      scripts: {} # will be overriden in homelab-secrets
+
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
+
+  # Disable internal metrics for now to save resources, or enable if needed
+  metrics:
+    enabled: true

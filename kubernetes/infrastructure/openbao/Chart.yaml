@@ -1,0 +1,9 @@
+apiVersion: v2
+name: openbao
+version: 1.0.0
+description: OpenBao secrets management for homelab
+
+dependencies:
+  - name: openbao
+    version: 0.25.4
+    repository: https://openbao.github.io/openbao-helm
