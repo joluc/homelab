@@ -1,8 +1,8 @@
 perses:
   image:
     registry: docker.io
-    name: perses/perses
-    version: latest
+    name: persesdev/perses
+    version: v0.49.1
 
   ingress:
     enabled: true
