@@ -21,10 +21,16 @@ spec:
       name: '{{ `{{ .path.basename }}` }}'
     spec:
       project: default
-      source:
-        repoURL: {{ $.Values.repoURL }}
-        targetRevision: {{ $.Values.targetRevision }}
-        path: '{{ `{{ .path.path }}` }}'
+      sources:
+        - repoURL: 'https://github.com/joluc/homelab-secrets.git'
+          targetRevision: main
+          ref: secrets
+        - repoURL: {{ $.Values.repoURL }}
+          targetRevision: {{ $.Values.targetRevision }}
+          path: '{{ `{{ .path.path }}` }}'
+          helm:
+            valueFiles:
+              - '$secrets/{{ `{{ .path.path }}` }}/values.yaml'
       destination:
         server: https://kubernetes.default.svc
         namespace: {{ if .namespace }}{{ .namespace }}{{ else }}'{{ `{{ .path.basename }}` }}'{{ end }}
