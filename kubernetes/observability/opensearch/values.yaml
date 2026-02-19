@@ -1,0 +1,61 @@
+operator:
+  enabled: true
+  manager:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+
+cluster:
+  enabled: true
+  name: opensearch
+  general:
+    version: 2.12.0
+    httpPort: 9200
+    vendor: opensearch
+    serviceName: opensearch-service
+
+  nodePools:
+    - component: main
+      replicas: 1
+      diskSize: "30Gi"
+      roles:
+        - "cluster_manager"
+        - "data"
+        - "ingest"
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: "500m"
+        limits:
+          memory: "2Gi"
+          cpu: "1000m"
+      persistence:
+        pvc:
+          storageClass: standard
+          accessModes:
+            - ReadWriteOnce
+
+  security:
+    enabled: false
+    tls:
+      transport:
+        generate: true
+        perNode: true
+      http:
+        generate: true
+
+  dashboards:
+    enabled: true
+    replicas: 1
+    version: 2.12.0
+    enableTls: false
+    ingress:
+      enabled: true
+      hosts:
+        - host: opensearch.example.com
+          paths:
+            - path: /

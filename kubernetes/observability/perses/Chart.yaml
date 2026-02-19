@@ -1,0 +1,9 @@
+apiVersion: v2
+name: perses
+version: 1.0.0
+description: Perses lightweight Prometheus dashboards
+
+dependencies:
+  - name: perses
+    version: 0.19.4
+    repository: https://perses.github.io/helm-charts

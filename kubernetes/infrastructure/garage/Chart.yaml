@@ -1,0 +1,9 @@
+apiVersion: v2
+name: garage
+version: 0.1.0
+description: Garage S3-compatible object storage
+
+dependencies:
+  - name: garage
+    version: 0.2.1
+    repository: https://datahub-local.github.io/garage-helm

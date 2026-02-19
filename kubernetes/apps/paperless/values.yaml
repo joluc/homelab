@@ -1,0 +1,72 @@
+paperless-ngx:
+  # Persistence for documents
+  persistence:
+    data:
+      enabled: true
+      storageClass: standard
+      size: 20Gi
+    media:
+      enabled: true
+      storageClass: standard
+      size: 50Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: "" # will be overriden in homelab-secrets
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # Configure external PostgreSQL
+  postgresql:
+    internal:
+      enabled: false
+    external:
+      enabled: true
+      host: postgres-postgresql.postgres.svc.cluster.local
+      port: 5432
+    secret:
+      enabled: false # We will provide credentials via options (or could use existing secret)
+    options:
+      username: "" # will be overriden in homelab-secrets
+      database: paperless
+      password: "" # will be overriden in homelab-secrets
+
+  # Configure external Redis
+  redis:
+    internal:
+      enabled: false
+    external:
+      enabled: true
+      host: redis-master.redis.svc.cluster.local
+      port: "6379"
+      # Note: Redis password is usually part of the URL.
+      # The chart helper `redis.url` constructs `redis://user:pass@host:port`
+      # if we configure it correctly?
+      # Let's check helper if needed. But for now we put just host/port.
+      # Bitnami redis uses password.
+
+  # Main application configuration
+  main:
+    # We need to inject the Redis password separately or construct the URL?
+    # The default chart helper might not support password for external Redis easily?
+    # Let's check if we can override REDIS URL via environment if the helper falls short.
+    # But since we saw duplicate keys before, we know `PAPERLESS_REDIS` is hardcoded.
+    # Debug below.
+    environments: {}
+    # NOTE: PAPERLESS_REDIS cannot be set via environments due to a chart template bug
+    # (the field is used as both a map and a list). Instead, configure redis.external.
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi

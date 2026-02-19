@@ -1,0 +1,43 @@
+hedgedoc:
+  # Persistence for uploads
+  persistence:
+    uploads:
+      enabled: true
+      storageClass: standard
+      accessModes:
+        - ReadWriteOnce
+      accessMode: ReadWriteOnce
+      size: 5Gi
+      mountPath: /hedgedoc/public/uploads
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: "" # will be overriden in homelab-secrets
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # PostgreSQL database
+  postgresql:
+    enabled: false
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # Environment variables
+  env:
+    CMD_DOMAIN: "" # will be overriden in homelab-secrets
+    CMD_PROTOCOL_USESSL: "false"  # Caddy handles TLS
+    CMD_URL_ADDPORT: "false"
+    CMD_DB_URL: "" # will be overriden in homelab-secrets
