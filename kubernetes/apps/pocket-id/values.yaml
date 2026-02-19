@@ -1,14 +1,14 @@
 image:
-  repository: stonith404/pocket-id
-  tag: latest
+  repository: ghcr.io/pocket-id/pocket-id
+  tag: v2
 
 ingress:
   enabled: true
-  host: auth.joluc.de
+  host: "" # will be overriden in homelab-secrets
 
 persistence:
   enabled: true
-  storageClass: local-path
+  storageClass: standard
   size: 1Gi
 
 resources:
@@ -20,4 +20,11 @@ resources:
     memory: 128Mi
 
 env:
-  PUBLIC_APP_URL: https://auth.joluc.de
+  PUBLIC_APP_URL: "" # will be overriden in homelab-secrets
+  ENCRYPTION_KEY: "" # will be overriden in homelab-secrets
+  DB_CONNECTION: pgsql
+  DB_HOST: postgresql.database.svc.cluster.local
+  DB_PORT: 5432
+  DB_DATABASE: pocket_id
+  DB_USERNAME: "" # will be overriden in homelab-secrets
+  DB_PASSWORD: "" # will be overriden in homelab-secrets
