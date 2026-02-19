@@ -24,17 +24,6 @@ garage:
           - path: /
             pathType: Prefix
 
-  # Node affinity to pin to VPS (edge-compute)
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: node_role
-            operator: In
-            values:
-            - edge-compute
-
   resources:
     limits:
       memory: 512Mi

@@ -10,9 +10,5 @@ applications:
     path: kubernetes/infrastructure
   - name: observability
     path: kubernetes/observability
-  - name: postgres
-    path: kubernetes/infrastructure/postgres
-  - name: redis
-    path: kubernetes/infrastructure/redis
   - name: apps
     path: kubernetes/apps

@@ -4,6 +4,9 @@ velero:
     image:
       repository: docker.io/bitnamilegacy/kubectl
 
+  # Disable upgradeCRDs job (image doesn't exist for k8s 1.34)
+  upgradeCRDs: false
+
   # Backup to MinIO (S3-compatible)
   configuration:
     backupStorageLocation:

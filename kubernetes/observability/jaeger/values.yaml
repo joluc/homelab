@@ -27,10 +27,6 @@ jaeger:
   collector:
     enabled: true
 
-    # Run on VPS (edge-compute node)
-    nodeSelector:
-      node_role: edge-compute
-
     resources:
       requests:
         cpu: 200m
