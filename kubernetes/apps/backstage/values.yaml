@@ -1,0 +1,52 @@
+# Configuration for the backstage subchart
+backstage:
+  # Global ingress settings
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    host: "" # overridden in homelab-secrets
+
+  # Backstage application config
+  backstage:
+    # Used for app-config.yaml generation
+    appConfig:
+      app:
+        baseUrl: "" # overridden in homelab-secrets
+        title: Joluc Homelab
+      backend:
+        baseUrl: "" # overridden in homelab-secrets
+        database:
+          client: pg
+          connection:
+            host: "" # overridden in homelab-secrets
+            port: 5432
+            # user/password injected via secrets/env vars
+      # Integrations
+      integrations:
+        github:
+          - host: github.com
+            # token injected via secrets
+
+      # Catalog
+      catalog:
+        rules:
+          - allow: [Component, System, API, Resource, Location]
+        locations:
+          # Load local examples or configured locations
+          - type: url
+            target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+
+  # Postgres Configuration (if using the subchart)
+  postgresql:
+    enabled: false # We use external or sqlite for now to save resources
+
+  # Resource limits (adjust based on usage)
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi

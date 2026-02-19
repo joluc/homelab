@@ -1,0 +1,8 @@
+openclaw:
+  ingress:
+    enabled: true
+    hosts:
+      - host: "" # will be overriden in homelab-secrets
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
