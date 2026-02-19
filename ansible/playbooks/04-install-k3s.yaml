@@ -3,8 +3,8 @@
   hosts: control_plane
   become: true
   tasks:
-    - name: Install K3s Server (With Default Traefik)
-      shell: curl -sfL https://get.k3s.io | sh -s - server --write-kubeconfig-mode 644
+    - name: Install K3s Server (Disable Traefik, we deploy custom)
+      shell: curl -sfL https://get.k3s.io | sh -s - server --write-kubeconfig-mode 644 --disable=traefik
       args:
         creates: /usr/local/bin/k3s
 
