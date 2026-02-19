@@ -9,11 +9,11 @@ ingress:
 persistence:
   config:
     enabled: true
-    storageClass: standard
+    storageClass: local-path
     size: 1Gi
   data:
     enabled: true
-    storageClass: standard
+    storageClass: local-path
     size: 5Gi
 
 resources:

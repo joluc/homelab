@@ -11,7 +11,7 @@ postgresql:
     persistence:
       enabled: true
       size: 20Gi
-      storageClass: standard
+      storageClass: local-path
 
     # initdb scripts extracted to secrets repo
     initdb:

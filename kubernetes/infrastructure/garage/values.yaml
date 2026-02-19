@@ -7,7 +7,7 @@ garage:
   # Persistence for data (S3 objects)
   persistence:
     enabled: true
-    storageClass: standard
+    storageClass: local-path
     size: 100Gi
 
   # Garage configuration

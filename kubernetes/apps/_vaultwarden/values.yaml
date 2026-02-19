@@ -2,7 +2,7 @@ vaultwarden:
   # Persistence for vault data
   persistence:
     enabled: true
-    storageClass: standard
+    storageClass: local-path
     size: 5Gi
 
   # Ingress configuration

@@ -35,7 +35,7 @@ cluster:
           cpu: "1000m"
       persistence:
         pvc:
-          storageClass: standard
+          storageClass: local-path
           accessModes:
             - ReadWriteOnce
 

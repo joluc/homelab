@@ -48,5 +48,5 @@ traefik:
   # Persistence for Traefik data
   persistence:
     enabled: true
-    storageClass: standard
+    storageClass: local-path
     size: 1Gi

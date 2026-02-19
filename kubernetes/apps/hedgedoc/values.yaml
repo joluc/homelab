@@ -3,7 +3,7 @@ hedgedoc:
   persistence:
     uploads:
       enabled: true
-      storageClass: standard
+      storageClass: local-path
       accessModes:
         - ReadWriteOnce
       accessMode: ReadWriteOnce

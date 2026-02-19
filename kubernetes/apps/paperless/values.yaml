@@ -3,11 +3,11 @@ paperless-ngx:
   persistence:
     data:
       enabled: true
-      storageClass: standard
+      storageClass: local-path
       size: 20Gi
     media:
       enabled: true
-      storageClass: standard
+      storageClass: local-path
       size: 50Gi
 
   # Ingress configuration

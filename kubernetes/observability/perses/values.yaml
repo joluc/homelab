@@ -15,7 +15,7 @@ perses:
 
   persistence:
     enabled: true
-    storageClass: standard
+    storageClass: local-path
     size: 2Gi
 
   resources:

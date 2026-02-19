@@ -19,7 +19,7 @@ minecraft:
   persistence:
     dataDir:
       enabled: true
-      storageClass: standard
+      storageClass: local-path
       size: 10Gi
 
   # Service with LoadBalancer

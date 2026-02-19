@@ -38,7 +38,7 @@ openbao:
     # Persistent storage disabled (using Postgres)
     dataStorage:
       enabled: false
-      storageClass: standard
+      storageClass: local-path
       size: 5Gi
 
     # Resource limits for homelab
