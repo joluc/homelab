@@ -4,11 +4,11 @@ image:
 
 ingress:
   enabled: true
-  host: status.joluc.de
+  host: "" # will be overriden in homelab-secrets
 
 persistence:
   enabled: true
-  storageClass: local-path
+  storageClass: standard
   size: 5Gi
 
 resources:

@@ -1,11 +1,7 @@
 jaeger:
-  # Use OpenSearch as storage backend
+  # Use Cassandra as storage backend (default for this chart)
   storage:
-    type: opensearch
-    opensearch:
-      host: opensearch-cluster-master.observability.svc.cluster.local
-      port: 9200
-      scheme: http
+    type: cassandra
 
   # Jaeger Query (UI)
   query:
@@ -17,7 +13,7 @@ jaeger:
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: web
       hosts:
-        - jaeger.joluc.de
+        - "" # will be overriden in homelab-secrets
 
     resources:
       requests:

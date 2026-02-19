@@ -4,11 +4,11 @@ image:
 
 ingress:
   enabled: true
-  host: n8n.joluc.de
+  host: "" # will be overriden in homelab-secrets
 
 persistence:
   enabled: true
-  storageClass: local-path
+  storageClass: standard
   size: 5Gi
 
 resources:
@@ -20,7 +20,14 @@ resources:
     memory: 1Gi
 
 env:
-  N8N_HOST: n8n.joluc.de
+  N8N_PORT: "5678"
+  N8N_HOST: "" # will be overriden in homelab-secrets
   N8N_PROTOCOL: https
-  WEBHOOK_URL: https://n8n.joluc.de
+  WEBHOOK_URL: "" # will be overriden in homelab-secrets
   GENERIC_TIMEZONE: Europe/Berlin
+  DB_TYPE: postgresdb
+  DB_POSTGRESDB_HOST: postgres-postgresql.postgres.svc.cluster.local
+  DB_POSTGRESDB_PORT: 5432
+  DB_POSTGRESDB_DATABASE: n8n
+  DB_POSTGRESDB_USER: "" # will be overriden in homelab-secrets
+  DB_POSTGRESDB_PASSWORD: "" # will be overriden in homelab-secrets

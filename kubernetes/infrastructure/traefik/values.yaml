@@ -1,10 +1,17 @@
 traefik:
-  # HTTP only - Caddy on VPS handles HTTPS
   ports:
     web:
-      port: 80
+      port: 8000
+      expose:
+        default: true
       exposedPort: 80
-    # No websecure port - Caddy handles TLS
+      protocol: TCP
+    websecure:
+      port: 8443
+      expose:
+        default: true
+      exposedPort: 443
+      protocol: TCP
 
   # Service configuration with MetalLB
   service:
@@ -16,7 +23,7 @@ traefik:
   ingressRoute:
     dashboard:
       enabled: true
-      matchRule: Host(`traefik.joluc.de`)
+      matchRule: "" # will be overriden in homelab-secrets
       entryPoints: ["web"]
 
   # Resource limits for homelab
@@ -41,5 +48,5 @@ traefik:
   # Persistence for Traefik data
   persistence:
     enabled: true
-    storageClass: local-path
+    storageClass: standard
     size: 1Gi

@@ -1,9 +1,0 @@
-apiVersion: v2
-name: paperless
-version: 1.0.0
-description: Paperless-ngx document management system
-
-dependencies:
-  - name: paperless
-    version: 0.19.0
-    repository: https://icereed.github.io/paperless-helm-chart

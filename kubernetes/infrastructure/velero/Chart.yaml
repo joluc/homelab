@@ -5,5 +5,5 @@ description: Velero backup and disaster recovery
 
 dependencies:
   - name: velero
-    version: 8.1.0
+    version: 11.3.2
     repository: https://vmware-tanzu.github.io/helm-charts

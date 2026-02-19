@@ -16,10 +16,7 @@ pyroscope:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: web
     hosts:
-      - host: pyroscope.joluc.de
-        paths:
-          - path: /
-            pathType: Prefix
+      - "" # will be overriden in homelab-secrets
 
   # Resource limits
   resources:

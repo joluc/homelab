@@ -4,17 +4,17 @@ image:
 
 ingress:
   enabled: true
-  host: dash.joluc.de
+  host: "" # will be overriden in homelab-secrets
 
 persistence:
   enabled: true
-  storageClass: local-path
+  storageClass: standard
   size: 1Gi
 
 resources:
   requests:
-    memory: 150Mi
+    memory: 256Mi
     cpu: 100m
   limits:
-    memory: 300Mi
+    memory: 1Gi
     cpu: 200m

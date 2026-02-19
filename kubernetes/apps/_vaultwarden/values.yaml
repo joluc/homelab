@@ -2,7 +2,7 @@ vaultwarden:
   # Persistence for vault data
   persistence:
     enabled: true
-    storageClass: local-path
+    storageClass: standard
     size: 5Gi
 
   # Ingress configuration
@@ -11,11 +11,7 @@ vaultwarden:
     ingressClassName: traefik
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: web
-    hosts:
-      - host: vault.joluc.de
-        paths:
-          - path: /
-            pathType: Prefix
+    host: "" # will be overriden in homelab-secrets
 
   # Resource limits
   resources:
@@ -28,6 +24,7 @@ vaultwarden:
 
   # Environment variables
   env:
-    DOMAIN: https://vault.joluc.de
+    DATABASE_URL: "" # will be overriden in homelab-secrets
+    DOMAIN: "" # will be overriden in homelab-secrets
     SIGNUPS_ALLOWED: "false"  # Disable after initial setup
     WEBSOCKET_ENABLED: "true"

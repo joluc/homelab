@@ -8,7 +8,7 @@ argo-cd:
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
       hosts:
-        - argocd.joluc.de
+        - "" # will be overriden in homelab-secrets
 
   # Config Management
   configs:

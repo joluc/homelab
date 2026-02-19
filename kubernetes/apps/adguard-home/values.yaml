@@ -4,16 +4,16 @@ image:
 
 ingress:
   enabled: true
-  host: dns.joluc.de
+  host: "" # will be overriden in homelab-secrets
 
 persistence:
   config:
     enabled: true
-    storageClass: local-path
+    storageClass: standard
     size: 1Gi
   data:
     enabled: true
-    storageClass: local-path
+    storageClass: standard
     size: 5Gi
 
 resources:

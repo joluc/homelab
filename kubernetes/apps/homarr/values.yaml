@@ -16,7 +16,7 @@ ingress:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
   hosts:
-    - host: home.joluc.de
+    - host: "" # will be overriden in homelab-secrets
       paths:
         - path: /
           pathType: Prefix
@@ -24,11 +24,11 @@ ingress:
 persistence:
   config:
     enabled: true
-    storageClass: local-path
+    storageClass: standard
     size: 2Gi
   data:
     enabled: true
-    storageClass: local-path
+    storageClass: standard
     size: 1Gi
 
 resources:

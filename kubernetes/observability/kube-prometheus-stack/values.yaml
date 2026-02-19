@@ -38,7 +38,7 @@ kube-prometheus-stack:
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: web
       hosts:
-        - grafana.joluc.de
+        - "" # will be overriden in homelab-secrets
 
     # Persistence for dashboards
     persistence:
@@ -56,7 +56,7 @@ kube-prometheus-stack:
         memory: 512Mi
 
     # Admin credentials (change these!)
-    adminPassword: admin
+    adminPassword: "" # will be overriden in homelab-secrets
 
   # Alertmanager configuration
   alertmanager:

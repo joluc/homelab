@@ -7,7 +7,7 @@ immich:
   persistence:
     library:
       enabled: true
-      storageClass: local-path
+      storageClass: standard
       size: 100Gi
 
   # Ingress configuration
@@ -17,7 +17,7 @@ immich:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: web
     hosts:
-      - host: photos.joluc.de
+      - host: "" # will be overriden in homelab-secrets
         paths:
           - path: /
             pathType: Prefix
@@ -27,7 +27,7 @@ immich:
     enabled: true
     persistence:
       enabled: true
-      storageClass: local-path
+      storageClass: standard
       size: 10Gi
 
   # Redis for caching
