@@ -3,6 +3,11 @@ kube-prometheus-stack:
   crds:
     enabled: true
 
+  # Disable admission webhooks to avoid sync issues
+  prometheusOperator:
+    admissionWebhooks:
+      enabled: false
+
   prometheus:
     enabled: true
     prometheusSpec:
