@@ -11,51 +11,57 @@ operator:
 
 cluster:
   enabled: true
-  name: opensearch
-  general:
-    version: 2.12.0
-    httpPort: 9200
-    vendor: opensearch
-    serviceName: opensearch-service
+  cluster:
+    name: opensearch
+    general:
+      version: 3.5.0
+      httpPort: 9200
+      vendor: opensearch
+      serviceName: opensearch-service
+      monitoring:
+        enable: true
+        scrapeInterval: 30s
+        pluginUrl: https://github.com/opensearch-project/opensearch-prometheus-exporter/releases/download/3.5.0.0/prometheus-exporter-3.5.0.0.zip
+        tlsConfig:
+          insecureSkipVerify: true
 
-  nodePools:
-    - component: nodes
-      replicas: 1
-      diskSize: "30Gi"
-      roles:
-        - "cluster_manager"
-        - "data"
-        - "ingest"
-      resources:
-        requests:
-          memory: "1Gi"
-          cpu: "500m"
-        limits:
-          memory: "2Gi"
-          cpu: "1000m"
-      persistence:
-        pvc:
-          storageClass: local-path
-          accessModes:
-            - ReadWriteOnce
+    nodePools:
+      - component: nodes
+        replicas: 1
+        diskSize: "30Gi"
+        roles:
+          - "cluster_manager"
+          - "data"
+          - "ingest"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        persistence:
+          pvc:
+            storageClass: local-path
+            accessModes:
+              - ReadWriteOnce
 
-  security:
-    enabled: false
-    tls:
-      transport:
-        generate: true
-        perNode: true
-      http:
-        generate: true
+    security:
+      tls:
+        transport:
+          generate: true
+          perNode: true
+        http:
+          generate: true
 
-  dashboards:
-    enabled: true
-    replicas: 1
-    version: 2.12.0
-    enableTls: false
-    ingress:
+    dashboards:
       enabled: true
-      hosts:
-        - host: opensearch.example.com
-          paths:
-            - path: /
+      replicas: 1
+      version: 3.5.0
+      enableTls: false
+      ingress:
+        enabled: true
+        hosts:
+          - host: opensearch.example.com
+            paths:
+              - path: /
