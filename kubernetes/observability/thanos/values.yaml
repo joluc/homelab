@@ -1,0 +1,92 @@
+thanos:
+  # Use Bitnami image with pinned version
+  image:
+    registry: registry-1.docker.io
+    repository: bitnami/thanos
+    tag: 0.39.2-debian-12-r0
+
+  # Object storage configuration
+  objstoreConfig: |-
+    type: S3
+    config:
+      bucket: thanos
+      endpoint: garage.garage.svc.cluster.local:3900
+      access_key: GK0913bdac0d23b5e53352d7ed
+      secret_key: 5c131018596fe40a8db156e31691309e9e1d39bad7f5fd2ae24261fb9fac3e3e
+      insecure: true
+      signature_version2: false
+      http_config:
+        insecure_skip_verify: true
+
+  # Querier - queries data from sidecars and object storage
+  query:
+    enabled: true
+    replicaCount: 1
+    stores:
+      - dnssrv+_grpc._tcp.kube-prometheus-stack-prometheus.kube-prometheus-stack.svc.cluster.local
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  # Query Frontend - caching layer for querier
+  queryFrontend:
+    enabled: true
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+
+  # Store Gateway - serves historical data from object storage
+  storegateway:
+    enabled: true
+    replicaCount: 1
+    persistence:
+      enabled: true
+      storageClass: local-path
+      size: 10Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+  # Compactor - compacts and downsamples blocks
+  compactor:
+    enabled: true
+    persistence:
+      enabled: true
+      storageClass: local-path
+      size: 10Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+  # Disable components we don't need
+  ruler:
+    enabled: false
+  receive:
+    enabled: false
+  receiveDistributor:
+    enabled: false
+
+  # Metrics configuration
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      labels:
+        release: kube-prometheus-stack

@@ -33,6 +33,37 @@ kube-prometheus-stack:
           name: thanos-objstore-config
           key: objstore.yml
 
+    # Enable Thanos components for querying from object storage
+    thanosService:
+      enabled: true
+    thanosServiceMonitor:
+      enabled: true
+
+  # Thanos Ruler for recording/alerting rules with HA
+  thanosRuler:
+    enabled: true
+    thanosRulerSpec:
+      image:
+        repository: quay.io/thanos/thanos
+        tag: v0.37.1
+      objectStorageConfig:
+        name: thanos-objstore-config
+        key: objstore.yml
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: local-path
+            resources:
+              requests:
+                storage: 10Gi
+
   grafana:
     enabled: true
 
