@@ -19,7 +19,7 @@ cluster:
     serviceName: opensearch-service
 
   nodePools:
-    - component: main
+    - component: nodes
       replicas: 1
       diskSize: "30Gi"
       roles:

@@ -62,11 +62,10 @@ paperless-ngx:
     # NOTE: PAPERLESS_REDIS cannot be set via environments due to a chart template bug
     # (the field is used as both a map and a list). Instead, configure redis.external.
 
-  # Resource limits
   resources:
     requests:
-      cpu: 200m
-      memory: 512Mi
+      cpu: 100m
+      memory: 256Mi
     limits:
       cpu: 1000m
       memory: 1Gi
