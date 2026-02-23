@@ -44,7 +44,7 @@ paperless-ngx:
     external:
       enabled: true
       host: redis-master.redis.svc.cluster.local
-      port: "6379"
+      port: 6379
       # Note: Redis password is usually part of the URL.
       # The chart helper `redis.url` constructs `redis://user:pass@host:port`
       # if we configure it correctly?
