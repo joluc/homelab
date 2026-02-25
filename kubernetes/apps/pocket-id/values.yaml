@@ -22,4 +22,4 @@ resources:
 env:
   PUBLIC_APP_URL: "" # will be overriden in homelab-secrets
   ENCRYPTION_KEY: "" # will be overriden in homelab-secrets
-  DATABASE_URL: "" # will be overriden in homelab-secrets (PostgreSQL DSN format)
+  # Using SQLite by default - database stored in /app/data PVC
