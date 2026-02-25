@@ -44,7 +44,7 @@ paperless-ngx:
     external:
       enabled: true
       host: redis-master.redis.svc.cluster.local
-      port: 6379
+      port: "6379"  # Use string to avoid Go formatting issues
       # Note: Redis password is usually part of the URL.
       # The chart helper `redis.url` constructs `redis://user:pass@host:port`
       # if we configure it correctly?
@@ -53,14 +53,9 @@ paperless-ngx:
 
   # Main application configuration
   main:
-    # We need to inject the Redis password separately or construct the URL?
-    # The default chart helper might not support password for external Redis easily?
-    # Let's check if we can override REDIS URL via environment if the helper falls short.
-    # But since we saw duplicate keys before, we know `PAPERLESS_REDIS` is hardcoded.
-    # Debug below.
-    environments: {}
-    # NOTE: PAPERLESS_REDIS cannot be set via environments due to a chart template bug
-    # (the field is used as both a map and a list). Instead, configure redis.external.
+    # Override PAPERLESS_REDIS directly to fix port formatting issue
+    environments:
+      PAPERLESS_REDIS: "redis://redis-master.redis.svc.cluster.local:6379"
 
   resources:
     requests:
