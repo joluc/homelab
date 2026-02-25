@@ -1,0 +1,4 @@
+apiVersion: v2
+name: spliit
+version: 1.0.0
+description: Spliit - Self-hosted expense splitting app

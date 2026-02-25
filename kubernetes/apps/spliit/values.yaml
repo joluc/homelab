@@ -1,0 +1,31 @@
+image:
+  repository: ghcr.io/spliit-app/spliit
+  tag: latest
+
+ingress:
+  enabled: true
+  host: "" # will be overriden in homelab-secrets
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+env:
+  # Database connection
+  DATABASE_URL: "" # will be overriden in homelab-secrets
+  # Example: postgresql://user:password@postgresql.database.svc.cluster.local:5432/spliit
+
+  # Optional features - set these if you want to enable them
+  # NEXT_PUBLIC_ENABLE_EXPENSE_DOCUMENTS: "true"
+  # S3_UPLOAD_KEY: ""
+  # S3_UPLOAD_SECRET: ""
+  # S3_UPLOAD_BUCKET: ""
+  # S3_UPLOAD_REGION: ""
+  # S3_UPLOAD_ENDPOINT: ""
+  # NEXT_PUBLIC_ENABLE_RECEIPT_EXTRACT: "true"
+  # OPENAI_API_KEY: ""
+  # NEXT_PUBLIC_ENABLE_CATEGORY_EXTRACT: "true"
