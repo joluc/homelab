@@ -22,9 +22,9 @@ resources:
 env:
   PUBLIC_APP_URL: "" # will be overriden in homelab-secrets
   ENCRYPTION_KEY: "" # will be overriden in homelab-secrets
-  DB_CONNECTION: pgsql
-  DB_HOST: postgres-postgresql.postgres.svc.cluster.local
-  DB_PORT: 5432
-  DB_DATABASE: pocket_id
+  DB_CONNECTION: "" # will be overriden in homelab-secrets
+  DB_HOST: "" # will be overriden in homelab-secrets
+  DB_PORT: "" # will be overriden in homelab-secrets
+  DB_DATABASE: "" # will be overriden in homelab-secrets
   DB_USERNAME: "" # will be overriden in homelab-secrets
   DB_PASSWORD: "" # will be overriden in homelab-secrets
