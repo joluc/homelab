@@ -53,10 +53,7 @@ paperless-ngx:
 
   # Main application configuration
   main:
-    # Override PAPERLESS_REDIS directly to fix port formatting issue
-    environments:
-      - name: PAPERLESS_REDIS
-        value: "redis://redis-master.redis.svc.cluster.local:6379"
+    environments: []
 
   resources:
     requests:
