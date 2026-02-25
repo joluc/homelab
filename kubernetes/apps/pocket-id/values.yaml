@@ -20,6 +20,7 @@ resources:
     memory: 128Mi
 
 env:
-  PUBLIC_APP_URL: "" # will be overriden in homelab-secrets
+  APP_URL: "" # will be overriden in homelab-secrets
+  TRUST_PROXY: "false" # will be overriden in homelab-secrets
   ENCRYPTION_KEY: "" # will be overriden in homelab-secrets
   # Using SQLite by default - database stored in /app/data PVC
