@@ -17,7 +17,7 @@ cluster:
       version: 3.5.0
       httpPort: 9200
       vendor: opensearch
-      serviceName: opensearch-service
+      serviceName: opensearch
       monitoring:
         enable: true
         scrapeInterval: 30s
