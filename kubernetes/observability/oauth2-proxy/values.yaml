@@ -1,0 +1,32 @@
+oauth2-proxy:
+  config:
+    clientID: "" # will be overridden in homelab-secrets
+    clientSecret: "" # will be overridden in homelab-secrets
+    cookieSecret: "" # will be overridden in homelab-secrets
+
+  extraArgs:
+    provider: oidc
+    oidc-issuer-url: https://auth.joluc.de
+    redirect-url: https://prometheus.joluc.de/oauth2/callback
+    cookie-secure: true
+    cookie-samesite: lax
+    email-domain: "*"
+    upstream: http://kube-prometheus-stack-prometheus.kube-prometheus-stack.svc.cluster.local:9090
+    http-address: 0.0.0.0:4180
+    skip-provider-button: true
+
+  ingress:
+    enabled: true
+    className: traefik
+    hosts:
+      - "" # will be overridden in homelab-secrets
+    path: /oauth2
+    pathType: Prefix
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
