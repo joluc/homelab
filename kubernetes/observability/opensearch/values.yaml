@@ -59,10 +59,3 @@ cluster:
       replicas: 1
       version: 3.5.0
       enableTls: false
-
-    ingress:
-      dashboards:
-        enabled: true
-        className: traefik
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
