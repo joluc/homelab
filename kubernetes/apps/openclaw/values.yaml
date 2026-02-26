@@ -1,8 +1,26 @@
 openclaw:
+  image:
+    tag: "2026.2.25"
+
+  config:
+    agents:
+      defaults:
+        model:
+          primary: "anthropic/claude-sonnet-4-20250514"
+        thinkingDefault: "low"
+        timeoutSeconds: 600
+    browser:
+      cdpUrl: "http://localhost:9222"
+    gateway:
+      mode: "local"
+    integrations:
+      telegram:
+        enabled: true
+
   ingress:
     enabled: true
     hosts:
-      - host: "" # will be overriden in homelab-secrets
+      - host: ""
         paths:
           - path: /
             pathType: ImplementationSpecific
