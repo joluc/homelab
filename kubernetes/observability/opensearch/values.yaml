@@ -24,6 +24,8 @@ cluster:
         pluginUrl: https://github.com/opensearch-project/opensearch-prometheus-exporter/releases/download/3.5.0.0/prometheus-exporter-3.5.0.0.zip
         tlsConfig:
           insecureSkipVerify: true
+      additionalConfig:
+        cluster.initial_cluster_manager_nodes: opensearch-nodes-0
 
     nodePools:
       - component: nodes
