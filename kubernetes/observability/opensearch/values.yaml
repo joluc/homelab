@@ -53,9 +53,18 @@ cluster:
           perNode: true
         http:
           generate: true
+      config:
+        securityConfigSecret:
+          name: opensearch-security-config
 
     dashboards:
       enabled: true
       replicas: 1
       version: 3.5.0
       enableTls: false
+      additionalConfig:
+        opensearch_security.auth.type: "openid"
+        opensearch_security.openid.connect_url: "" # Will be set in homelab-secrets
+        opensearch_security.openid.client_id: "" # Will be set in homelab-secrets
+        opensearch_security.openid.client_secret: "" # Will be set in homelab-secrets
+        opensearch_security.openid.base_redirect_url: "" # Will be set in homelab-secrets
