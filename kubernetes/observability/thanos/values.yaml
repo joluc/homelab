@@ -1,3 +1,7 @@
+global:
+  security:
+    allowInsecureImages: true
+
 thanos:
   # Use Bitnami image with pinned version
   image:
