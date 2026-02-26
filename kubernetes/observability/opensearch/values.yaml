@@ -59,9 +59,3 @@ cluster:
       replicas: 1
       version: 3.5.0
       enableTls: false
-      ingress:
-        enabled: true
-        hosts:
-          - host: opensearch.example.com
-            paths:
-              - path: /
