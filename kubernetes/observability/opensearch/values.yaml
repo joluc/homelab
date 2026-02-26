@@ -66,4 +66,3 @@ cluster:
         className: traefik
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-        hosts: [] # Will be set in homelab-secrets
