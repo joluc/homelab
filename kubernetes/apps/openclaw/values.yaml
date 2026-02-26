@@ -20,31 +20,6 @@ openclaw:
           allowedOrigins:
             - "https://krabbe.joluc.de"
 
-  # Install kubectl for cluster management
-  extraInitContainers:
-    - name: install-kubectl
-      image: alpine:3.19
-      command:
-        - sh
-        - -c
-        - |
-          apk add --no-cache curl
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          mv kubectl /kubectl-bin/
-      volumeMounts:
-        - name: kubectl-bin
-          mountPath: /kubectl-bin
-
-  extraVolumes:
-    - name: kubectl-bin
-      emptyDir: {}
-
-  extraVolumeMounts:
-    - name: kubectl-bin
-      mountPath: /usr/local/bin/kubectl
-      subPath: kubectl
-
   ingress:
     enabled: true
     hosts:
