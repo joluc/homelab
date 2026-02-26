@@ -1,9 +1,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "openclaw.fullname" . }}-cluster-operator
+  name: krabbe-cluster-operator
   labels:
-    {{- include "openclaw.labels" . | nindent 4 }}
+    app.kubernetes.io/name: krabbe
+    app.kubernetes.io/instance: {{ .Release.Name }}
 rules:
 # Read-only access to cluster resources
 - apiGroups: [""]
@@ -49,14 +50,15 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "openclaw.fullname" . }}-cluster-operator-binding
+  name: krabbe-cluster-operator-binding
   labels:
-    {{- include "openclaw.labels" . | nindent 4 }}
+    app.kubernetes.io/name: krabbe
+    app.kubernetes.io/instance: {{ .Release.Name }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "openclaw.serviceAccountName" . }}
+  name: krabbe
   namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
-  name: {{ include "openclaw.fullname" . }}-cluster-operator
+  name: krabbe-cluster-operator
   apiGroup: rbac.authorization.k8s.io
