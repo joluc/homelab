@@ -5,20 +5,20 @@ openclaw:
   image:
     tag: "2026.2.25"
 
-  config:
+  openclaw:
     agents:
       defaults:
-        model:
-          primary: "anthropic/claude-sonnet-4-20250514"
+        model: "anthropic/claude-sonnet-4-20250514"
         thinkingDefault: "low"
         timeoutSeconds: 600
-    browser:
-      cdpUrl: "http://localhost:9222"
-    gateway:
-      mode: "local"
-      controlUi:
-        allowedOrigins:
-          - "https://krabbe.joluc.de"
+    configOverrides:
+      browser:
+        cdpUrl: "http://localhost:9222"
+      gateway:
+        mode: "local"
+        controlUi:
+          allowedOrigins:
+            - "https://krabbe.joluc.de"
 
   ingress:
     enabled: true
