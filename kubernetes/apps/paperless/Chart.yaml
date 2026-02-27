@@ -1,9 +1,4 @@
 apiVersion: v2
 name: paperless
 version: 1.0.0
-description: Paperless-ngx document management system
-
-dependencies:
-  - name: paperless-ngx
-    version: 7.6.8
-    repository: https://mt190502.github.io/helm-charts
+description: Paperless-ngx document management system (custom chart)

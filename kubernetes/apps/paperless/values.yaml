@@ -1,64 +1,40 @@
-paperless-ngx:
-  # Persistence for documents
-  persistence:
-    data:
-      enabled: true
-      storageClass: local-path
-      size: 20Gi
-    media:
-      enabled: true
-      storageClass: local-path
-      size: 50Gi
+image:
+  repository: ghcr.io/paperless-ngx/paperless-ngx
+  tag: "2.20.7"
 
-  # Ingress configuration
-  ingress:
-    enabled: true
-    ingressClassName: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-    hosts:
-      - host: "" # will be overriden in homelab-secrets
-        paths:
-          - path: /
-            pathType: Prefix
+# PostgreSQL configuration
+postgresql:
+  host: postgres-postgresql.postgres.svc.cluster.local
+  port: "5432"
+  database: paperless
+  username: "" # will be overridden in homelab-secrets
+  password: "" # will be overridden in homelab-secrets
 
-  # Configure external PostgreSQL
-  postgresql:
-    internal:
-      enabled: false
-    external:
-      enabled: true
-      host: postgres-postgresql.postgres.svc.cluster.local
-      # Don't set port - causes duplicate port bug in chart
-    secret:
-      enabled: false # We will provide credentials via options (or could use existing secret)
-    options:
-      username: "" # will be overriden in homelab-secrets
-      database: paperless
-      password: "" # will be overriden in homelab-secrets
+# Redis configuration
+redis:
+  host: redis-master.redis.svc.cluster.local
+  port: "6379"
+  url: "" # will be overridden in homelab-secrets
 
-  # Configure external Redis
-  redis:
-    internal:
-      enabled: false
-    external:
-      enabled: true
-      host: redis-master.redis.svc.cluster.local
-      port: "6379"  # Use string to avoid Go formatting issues
-      # Note: Redis password is usually part of the URL.
-      # The chart helper `redis.url` constructs `redis://user:pass@host:port`
-      # if we configure it correctly?
-      # Let's check helper if needed. But for now we put just host/port.
-      # Bitnami redis uses password.
+# Paperless configuration
+paperlessUrl: "https://docs.joluc.de"
+appSecret: "my_strong_secret"
 
-  # Main application configuration
-  main:
-    environments: []
+# Ingress
+ingress:
+  enabled: true
+  host: "" # will be overridden in homelab-secrets
 
-  resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
-    limits:
-      cpu: 1000m
-      memory: 1Gi
+# Persistence
+persistence:
+  storageClass: local-path
+  size: 20Gi
+
+# Resources
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 2Gi
