@@ -18,7 +18,7 @@ cph-metro-exporter:
     enabled: true
     labels:
       prometheus: kube-prometheus
-    interval: 1h
+    interval: 30s
 
   resources:
     limits:
