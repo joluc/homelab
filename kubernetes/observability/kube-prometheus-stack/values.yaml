@@ -13,6 +13,15 @@ kube-prometheus-stack:
     prometheusSpec:
       retention: 15d
 
+      # Pick up all ServiceMonitors and PodMonitors across all namespaces
+      serviceMonitorSelectorNilUsesHelmValues: false
+      serviceMonitorSelector: {}
+      serviceMonitorNamespaceSelector: {}
+
+      podMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelector: {}
+      podMonitorNamespaceSelector: {}
+
       # Storage for Prometheus data
       storageSpec:
         volumeClaimTemplate:
