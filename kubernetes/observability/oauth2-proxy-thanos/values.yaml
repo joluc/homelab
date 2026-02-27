@@ -13,15 +13,15 @@ oauth2-proxy:
     email-domain: "*"
     http-address: 0.0.0.0:4180
     skip-provider-button: true
-    reverse-proxy: true
     insecure-oidc-allow-unverified-email: true
+    upstream: http://thanos-query.thanos.svc:9090
 
   ingress:
     enabled: true
     className: traefik
     hosts:
       - "" # will be overridden in homelab-secrets
-    path: /oauth2
+    path: /
     pathType: Prefix
 
   resources:
