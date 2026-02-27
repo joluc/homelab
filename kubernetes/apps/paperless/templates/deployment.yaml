@@ -65,6 +65,8 @@ spec:
               value: "allauth.socialaccount.providers.openid_connect"
             - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
               value: {{ .Values.oidc.providers | toJson | quote }}
+            - name: PAPERLESS_DISABLE_REGULAR_LOGIN
+              value: "true"
           ports:
             - containerPort: 8000
           resources:
