@@ -13,6 +13,7 @@ oauth2-proxy:
     email-domain: "*"
     http-address: 0.0.0.0:4180
     skip-provider-button: true
+    reverse-proxy: true
 
   ingress:
     enabled: true
