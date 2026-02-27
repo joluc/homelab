@@ -1,0 +1,25 @@
+icebreaker-exporter:
+  nameOverride: "icebreaker-exporter"
+  fullnameOverride: "icebreaker-exporter"
+
+  image:
+    repository: ghcr.io/joluc/icebreaker-exporter
+    tag: "0.2.0"
+
+  config:
+    refreshInterval: "10m"
+    logLevel: "info"
+
+  serviceMonitor:
+    enabled: true
+    labels:
+      prometheus: kube-prometheus
+    interval: 30s
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi

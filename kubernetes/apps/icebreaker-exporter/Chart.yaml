@@ -1,0 +1,10 @@
+apiVersion: v2
+name: icebreaker-exporter
+description: Icebreaker Exporter wrapper chart
+type: application
+version: 0.1.0
+appVersion: "0.2.0"
+dependencies:
+  - name: icebreaker-exporter
+    version: "0.1.0"
+    repository: "oci://ghcr.io/joluc/charts"
