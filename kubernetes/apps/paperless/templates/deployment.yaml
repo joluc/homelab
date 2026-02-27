@@ -61,6 +61,10 @@ spec:
               value: "1000"
             - name: USERMAP_GID
               value: "1000"
+            - name: PAPERLESS_APPS
+              value: "allauth.socialaccount.providers.openid_connect"
+            - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+              value: {{ .Values.oidc.providers | toJson | quote }}
           ports:
             - containerPort: 8000
           resources:

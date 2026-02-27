@@ -38,3 +38,7 @@ resources:
   limits:
     cpu: 1000m
     memory: 2Gi
+
+# OIDC Configuration
+oidc:
+  providers: {} # will be overridden in homelab-secrets
