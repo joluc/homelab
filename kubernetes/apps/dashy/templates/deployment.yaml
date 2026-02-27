@@ -26,6 +26,7 @@ spec:
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["yarn", "start"]
           env:
             - name: NODE_ENV
               value: "production"
