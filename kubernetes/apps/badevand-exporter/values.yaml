@@ -4,13 +4,14 @@ badevand-exporter:
 
   image:
     repository: ghcr.io/joluc/badevand-exporter
-    tag: "0.1.0"
+    tag: "0.2.1"
 
   config:
     sites: []
     include: ""
     exclude: ""
-    interval: "5m"
+    interval: "30s"
+    cacheTTL: "30m"
     logLevel: "info"
 
   serviceMonitor:

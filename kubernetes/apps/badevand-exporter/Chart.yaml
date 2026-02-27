@@ -2,9 +2,9 @@ apiVersion: v2
 name: badevand-exporter
 description: Badevand Exporter wrapper chart
 type: application
-version: 0.1.0
-appVersion: "1.0.0"
+version: 0.2.1
+appVersion: "0.2.1"
 dependencies:
   - name: badevand-exporter
-    version: "0.1.0"
+    version: "0.2.1"
     repository: "oci://ghcr.io/joluc/charts"
