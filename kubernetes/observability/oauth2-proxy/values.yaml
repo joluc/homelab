@@ -11,7 +11,6 @@ oauth2-proxy:
     cookie-secure: true
     cookie-samesite: lax
     email-domain: "*"
-    upstream: http://kube-prometheus-stack-prometheus.kube-prometheus-stack.svc.cluster.local:9090
     http-address: 0.0.0.0:4180
     skip-provider-button: true
 
