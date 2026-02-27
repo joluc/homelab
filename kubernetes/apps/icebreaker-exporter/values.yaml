@@ -4,7 +4,7 @@ icebreaker-exporter:
 
   image:
     repository: ghcr.io/joluc/icebreaker-exporter
-    tag: "0.2.0"
+    tag: "v0.2.0"
 
   config:
     refreshInterval: "10m"
