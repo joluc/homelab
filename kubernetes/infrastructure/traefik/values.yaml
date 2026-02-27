@@ -13,11 +13,9 @@ traefik:
       exposedPort: 443
       protocol: TCP
 
-  # Service configuration with MetalLB
+  # Service configuration with k3s ServiceLB
   service:
     type: LoadBalancer
-    spec:
-      loadBalancerIP: 10.0.10.100
 
   # Enable dashboard
   ingressRoute:
