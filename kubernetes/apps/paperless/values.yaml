@@ -29,7 +29,7 @@ paperless-ngx:
     external:
       enabled: true
       host: postgres-postgresql.postgres.svc.cluster.local
-      port: 5432
+      # Don't set port - causes duplicate port bug in chart
     secret:
       enabled: false # We will provide credentials via options (or could use existing secret)
     options:
