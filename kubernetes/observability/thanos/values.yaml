@@ -82,8 +82,29 @@ thanos:
   # Disable components we don't need
   ruler:
     enabled: false
+
+  # Receive - accepts remote write from Prometheus (basic auth)
   receive:
-    enabled: false
+    enabled: true
+    replicaCount: 1
+    persistence:
+      enabled: true
+      storageClass: local-path
+      size: 20Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+    ingress:
+      enabled: true
+      hostname: thanos-receive.joluc.de
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: thanos-thanos-basicauth@kubernetescrd
+
   receiveDistributor:
     enabled: false
 
