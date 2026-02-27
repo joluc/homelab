@@ -1,0 +1,29 @@
+cph-metro-exporter:
+  nameOverride: "cph-metro-exporter"
+  fullnameOverride: "cph-metro-exporter"
+
+  image:
+    repository: ghcr.io/joluc/cph-metro-exporter
+    tag: "1.0.0"
+
+  config:
+    scrapeInterval: "30m"
+    logLevel: "info"
+    demoMode: false
+
+  rejseplanen:
+    apiKey: ""
+
+  serviceMonitor:
+    enabled: true
+    labels:
+      prometheus: kube-prometheus
+    interval: 1h
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
