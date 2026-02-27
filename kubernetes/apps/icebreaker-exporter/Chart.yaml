@@ -7,4 +7,4 @@ appVersion: "0.2.0"
 dependencies:
   - name: icebreaker-exporter
     version: "0.1.0"
-    repository: "oci://ghcr.io/joluc/charts/icebreaker-exporter"
+    repository: "oci://ghcr.io/joluc/charts"
