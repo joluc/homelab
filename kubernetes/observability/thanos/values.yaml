@@ -27,7 +27,7 @@ thanos:
     enabled: true
     replicaCount: 1
     stores:
-      - dnssrv+_grpc._tcp.kube-prometheus-stack-prometheus.kube-prometheus-stack.svc.cluster.local
+      - dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.kube-prometheus-stack.svc.cluster.local
     resources:
       requests:
         cpu: 100m
