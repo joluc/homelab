@@ -1,0 +1,28 @@
+badevand-exporter:
+  nameOverride: "badevand-exporter"
+  fullnameOverride: "badevand-exporter"
+
+  image:
+    repository: ghcr.io/joluc/badevand-exporter
+    tag: "latest"
+
+  config:
+    sites: []
+    include: ""
+    exclude: ""
+    interval: "5m"
+    logLevel: "info"
+
+  serviceMonitor:
+    enabled: true
+    labels:
+      prometheus: kube-prometheus
+    interval: 30s
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
