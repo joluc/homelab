@@ -24,3 +24,9 @@ env:
   CMD_DOMAIN: "" # will be overriden in homelab-secrets
   CMD_PROTOCOL_USESSL: "false"
   CMD_URL_ADDPORT: "false"
+  # Guest mode for easy sharing with friends
+  CMD_ALLOW_ANONYMOUS: "true"
+  CMD_ALLOW_ANONYMOUS_EDITS: "true"
+  # Security: Prevent abuse
+  CMD_ALLOW_FREEURL: "false"  # Only random URLs, prevents name squatting
+  CMD_REQUIRE_FREEURL_AUTHENTICATION: "true"  # Custom URLs need auth
