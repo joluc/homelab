@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(helm template:*)",
+      "Bash(ssh root@159.195.63.121 \"kubectl describe pod perses-0 -n perses | grep ''Image:''\")",
+      "Bash(ssh:*)",
+      "Bash(kubectl get:*)"
+    ]
+  }
+}

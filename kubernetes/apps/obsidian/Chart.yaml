@@ -1,0 +1,9 @@
+apiVersion: v2
+name: obsidian
+version: 1.0.0
+description: Obsidian knowledge base
+
+dependencies:
+  - name: obsidian
+    version: 0.1.5
+    repository: https://x-tructure.github.io/helm-charts

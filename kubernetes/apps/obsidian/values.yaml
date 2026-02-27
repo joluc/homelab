@@ -1,0 +1,39 @@
+obsidian:
+  # Image configuration
+  image:
+    repository: lscr.io/linuxserver/obsidian
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  # Persistence for vault data
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 10Gi
+
+  # Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    host: "" # will be overriden in homelab-secrets
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+
+  # Environment variables for Obsidian configuration
+  env:
+    PUID: "1000"
+    PGID: "1000"
+    TZ: "UTC"
+
+  # Authentication (optional)
+  auth:
+    enabled: false
+    # username: "" # will be overriden in homelab-secrets if enabled
+    # password: "" # will be overriden in homelab-secrets if enabled

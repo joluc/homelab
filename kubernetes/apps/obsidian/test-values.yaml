@@ -1,0 +1,39 @@
+obsidian:
+  # Image configuration
+  image:
+    repository: lscr.io/linuxserver/obsidian
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  # Persistence for vault data
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 1Gi  # Smaller size for testing
+
+  # Disable ingress for testing
+  ingress:
+    enabled: false
+
+  # Resource limits (smaller for testing)
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+  # Environment variables for Obsidian configuration
+  env:
+    PUID: "1000"
+    PGID: "1000"
+    TZ: "UTC"
+
+  # Authentication disabled for testing
+  auth:
+    enabled: false
+
+  # Service type LoadBalancer for easy access in kind
+  service:
+    type: NodePort
