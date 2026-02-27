@@ -17,7 +17,7 @@ badevand-exporter:
     enabled: true
     labels:
       prometheus: kube-prometheus
-    interval: 30s
+    interval: 1h
 
   resources:
     limits:
