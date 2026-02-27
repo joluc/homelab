@@ -17,4 +17,4 @@ resources:
     cpu: 100m
   limits:
     memory: 1Gi
-    cpu: 200m
+    cpu: 1000m  # Increased for build performance
