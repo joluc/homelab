@@ -1,0 +1,10 @@
+apiVersion: v2
+name: weather-exporter
+description: Weather Exporter wrapper chart
+type: application
+version: 0.2.0
+appVersion: "0.2.0"
+dependencies:
+  - name: weather-exporter
+    version: "0.2.0"
+    repository: "oci://ghcr.io/joluc/charts"

@@ -1,0 +1,32 @@
+weather-exporter:
+  nameOverride: "weather-exporter"
+  fullnameOverride: "weather-exporter"
+
+  image:
+    repository: ghcr.io/joluc/weather-exporter
+    tag: "0.2.0"
+
+  config:
+    cities:
+      - "Leipzig:51.33,12.37"
+      - "Copenhagen:55.67,12.56"
+
+    providers:
+      dwd:
+        enabled: false
+      yr:
+        userAgent: ""
+      openweathermap:
+        enabled: false
+        apiKey: ""
+
+    cacheTTL: "5m"
+    jsonLogs: false
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
