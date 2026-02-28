@@ -10,7 +10,7 @@ badevand-exporter:
     sites: []
     include: ""
     exclude: ""
-    interval: "30s"
+    interval: "1h"
     cacheTTL: "30m"
     logLevel: "info"
 
@@ -18,7 +18,7 @@ badevand-exporter:
     enabled: true
     labels:
       prometheus: kube-prometheus
-    interval: 1h
+    interval: 30s
 
   resources:
     limits:
