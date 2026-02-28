@@ -8,16 +8,16 @@ weather-exporter:
 
   config:
     cities:
-      - "Leipzig:51.33,12.37"
-      - "Copenhagen:55.67,12.56"
+      - "Leipzig:51.33,12.37@dwd"
+      - "Copenhagen:55.67,12.56@yr"
 
     providers:
       dwd:
-        enabled: false
+        enabled: true
       yr:
         userAgent: ""
       openweathermap:
-        enabled: true
+        enabled: false
         apiKey: ""
 
     cacheTTL: "5m"
