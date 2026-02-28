@@ -1,0 +1,64 @@
+image:
+  repository: plausible/analytics
+  tag: "v2.1.1"
+
+# Base URL for Plausible
+baseUrl: "https://plausible.example.com"
+
+# Secret key base - will be overridden in homelab-secrets
+secretKeyBase: "changeme"
+
+# PostgreSQL configuration (using shared PostgreSQL instance)
+postgresql:
+  host: postgres-postgresql.postgres.svc.cluster.local
+  port: "5432"
+  database: plausible
+  username: plausible
+  password: "" # will be overridden in homelab-secrets
+
+# ClickHouse configuration (using shared ClickHouse instance)
+clickhouse:
+  host: clickhouse.clickhouse.svc.cluster.local
+  port: "8123"
+  database: plausible_events_db
+  username: default
+  password: "" # will be overridden in homelab-secrets
+
+# Plausible resources
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 1Gi
+    cpu: 500m
+
+# Ingress
+ingress:
+  enabled: true
+  host: "" # will be overridden in homelab-secrets
+
+# Persistence for GeoIP data
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 1Gi
+
+# Registration settings
+disableRegistration: "invite_only"
+
+# Email configuration (optional)
+smtp:
+  enabled: false
+  host: ""
+  port: "587"
+  username: ""
+  password: ""
+  ssl:
+    enabled: true
+
+# Google Search Console integration (optional)
+googleSearchConsole:
+  enabled: false
+  clientId: ""
+  clientSecret: ""

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  namespace: {{ .Release.Namespace }}
+data:
+  CLICKHOUSE_DATABASE_URL: "http://{{ .Values.clickhouse.username }}:{{ .Values.clickhouse.password }}@{{ .Values.clickhouse.host }}:{{ .Values.clickhouse.port }}/{{ .Values.clickhouse.database }}"
+  DATABASE_URL: "postgres://{{ .Values.postgresql.username }}:{{ .Values.postgresql.password }}@{{ .Values.postgresql.host }}:{{ .Values.postgresql.port }}/{{ .Values.postgresql.database }}"
+  BASE_URL: {{ .Values.baseUrl | quote }}
+  DISABLE_REGISTRATION: {{ .Values.disableRegistration | quote }}
+  {{- if .Values.smtp.enabled }}
+  MAILER_ADAPTER: "Bamboo.SMTPAdapter"
+  SMTP_HOST_ADDR: {{ .Values.smtp.host | quote }}
+  SMTP_HOST_PORT: {{ .Values.smtp.port | quote }}
+  SMTP_USER_NAME: {{ .Values.smtp.username | quote }}
+  SMTP_HOST_SSL_ENABLED: {{ .Values.smtp.ssl.enabled | quote }}
+  MAILER_EMAIL: {{ .Values.smtp.username | quote }}
+  {{- end }}
+  {{- if .Values.googleSearchConsole.enabled }}
+  GOOGLE_CLIENT_ID: {{ .Values.googleSearchConsole.clientId | quote }}
+  {{- end }}

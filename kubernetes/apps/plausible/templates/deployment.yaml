@@ -1,0 +1,137 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      initContainers:
+        - name: wait-for-clickhouse
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z -v -w30 {{ .Values.clickhouse.host }} {{ .Values.clickhouse.port }}
+              do
+                echo "Waiting for ClickHouse to be ready..."
+                sleep 5
+              done
+        - name: wait-for-postgres
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z -v -w30 {{ .Values.postgresql.host }} {{ .Values.postgresql.port }}
+              do
+                echo "Waiting for PostgreSQL to be ready..."
+                sleep 5
+              done
+      containers:
+        - name: plausible
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: SECRET_KEY_BASE
+            - name: BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: BASE_URL
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: DATABASE_URL
+            - name: CLICKHOUSE_DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: CLICKHOUSE_DATABASE_URL
+            - name: DISABLE_REGISTRATION
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: DISABLE_REGISTRATION
+            {{- if .Values.smtp.enabled }}
+            - name: MAILER_ADAPTER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: MAILER_ADAPTER
+            - name: SMTP_HOST_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: SMTP_HOST_ADDR
+            - name: SMTP_HOST_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: SMTP_HOST_PORT
+            - name: SMTP_USER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: SMTP_USER_NAME
+            - name: SMTP_USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: SMTP_USER_PWD
+            - name: SMTP_HOST_SSL_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: SMTP_HOST_SSL_ENABLED
+            - name: MAILER_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: MAILER_EMAIL
+            {{- end }}
+            {{- if .Values.googleSearchConsole.enabled }}
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: GOOGLE_CLIENT_ID
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: GOOGLE_CLIENT_SECRET
+            {{- end }}
+          volumeMounts:
+            {{- if .Values.persistence.enabled }}
+            - name: data
+              mountPath: /app/geoip
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-data
+        {{- end }}
