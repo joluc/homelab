@@ -108,6 +108,12 @@ kube-prometheus-stack:
     # Admin credentials (change these!)
     adminPassword: "" # will be overriden in homelab-secrets
 
+    # Dashboard sidecar configuration - allow UI dashboard creation/editing
+    sidecar:
+      dashboards:
+        provider:
+          allowUiUpdates: true
+
   # Alertmanager configuration
   alertmanager:
     enabled: true
