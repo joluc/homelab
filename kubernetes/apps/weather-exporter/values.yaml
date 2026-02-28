@@ -6,6 +6,12 @@ weather-exporter:
     repository: ghcr.io/joluc/weather-exporter
     tag: "0.2.0"
 
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    labels:
+      prometheus: kube-prometheus
+
   config:
     cities:
       - "Leipzig:51.33,12.37@dwd"
