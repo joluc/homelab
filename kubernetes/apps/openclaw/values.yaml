@@ -8,7 +8,7 @@ openclaw:
   openclaw:
     agents:
       defaults:
-        model: "anthropic/claude-sonnet-4-20250514"
+        model: "openai-codex/gpt-5.3-codex"
         thinkingDefault: "low"
         timeoutSeconds: 600
     configOverrides:
