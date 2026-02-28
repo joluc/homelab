@@ -17,7 +17,7 @@ weather-exporter:
       yr:
         userAgent: ""
       openweathermap:
-        enabled: false
+        enabled: true
         apiKey: ""
 
     cacheTTL: "5m"
