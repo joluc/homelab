@@ -21,6 +21,8 @@ oauth2-proxy:
     pass-authorization-header: true
     set-xauthrequest: true
     set-authorization-header: true
+    # Explicitly set x-forwarded-user to the user ID
+    prefer-email-to-user: false
 
   ingress:
     enabled: true
