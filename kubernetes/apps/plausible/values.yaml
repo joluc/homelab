@@ -1,6 +1,6 @@
 image:
   repository: plausible/analytics
-  tag: "v2.1.1"
+  tag: "v2.0.0"
 
 # Base URL for Plausible
 baseUrl: "https://plausible.example.com"
