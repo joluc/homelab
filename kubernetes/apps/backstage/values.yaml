@@ -22,6 +22,9 @@ backstage:
           connection:
             host: "" # overridden in homelab-secrets
             port: 5432
+            database: backstage
+            user: ${POSTGRES_USER}
+            password: ${POSTGRES_PASSWORD}
             # user/password injected via secrets/env vars
       # Integrations
       integrations:
