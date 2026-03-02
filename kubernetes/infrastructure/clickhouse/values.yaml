@@ -30,6 +30,17 @@ clickhouse:
       memory: 2Gi
       cpu: 1000m
 
+  # Security context for official ClickHouse image
+  podSecurityContext:
+    enabled: true
+    fsGroup: 101
+    runAsUser: 101
+
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 101
+    runAsNonRoot: true
+
   # Init script to create Plausible database
   initdbScripts:
     init-plausible.sql: |
