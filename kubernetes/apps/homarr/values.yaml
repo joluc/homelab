@@ -1,4 +1,11 @@
 homarr:
+  env:
+    AUTH_PROVIDERS: "oidc"
+    AUTH_OIDC_ISSUER: ""  # will be overridden in homelab-secrets
+    AUTH_OIDC_CLIENT_NAME: "Pocket ID"
+    AUTH_OIDC_AUTO_LOGIN: "true"
+    AUTH_OIDC_SCOPE_OVERWRITE: "openid email profile"
+
   envSecrets:
     dbEncryption:
       existingSecret: "homarr-db-secret"
@@ -6,10 +13,18 @@ homarr:
     dbCredentials:
       existingSecret: "homarr-db-secret"
       dbUrlKey: "db-url"
+    authOidcCredentials:
+      existingSecret: "homarr-oidc-secret"
+      oidcClientId: "oidc-client-id"
+      oidcClientSecret: "oidc-client-secret"
 
   dbCredentials:
     dbEncryptionKey: ""  # will be overridden in homelab-secrets
     dbUrl: ""  # will be overridden in homelab-secrets
+
+  oidcCredentials:
+    clientId: ""  # will be overridden in homelab-secrets
+    clientSecret: ""  # will be overridden in homelab-secrets
 
   ingress:
     enabled: true
