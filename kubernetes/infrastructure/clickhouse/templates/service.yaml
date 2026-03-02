@@ -13,4 +13,3 @@ spec:
     - name: tcp
       port: {{ .Values.service.tcpPort }}
       targetPort: tcp
-  clusterIP: None
