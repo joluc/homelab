@@ -41,9 +41,12 @@ backstage:
       # Catalog
       catalog:
         rules:
-          - allow: [Component, System, API, Resource, Location]
+          - allow: [Component, System, API, Resource, Location, User, Group]
         locations:
-          # Load local examples or configured locations
+          # Local users catalog
+          - type: file
+            target: /catalog/users.yaml
+          # Load examples
           - type: url
             target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
 

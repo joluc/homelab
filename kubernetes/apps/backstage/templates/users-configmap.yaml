@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstage-users-catalog
+  namespace: {{ .Release.Namespace }}
+data:
+  users.yaml: |
+    # This file is populated from homelab-secrets repo
+    # Content will be injected during deployment
