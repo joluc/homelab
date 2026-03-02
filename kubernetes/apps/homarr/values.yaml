@@ -1,4 +1,7 @@
 homarr:
+  database:
+    type: postgresql
+
   env:
     AUTH_PROVIDERS: "oidc"
     AUTH_OIDC_ISSUER: ""  # will be overridden in homelab-secrets
