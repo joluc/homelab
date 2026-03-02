@@ -37,6 +37,8 @@ backstage:
         auth:
           keys:
             - secret: ${AUTH_SESSION_SECRET}
+        session:
+          secret: ${AUTH_SESSION_SECRET}
 
       # Auth configuration
       auth:
