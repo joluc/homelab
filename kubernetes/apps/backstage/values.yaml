@@ -1,8 +1,18 @@
 # Configuration for the backstage subchart
 backstage:
-  # Ingress disabled - oauth2-proxy handles this
+  # Use custom image with OIDC support
+  image:
+    registry: docker.io
+    repository: joluc/backstage-custom
+    tag: latest
+
+  # Enable ingress
   ingress:
-    enabled: false
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    host: "" # overridden in homelab-secrets
 
   # Backstage application config
   backstage:
