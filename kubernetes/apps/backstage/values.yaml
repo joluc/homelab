@@ -34,6 +34,29 @@ backstage:
             user: ${POSTGRES_USER}
             password: ${POSTGRES_PASSWORD}
             # user/password injected via secrets/env vars
+
+      # Auth configuration
+      auth:
+        environment: production
+        providers:
+          oidc:
+            development:
+              metadataUrl: ${OIDC_METADATA_URL}
+              clientId: ${OIDC_CLIENT_ID}
+              clientSecret: ${OIDC_CLIENT_SECRET}
+              prompt: auto
+              signIn:
+                resolvers:
+                  - resolver: emailMatchingUserEntityProfileEmail
+            production:
+              metadataUrl: ${OIDC_METADATA_URL}
+              clientId: ${OIDC_CLIENT_ID}
+              clientSecret: ${OIDC_CLIENT_SECRET}
+              prompt: auto
+              signIn:
+                resolvers:
+                  - resolver: emailMatchingUserEntityProfileEmail
+
       # Integrations
       integrations:
         github:
