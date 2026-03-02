@@ -34,6 +34,9 @@ backstage:
             user: ${POSTGRES_USER}
             password: ${POSTGRES_PASSWORD}
             # user/password injected via secrets/env vars
+        auth:
+          keys:
+            - secret: ${AUTH_SESSION_SECRET}
 
       # Auth configuration
       auth:
