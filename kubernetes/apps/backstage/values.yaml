@@ -1,12 +1,8 @@
 # Configuration for the backstage subchart
 backstage:
-  # Global ingress settings
+  # Ingress disabled - oauth2-proxy handles this
   ingress:
-    enabled: true
-    className: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    host: "" # overridden in homelab-secrets
+    enabled: false
 
   # Backstage application config
   backstage:
@@ -15,6 +11,16 @@ backstage:
       app:
         baseUrl: "" # overridden in homelab-secrets
         title: Joluc Homelab
+
+      # OAuth2-Proxy authentication
+      auth:
+        environment: production
+        providers:
+          oauth2Proxy:
+            signIn:
+              resolvers:
+                - resolver: forwardedUserMatchingUserEntityName
+
       backend:
         baseUrl: "" # overridden in homelab-secrets
         database:
