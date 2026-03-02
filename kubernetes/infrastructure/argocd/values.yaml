@@ -22,6 +22,10 @@ argo-cd:
   # High Availability (optional, keep default single replica for homelab to save resources)
   controller:
     replicas: 1
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
     resources:
       limits:
         cpu: 500m
@@ -32,6 +36,10 @@ argo-cd:
 
   repoServer:
     replicas: 1
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
     resources:
       limits:
         cpu: 500m
@@ -42,6 +50,10 @@ argo-cd:
 
   server:
     replicas: 1
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
     resources:
       limits:
         cpu: 500m
@@ -49,3 +61,9 @@ argo-cd:
       requests:
         cpu: 100m
         memory: 128Mi
+
+  applicationSet:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
