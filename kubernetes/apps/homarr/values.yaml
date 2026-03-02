@@ -1,4 +1,13 @@
+dbCredentials:
+  dbEncryptionKey: ""  # will be overridden in homelab-secrets
+  dbUrl: ""  # will be overridden in homelab-secrets
+
 homarr:
+  dbCredentials:
+    existingSecret: "homarr-db-secret"
+    dbEncryptionKey: "db-encryption-key"
+    dbUrlKey: "db-url"
+
   ingress:
     enabled: true
     className: traefik
