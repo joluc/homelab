@@ -15,10 +15,11 @@ oauth2-proxy:
     skip-provider-button: true
     insecure-oidc-allow-unverified-email: true
     upstream: http://backstage.backstage.svc:7007
-    # Pass user identity to Backstage
-    set-xauthrequest: true
+    # Pass user identity to Backstage via x-forwarded-user header
+    pass-user-headers: true
     pass-access-token: true
     pass-authorization-header: true
+    set-xauthrequest: true
     set-authorization-header: true
 
   ingress:
