@@ -35,10 +35,6 @@ clickhouse:
     init-plausible.sql: |
       CREATE DATABASE IF NOT EXISTS plausible_events_db;
 
+# Disable keeper for single-node setup
 keeper:
-  enabled: true
-  image:
-    registry: docker.io
-    repository: clickhouse/clickhouse-keeper
-    tag: 24.3.3.102-alpine
-    digest: ""
+  enabled: false
