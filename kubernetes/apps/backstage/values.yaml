@@ -5,6 +5,7 @@ backstage:
     registry: docker.io
     repository: joluc/backstage-custom
     tag: latest
+    pullPolicy: Always
 
   # Enable ingress
   ingress:
