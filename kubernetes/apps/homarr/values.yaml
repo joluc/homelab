@@ -3,10 +3,13 @@ dbCredentials:
   dbUrl: ""  # will be overridden in homelab-secrets
 
 homarr:
-  dbCredentials:
-    existingSecret: "homarr-db-secret"
-    dbEncryptionKey: "db-encryption-key"
-    dbUrlKey: "db-url"
+  envSecrets:
+    dbEncryption:
+      existingSecret: "homarr-db-secret"
+      key: "db-encryption-key"
+    dbCredentials:
+      existingSecret: "homarr-db-secret"
+      dbUrlKey: "db-url"
 
   ingress:
     enabled: true
