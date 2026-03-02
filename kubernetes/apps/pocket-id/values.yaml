@@ -7,7 +7,7 @@ ingress:
   host: "" # will be overriden in homelab-secrets
 
 persistence:
-  enabled: true
+  enabled: false  # Disabled when using external Postgres database
   storageClass: local-path
   size: 1Gi
 
@@ -23,4 +23,4 @@ env:
   APP_URL: "" # will be overriden in homelab-secrets
   TRUST_PROXY: "false" # will be overriden in homelab-secrets
   ENCRYPTION_KEY: "" # will be overriden in homelab-secrets
-  # Using SQLite by default - database stored in /app/data PVC
+  DATABASE_URL: "" # will be overriden in homelab-secrets - set to postgres:// URL for external database
