@@ -3,5 +3,7 @@ name: homarr
 version: 1.0.0
 description: Homarr customizable dashboard
 
-# Note: Homarr doesn't have an official Helm chart yet
-# This is a custom chart that wraps the Docker image
+dependencies:
+  - name: homarr
+    version: "8.13.0"
+    repository: https://homarr-labs.github.io/charts

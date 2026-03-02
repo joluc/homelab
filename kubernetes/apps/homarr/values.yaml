@@ -1,40 +1,29 @@
-# Custom values for Homarr deployment
-# Since there's no official Helm chart, you'll need to create a custom deployment
-
-image:
-  repository: ghcr.io/ajnart/homarr
-  tag: latest
-  pullPolicy: Always
-
-service:
-  type: ClusterIP
-  port: 7575
-
-ingress:
-  enabled: true
-  ingressClassName: traefik
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-  hosts:
-    - host: "" # will be overriden in homelab-secrets
-      paths:
-        - path: /
-          pathType: Prefix
-
-persistence:
-  config:
+homarr:
+  ingress:
     enabled: true
-    storageClass: local-path
-    size: 2Gi
-  data:
-    enabled: true
-    storageClass: local-path
-    size: 1Gi
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - host: "" # will be overridden in homelab-secrets
+        paths:
+          - path: /
+            pathType: Prefix
 
-resources:
-  requests:
-    cpu: 100m
-    memory: 128Mi
-  limits:
-    cpu: 500m
-    memory: 256Mi
+  persistence:
+    data:
+      enabled: true
+      storageClass: local-path
+      size: 2Gi
+    config:
+      enabled: true
+      storageClass: local-path
+      size: 1Gi
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
