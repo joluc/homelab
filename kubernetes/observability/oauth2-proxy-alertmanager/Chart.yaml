@@ -1,0 +1,10 @@
+apiVersion: v2
+name: oauth2-proxy-alertmanager
+description: OAuth2 Proxy for Alertmanager
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: oauth2-proxy
+    version: 7.8.3
+    repository: https://oauth2-proxy.github.io/manifests
