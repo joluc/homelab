@@ -1,9 +1,4 @@
 apiVersion: v2
 name: clickhouse
 version: 1.0.0
-description: Shared ClickHouse database
-
-dependencies:
-  - name: clickhouse
-    version: 9.4.4
-    repository: https://charts.bitnami.com/bitnami
+description: ClickHouse database for analytics (custom deployment)

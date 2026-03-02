@@ -1,51 +1,24 @@
-global:
-  security:
-    allowInsecureImages: true
+image:
+  repository: clickhouse/clickhouse-server
+  tag: 24.3.3.102-alpine
 
-clickhouse:
-  image:
-    registry: docker.io
-    repository: clickhouse/clickhouse-server
-    tag: 24.3.3.102-alpine
-    digest: ""
+auth:
+  username: "default"
+  password: "" # will be overridden in homelab-secrets
 
-  auth:
-    username: "default"
-    password: "" # will be overridden in homelab-secrets
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 20Gi
 
-  # Single shard, single replica for homelab
-  shards: 1
-  replicaCount: 1
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 200m
+  limits:
+    memory: 2Gi
+    cpu: 1000m
 
-  persistence:
-    enabled: true
-    storageClass: local-path
-    size: 20Gi
-
-  resources:
-    requests:
-      memory: 512Mi
-      cpu: 200m
-    limits:
-      memory: 2Gi
-      cpu: 1000m
-
-  # Security context for official ClickHouse image
-  podSecurityContext:
-    enabled: true
-    fsGroup: 101
-    runAsUser: 101
-
-  containerSecurityContext:
-    enabled: true
-    runAsUser: 101
-    runAsNonRoot: true
-
-  # Init script to create Plausible database
-  initdbScripts:
-    init-plausible.sql: |
-      CREATE DATABASE IF NOT EXISTS plausible_events_db;
-
-# Disable keeper for single-node setup
-keeper:
-  enabled: false
+service:
+  httpPort: 8123
+  tcpPort: 9000
