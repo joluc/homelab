@@ -1,12 +1,5 @@
 # Configuration for the backstage subchart
 backstage:
-  # Use custom image with OIDC support
-  image:
-    registry: docker.io
-    repository: joluc/backstage-custom
-    tag: latest
-    pullPolicy: Always
-
   # Enable ingress
   ingress:
     enabled: true
@@ -17,6 +10,13 @@ backstage:
 
   # Backstage application config
   backstage:
+    # Use custom image with OIDC support
+    image:
+      registry: docker.io
+      repository: joluc/backstage-custom
+      tag: latest
+      pullPolicy: Always
+
     # Used for app-config.yaml generation
     appConfig:
       app:
