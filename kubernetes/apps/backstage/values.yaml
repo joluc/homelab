@@ -12,15 +12,6 @@ backstage:
         baseUrl: "" # overridden in homelab-secrets
         title: Joluc Homelab
 
-      # OAuth2-Proxy authentication
-      auth:
-        environment: production
-        providers:
-          oauth2Proxy:
-            signIn:
-              resolvers:
-                - resolver: forwardedUserMatchingUserEntityName
-
       backend:
         baseUrl: "" # overridden in homelab-secrets
         database:
