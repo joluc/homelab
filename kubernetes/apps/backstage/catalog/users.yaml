@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: joluc
+  description: Homelab Administrator
+spec:
+  profile:
+    displayName: joluc
+    email: auth@joluc.de
+  memberOf: [homelab-team]
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: homelab-team
+  description: Homelab Team
+spec:
+  type: team
+  profile:
+    displayName: Homelab Team
+  children: []

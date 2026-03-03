@@ -17,6 +17,18 @@ backstage:
       tag: latest
       pullPolicy: Always
 
+    # Extra volumes for catalog files
+    extraVolumes:
+      - name: homelab-catalog
+        configMap:
+          name: backstage-homelab-catalog
+
+    # Extra volume mounts
+    extraVolumeMounts:
+      - name: homelab-catalog
+        mountPath: /catalog
+        readOnly: true
+
     # Used for app-config.yaml generation
     appConfig:
       app:
@@ -73,12 +85,15 @@ backstage:
       # Catalog
       catalog:
         rules:
-          - allow: [Component, System, API, Resource, Location, User, Group]
+          - allow: [Component, System, API, Resource, Location, User, Group, Domain]
         locations:
           # Local users catalog
           - type: file
             target: /catalog/users.yaml
-          # Load examples
+          # Homelab services catalog
+          - type: file
+            target: /catalog/homelab-catalog.yaml
+          # Load examples (optional - can be removed later)
           - type: url
             target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
 

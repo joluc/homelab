@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstage-homelab-catalog
+  namespace: {{ .Release.Namespace }}
+data:
+  homelab-catalog.yaml: |
+{{ .Files.Get "catalog/homelab-catalog.yaml" | indent 4 }}
+  users.yaml: |
+{{ .Files.Get "catalog/users.yaml" | indent 4 }}

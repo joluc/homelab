@@ -1,0 +1,401 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: homelab-infrastructure
+  description: Core infrastructure services for the homelab
+  tags:
+    - infrastructure
+    - kubernetes
+spec:
+  owner: homelab-team
+  domain: platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: homelab-observability
+  description: Monitoring and observability stack
+  tags:
+    - observability
+    - monitoring
+spec:
+  owner: homelab-team
+  domain: platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: homelab-applications
+  description: User-facing applications and services
+  tags:
+    - applications
+spec:
+  owner: homelab-team
+  domain: services
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: home-assistant
+  description: Home automation platform for controlling smart home devices
+  tags:
+    - home-automation
+    - iot
+  links:
+    - url: https://ha.joluc.de
+      title: Home Assistant UI
+      icon: dashboard
+    - url: https://grafana.joluc.de/d/home-assistant
+      title: Grafana Dashboard
+      icon: graph
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: home-assistant
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-applications
+  dependsOn:
+    - component:default/postgres
+    - component:default/redis
+  providesApis: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: paperless
+  description: Document management system for organizing and archiving documents
+  tags:
+    - documents
+    - productivity
+  links:
+    - url: https://docs.joluc.de
+      title: Paperless UI
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: paperless
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-applications
+  dependsOn:
+    - component:default/postgres
+    - component:default/redis
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: immich
+  description: Self-hosted photo and video backup solution (Google Photos alternative)
+  tags:
+    - photos
+    - media
+    - backup
+  links:
+    - url: https://photos.joluc.de
+      title: Immich UI
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: immich
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-applications
+  dependsOn:
+    - component:default/postgres
+    - component:default/clickhouse
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: n8n
+  description: Workflow automation platform for connecting apps and services
+  tags:
+    - automation
+    - workflows
+  links:
+    - url: https://n8n.joluc.de
+      title: n8n UI
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: n8n
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-applications
+  dependsOn:
+    - component:default/postgres
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: homarr
+  description: Modern dashboard for accessing all homelab services
+  tags:
+    - dashboard
+    - portal
+  links:
+    - url: https://home.joluc.de
+      title: Homarr Dashboard
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: homarr
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-applications
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: vaultwarden
+  description: Self-hosted password manager (Bitwarden-compatible)
+  tags:
+    - security
+    - passwords
+  links:
+    - url: https://vault.joluc.de
+      title: Vaultwarden UI
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: vaultwarden
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-applications
+  dependsOn:
+    - component:default/postgres
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: pocket-id
+  description: Lightweight SSO and identity provider (100MB)
+  tags:
+    - authentication
+    - sso
+    - identity
+  links:
+    - url: https://auth.joluc.de
+      title: Pocket ID
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: pocket-id
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: postgres
+  description: Shared PostgreSQL database for multiple services
+  tags:
+    - database
+    - infrastructure
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: postgres
+spec:
+  type: resource
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: redis
+  description: Shared Redis cache for multiple services
+  tags:
+    - cache
+    - infrastructure
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: redis
+spec:
+  type: resource
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: clickhouse
+  description: Analytics database for logs and metrics
+  tags:
+    - database
+    - analytics
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: clickhouse
+spec:
+  type: resource
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: grafana
+  description: Metrics visualization and dashboards
+  tags:
+    - observability
+    - dashboards
+    - monitoring
+  links:
+    - url: https://grafana.joluc.de
+      title: Grafana
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: grafana
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-observability
+  dependsOn:
+    - component:default/prometheus
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: prometheus
+  description: Metrics collection and storage
+  tags:
+    - observability
+    - metrics
+    - monitoring
+  links:
+    - url: https://prometheus.joluc.de
+      title: Prometheus
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: prometheus
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-observability
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: jaeger
+  description: Distributed tracing for microservices
+  tags:
+    - observability
+    - tracing
+  links:
+    - url: https://jaeger.joluc.de
+      title: Jaeger UI
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: jaeger
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-observability
+  dependsOn:
+    - component:default/opensearch
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: opensearch
+  description: Log aggregation and trace storage
+  tags:
+    - observability
+    - logs
+    - search
+  links:
+    - url: https://opensearch.joluc.de
+      title: OpenSearch
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: opensearch
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-observability
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: uptime-kuma
+  description: Uptime monitoring with status page
+  tags:
+    - monitoring
+    - uptime
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: uptime-kuma
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-observability
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: plausible
+  description: Privacy-friendly analytics platform
+  tags:
+    - analytics
+    - privacy
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: plausible
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-applications
+  dependsOn:
+    - component:default/postgres
+    - component:default/clickhouse
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: argocd
+  description: GitOps deployment orchestrator
+  tags:
+    - gitops
+    - deployment
+    - infrastructure
+  links:
+    - url: https://argocd.joluc.de
+      title: ArgoCD UI
+      icon: dashboard
+  annotations:
+    github.com/project-slug: joluc/homelab
+    backstage.io/kubernetes-id: argocd
+spec:
+  type: service
+  lifecycle: production
+  owner: homelab-team
+  system: homelab-infrastructure
