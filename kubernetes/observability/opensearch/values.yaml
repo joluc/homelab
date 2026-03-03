@@ -1,3 +1,7 @@
+# User passwords (override in homelab-secrets)
+userPasswords: {}
+  # logs: "password-here"
+
 operator:
   enabled: true
   manager:
