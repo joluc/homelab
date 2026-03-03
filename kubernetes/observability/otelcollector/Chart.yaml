@@ -1,0 +1,9 @@
+apiVersion: v2
+name: otelcollector
+version: 1.0.0
+description: OpenTelemetry Collector for observability pipeline
+
+dependencies:
+  - name: opentelemetry-collector
+    version: 0.110.3
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
