@@ -70,7 +70,7 @@ opentelemetry-collector:
             parse_from: body
             parse_to: attributes
             on_error: send
-            if: 'body matches "^time=\\".*\\""'
+            if: 'body matches "^time=\""'
       prometheus:
         config:
           scrape_configs:
