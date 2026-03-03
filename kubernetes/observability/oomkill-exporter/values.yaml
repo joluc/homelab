@@ -7,7 +7,7 @@ oomkill-exporter:
 
   config:
     listenAddress: ":9102"
-    containerdSocket: "/run/containerd/containerd.sock"
+    containerdSocket: "/run/k3s/containerd/containerd.sock"
     containerdNamespace: "k8s.io"
     logLevel: "info"
 
@@ -26,3 +26,7 @@ oomkill-exporter:
 
   tolerations:
     - operator: Exists
+
+  hostPaths:
+    kmsg: /dev/kmsg
+    containerdSocket: /run/k3s/containerd/containerd.sock
