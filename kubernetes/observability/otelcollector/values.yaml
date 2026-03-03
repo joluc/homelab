@@ -38,8 +38,8 @@ opentelemetry-collector:
         include:
           - /var/log/pods/*/*/*.log
         exclude:
-          - /var/log/pods/*/otelcollector*/*
-          - /var/log/pods/*/kube-system*/*
+          - /var/log/pods/otelcollector_*/*/*
+          - /var/log/pods/kube-system_*/*/*
         start_at: end
         include_file_path: true
         include_file_name: false
