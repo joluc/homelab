@@ -75,17 +75,16 @@ cluster:
   ismPolicies:
     - name: logs-retention-policy
       defaultState: hot
-      description: "Logs policy with 7-day retention and 40GB rollover"
+      description: "Logs policy with 1-year retention and 10GB rollover"
       states:
         - name: hot
           actions:
             - rollover:
-                minSize: 40gb
-                minIndexAge: 1d
+                minSize: 10gb
           transitions:
             - stateName: delete
               conditions:
-                minIndexAge: 7d
+                minIndexAge: 365d
         - name: delete
           actions:
             - delete: {}
