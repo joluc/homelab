@@ -329,7 +329,7 @@ metadata:
     - logs
     - search
   links:
-    - url: https://opensearch.joluc.de
+    - url: https://logs.joluc.de
       title: OpenSearch
       icon: dashboard
   annotations:
