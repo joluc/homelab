@@ -52,6 +52,12 @@ opentelemetry-collector:
             parse_from: body
             parse_to: attributes
             on_error: send
+          - type: key_value_parser
+            id: logfmt-parser
+            parse_from: body
+            parse_to: attributes
+            on_error: send
+            if: 'body matches "^time=\\".*\\""'
       prometheus:
         config:
           scrape_configs:
