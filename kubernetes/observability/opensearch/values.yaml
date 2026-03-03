@@ -71,50 +71,141 @@ cluster:
         opensearch_security.openid.client_secret: "" # Will be set in homelab-secrets
         opensearch_security.openid.base_redirect_url: "" # Will be set in homelab-secrets
 
-    ismPolicies:
-      - name: logs-retention-policy
-        defaultState: hot
-        description: "Logs policy with 7-day retention and 40GB rollover"
-        states:
-          - name: hot
-            actions:
-              - rollover:
-                  minSize: "40gb"
-                  minIndexAge: "1d"
-            transitions:
-              - stateName: delete
-                conditions:
-                  minIndexAge: "7d"
-          - name: delete
-            actions:
-              - delete: {}
-        ismTemplate:
-          indexPatterns:
-            - "logs-*"
-          priority: 100
+  # ISM Policies - defined at cluster level, not cluster.cluster
+  ismPolicies:
+    - name: logs-retention-policy
+      defaultState: hot
+      description: "Logs policy with 7-day retention and 40GB rollover"
+      states:
+        - name: hot
+          actions:
+            - rollover:
+                minSize: 40gb
+                minIndexAge: 1d
+          transitions:
+            - stateName: delete
+              conditions:
+                minIndexAge: 7d
+        - name: delete
+          actions:
+            - delete: {}
+      ismTemplate:
+        priority: 100
+        indexPatterns:
+          - "logs-*"
 
-    roles:
-      - name: logs
-        clusterPermissions:
-          - cluster_composite_ops
-          - cluster_monitor
-        indexPermissions:
-          - indexPatterns:
-              - logs-*
-              - otel-logs-*
-              - .opendistro-ism-*
-            allowedActions:
-              - indices_all
-              - crud
-              - create_index
-              - manage
+  # Roles - defined at cluster level
+  roles:
+    - name: logs
+      clusterPermissions:
+        - cluster_composite_ops
+        - cluster_monitor
+      indexPermissions:
+        - indexPatterns:
+            - logs-*
+            - otel-logs-*
+            - .opendistro-ism-*
+          allowedActions:
+            - indices_all
+            - crud
+            - create_index
+            - manage
 
-    users:
-      - name: logs
-        passwordSecretRef:
-          name: logs-password
-          key: password
-        backendRoles:
-          - logs
-        opendistroSecurityRoles:
-          - logs
+  # Users - defined at cluster level
+  users:
+    - name: logs
+      secretName: logs-password
+      secretKey: password
+      backendRoles:
+        - logs
+      opendistroSecurityRoles:
+        - logs
+
+  # Index Templates - defined at cluster level
+  indexTemplates:
+    - name: logs
+      indexPatterns:
+        - logs-*
+      priority: 200
+      dataStream: {}
+      templateSpec:
+        settings:
+          index:
+            number_of_shards: 1
+            number_of_replicas: 0
+            refresh_interval: 5s
+            codec: best_compression
+        mappings:
+          properties:
+            "@timestamp":
+              type: date
+            observedTimestamp:
+              type: date
+            body:
+              type: text
+              fields:
+                keyword:
+                  type: keyword
+                  ignore_above: 1024
+            severity:
+              properties:
+                text:
+                  type: keyword
+                number:
+                  type: integer
+            instrumentationScope:
+              properties:
+                name:
+                  type: keyword
+                version:
+                  type: keyword
+            trace_id:
+              type: keyword
+            span_id:
+              type: keyword
+            attributes:
+              properties:
+                log.file.path:
+                  type: keyword
+                log.iostream:
+                  type: keyword
+                logtag:
+                  type: keyword
+                data_stream.dataset:
+                  type: keyword
+                data_stream.namespace:
+                  type: keyword
+                data_stream.type:
+                  type: keyword
+            resource:
+              properties:
+                k8s.namespace.name:
+                  type: keyword
+                k8s.pod.name:
+                  type: keyword
+                k8s.pod.uid:
+                  type: keyword
+                k8s.pod.start_time:
+                  type: date
+                k8s.container.name:
+                  type: keyword
+                k8s.container.restart_count:
+                  type: integer
+                k8s.node.name:
+                  type: keyword
+                k8s.deployment.name:
+                  type: keyword
+                k8s.daemonset.name:
+                  type: keyword
+                k8s.statefulset.name:
+                  type: keyword
+                k8s.replicaset.name:
+                  type: keyword
+                k8s.job.name:
+                  type: keyword
+                k8s.cronjob.name:
+                  type: keyword
+                service.name:
+                  type: keyword
+                service.version:
+                  type: keyword
