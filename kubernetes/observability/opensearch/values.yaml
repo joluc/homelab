@@ -30,7 +30,7 @@ cluster:
     nodePools:
       - component: nodes
         replicas: 1
-        diskSize: "30Gi"
+        diskSize: "200Gi"
         roles:
           - "cluster_manager"
           - "data"
@@ -70,3 +70,51 @@ cluster:
         opensearch_security.openid.client_id: "" # Will be set in homelab-secrets
         opensearch_security.openid.client_secret: "" # Will be set in homelab-secrets
         opensearch_security.openid.base_redirect_url: "" # Will be set in homelab-secrets
+
+    ismPolicies:
+      - name: logs-retention-policy
+        defaultState: hot
+        description: "Logs policy with 7-day retention and 40GB rollover"
+        states:
+          - name: hot
+            actions:
+              - rollover:
+                  minSize: "40gb"
+                  minIndexAge: "1d"
+            transitions:
+              - stateName: delete
+                conditions:
+                  minIndexAge: "7d"
+          - name: delete
+            actions:
+              - delete: {}
+        ismTemplate:
+          indexPatterns:
+            - "logs-*"
+          priority: 100
+
+    roles:
+      - name: logs
+        clusterPermissions:
+          - cluster_composite_ops
+          - cluster_monitor
+        indexPermissions:
+          - indexPatterns:
+              - logs-*
+              - otel-logs-*
+              - .opendistro-ism-*
+            allowedActions:
+              - indices_all
+              - crud
+              - create_index
+              - manage
+
+    users:
+      - name: logs
+        passwordSecretRef:
+          name: logs-password
+          key: password
+        backendRoles:
+          - logs
+        opendistroSecurityRoles:
+          - logs
