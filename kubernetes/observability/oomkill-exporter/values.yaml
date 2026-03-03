@@ -1,0 +1,28 @@
+# oomkill-exporter values
+oomkill-exporter:
+  image:
+    repository: ghcr.io/joluc/oomkill-exporter
+    tag: v1.0.0
+    pullPolicy: IfNotPresent
+
+  config:
+    listenAddress: ":9102"
+    containerdSocket: "/run/containerd/containerd.sock"
+    containerdNamespace: "k8s.io"
+    logLevel: "info"
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 20m
+      memory: 20Mi
+
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s
+
+  tolerations:
+    - operator: Exists

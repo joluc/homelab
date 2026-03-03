@@ -1,0 +1,9 @@
+apiVersion: v2
+name: oomkill-exporter
+version: 1.0.0
+description: Prometheus exporter for Kubernetes OOM kills
+
+dependencies:
+  - name: oomkill-exporter
+    version: 1.0.0
+    repository: oci://ghcr.io/joluc/charts
