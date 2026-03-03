@@ -47,6 +47,11 @@ opentelemetry-collector:
           - type: container
             id: container-parser
             max_log_size: 102400
+          - type: json_parser
+            id: json-parser
+            parse_from: body
+            parse_to: attributes
+            on_error: send
       prometheus:
         config:
           scrape_configs:
