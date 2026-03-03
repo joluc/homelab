@@ -3,7 +3,8 @@ opentelemetry-collector:
   mode: deployment
 
   image:
-    repository: "otel/opentelemetry-collector-k8s"
+    repository: "otel/opentelemetry-collector-contrib"
+    tag: "0.114.0"
 
   presets:
     kubernetesAttributes:
