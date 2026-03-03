@@ -52,7 +52,7 @@ opentelemetry-collector:
         http:
           endpoint: https://opensearch.opensearch.svc.cluster.local:9200
           auth:
-            authenticator: basicauth
+            authenticator: basicauth/opensearch
           tls:
             insecure_skip_verify: true
         logs_index: logs-otel
