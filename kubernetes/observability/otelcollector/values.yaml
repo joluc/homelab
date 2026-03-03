@@ -125,11 +125,13 @@ opentelemetry-collector:
       enabled: true
       containerPort: 54526
       servicePort: 54526
+      hostPort: 54526
       protocol: TCP
     syslog-udp:
       enabled: true
       containerPort: 54526
       servicePort: 54526
+      hostPort: 54526
       protocol: UDP
     prometheus:
       enabled: true
