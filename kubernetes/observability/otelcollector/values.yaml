@@ -57,7 +57,7 @@ opentelemetry-collector:
         logs_index: logs-otel
 
     service:
-      extensions: [basicauth/opensearch]
+      extensions: [health_check, basicauth/opensearch]
       pipelines:
         traces:
           receivers: [otlp]
