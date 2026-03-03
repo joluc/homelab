@@ -14,6 +14,12 @@ opentelemetry-collector:
       enabled: false
 
   config:
+    extensions:
+      basicauth/opensearch:
+        client_auth:
+          username: logs
+          password: ${OPENSEARCH_PASSWORD}
+
     receivers:
       otlp:
         protocols:
@@ -41,15 +47,17 @@ opentelemetry-collector:
     exporters:
       debug:
         verbosity: detailed
-      # Configure your exporters here (e.g., prometheus, jaeger, etc.)
-      # prometheus:
-      #   endpoint: "0.0.0.0:8889"
-      # otlp:
-      #   endpoint: jaeger-collector:4317
-      #   tls:
-      #     insecure: true
+      opensearch:
+        http:
+          endpoint: https://opensearch.opensearch.svc.cluster.local:9200
+          auth:
+            authenticator: basicauth
+          tls:
+            insecure_skip_verify: true
+        logs_index: logs-otel
 
     service:
+      extensions: [basicauth/opensearch]
       pipelines:
         traces:
           receivers: [otlp]
@@ -62,7 +70,7 @@ opentelemetry-collector:
         logs:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [debug]
+          exporters: [opensearch, debug]
 
   ports:
     otlp:
@@ -101,3 +109,11 @@ opentelemetry-collector:
     scrapeTimeout: 10s
 
   tolerations: []
+
+  extraEnvs:
+    - name: OPENSEARCH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: logs-password
+          key: password
+
