@@ -47,6 +47,19 @@ opentelemetry-collector:
           - type: container
             id: container-parser
             max_log_size: 102400
+          - type: regex_parser
+            id: ansi-stripper
+            regex: '^(?P<body_clean>(?:\x1b\[[0-9;]*m|[^\x1b])*)$'
+            parse_from: body
+            parse_to: body
+            on_error: send
+            if: 'body matches "\\x1b\\["'
+          - type: regex_parser
+            id: structured-log-parser
+            regex: '^(?P<timestamp>[0-9T:.Z-]+)\s+(?P<level>[A-Z]+)\s+(?P<module>[^:]+):\s+(?P<message>.*)$'
+            parse_from: body
+            parse_to: attributes
+            on_error: send
           - type: json_parser
             id: json-parser
             parse_from: body
