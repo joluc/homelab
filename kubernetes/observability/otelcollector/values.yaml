@@ -1,6 +1,6 @@
 # OpenTelemetry Collector values
 opentelemetry-collector:
-  mode: deployment
+  mode: daemonset
 
   image:
     repository: "otel/opentelemetry-collector-contrib"
@@ -28,6 +28,25 @@ opentelemetry-collector:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
+      syslog:
+        tcp:
+          listen_address: "0.0.0.0:54526"
+        udp:
+          listen_address: "0.0.0.0:54526"
+        protocol: rfc5424
+      filelog:
+        include:
+          - /var/log/pods/*/*/*.log
+        exclude:
+          - /var/log/pods/*/otelcollector*/*
+          - /var/log/pods/*/kube-system*/*
+        start_at: end
+        include_file_path: true
+        include_file_name: false
+        operators:
+          - type: container
+            id: container-parser
+            max_log_size: 102400
       prometheus:
         config:
           scrape_configs:
@@ -69,7 +88,7 @@ opentelemetry-collector:
           processors: [memory_limiter, batch]
           exporters: [debug]
         logs:
-          receivers: [otlp]
+          receivers: [otlp, filelog, syslog]
           processors: [memory_limiter, batch]
           exporters: [opensearch, debug]
 
@@ -85,6 +104,16 @@ opentelemetry-collector:
       containerPort: 4318
       servicePort: 4318
       protocol: TCP
+    syslog:
+      enabled: true
+      containerPort: 54526
+      servicePort: 54526
+      protocol: TCP
+    syslog-udp:
+      enabled: true
+      containerPort: 54526
+      servicePort: 54526
+      protocol: UDP
     prometheus:
       enabled: true
       containerPort: 8889
@@ -117,4 +146,20 @@ opentelemetry-collector:
         secretKeyRef:
           name: logs-password
           key: password
+
+  extraVolumes:
+    - name: varlogpods
+      hostPath:
+        path: /var/log/pods
+    - name: varlibdockercontainers
+      hostPath:
+        path: /var/lib/docker/containers
+
+  extraVolumeMounts:
+    - name: varlogpods
+      mountPath: /var/log/pods
+      readOnly: true
+    - name: varlibdockercontainers
+      mountPath: /var/lib/docker/containers
+      readOnly: true
 
