@@ -1,0 +1,41 @@
+apiVersion: opensearch.opster.io/v1
+kind: OpensearchIndexTemplate
+metadata:
+  name: logs
+  namespace: {{ .Release.Namespace }}
+spec:
+  opensearchCluster:
+    name: opensearch
+  name: logs
+  indexPatterns:
+    - logs-*
+  dataStream: {}
+  priority: 200
+  template:
+    settings:
+      index:
+        number_of_shards: 1
+        number_of_replicas: 0
+        refresh_interval: 5s
+    mappings:
+      properties:
+        "@timestamp":
+          type: date
+        message:
+          type: text
+        level:
+          type: keyword
+        logger:
+          type: keyword
+        service:
+          type: keyword
+        trace_id:
+          type: keyword
+        span_id:
+          type: keyword
+        resource:
+          type: object
+          enabled: true
+        attributes:
+          type: object
+          enabled: true
