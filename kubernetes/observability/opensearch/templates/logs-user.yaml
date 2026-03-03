@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: logs-password
+  namespace: {{ .Release.Namespace }}
+type: Opaque
+stringData:
+  password: {{ .Values.logs.password | required "logs.password is required" }}
+---
+apiVersion: opensearch.opster.io/v1
+kind: OpensearchRole
+metadata:
+  name: logs
+  namespace: {{ .Release.Namespace }}
+spec:
+  opensearchCluster:
+    name: opensearch
+  clusterPermissions:
+    - cluster_composite_ops
+    - cluster_monitor
+  indexPermissions:
+    - indexPatterns:
+        - logs-*
+        - otel-logs-*
+        - .opendistro-ism-*
+      allowedActions:
+        - indices_all
+        - crud
+        - create_index
+        - manage
+---
+apiVersion: opensearch.opster.io/v1
+kind: OpensearchUser
+metadata:
+  name: logs
+  namespace: {{ .Release.Namespace }}
+spec:
+  opensearchCluster:
+    name: opensearch
+  passwordFrom:
+    name: logs-password
+    key: password
+  backendRoles:
+    - logs
+  opendistroSecurityRoles:
+    - logs
