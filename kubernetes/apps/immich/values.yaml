@@ -1,56 +1,86 @@
-immich:
-  # Run on VPS (edge-compute node) for better performance
-  nodeSelector:
-    node_role: edge-compute
+# Run on VPS (edge-compute node) for better performance
+controllers:
+  main:
+    containers:
+      main:
+        env:
+          DB_HOSTNAME: postgres-postgresql.postgres.svc.cluster.local
+          DB_DATABASE_NAME: immich
+          DB_USERNAME: immich
+          DB_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: immich-db-secret
+                key: password
 
-  # Persistence for photos and videos
+immich:
   persistence:
     library:
-      enabled: true
-      storageClass: local-path
-      size: 100Gi
+      existingClaim: immich-library
 
-  # Ingress configuration
+# Enable Valkey (Redis replacement)
+valkey:
+  enabled: true
+  persistence:
+    data:
+      enabled: true
+      type: persistentVolumeClaim
+      size: 1Gi
+      storageClass: local-path
+      accessMode: ReadWriteOnce
+
+# Server component
+server:
+  enabled: true
+  controllers:
+    main:
+      pod:
+        nodeSelector:
+          node_role: edge-compute
+      containers:
+        main:
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
   ingress:
-    enabled: true
-    ingressClassName: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-    hosts:
-      - host: "" # will be overriden in homelab-secrets
-        paths:
-          - path: /
-            pathType: Prefix
-
-  # PostgreSQL database
-  postgresql:
-    enabled: true
-    persistence:
+    main:
       enabled: true
-      storageClass: local-path
+      className: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+      hosts:
+        - host: "" # will be overriden in homelab-secrets
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                identifier: main
+
+# Machine learning component
+machine-learning:
+  enabled: true
+  controllers:
+    main:
+      pod:
+        nodeSelector:
+          node_role: edge-compute
+      containers:
+        main:
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+  persistence:
+    cache:
+      enabled: true
+      type: persistentVolumeClaim
       size: 10Gi
-
-  # Redis for caching
-  redis:
-    enabled: true
-
-  # Resource limits
-  server:
-    resources:
-      requests:
-        cpu: 500m
-        memory: 1Gi
-      limits:
-        cpu: 2000m
-        memory: 2Gi
-
-  # Machine learning (CPU-based transcoding on VPS)
-  machineLearning:
-    enabled: true
-    resources:
-      requests:
-        cpu: 500m
-        memory: 1Gi
-      limits:
-        cpu: 2000m
-        memory: 2Gi
+      storageClass: local-path
+      accessMode: ReadWriteMany
