@@ -82,4 +82,4 @@ immichApp:
         type: persistentVolumeClaim
         size: 10Gi
         storageClass: local-path
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
