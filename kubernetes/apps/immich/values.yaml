@@ -39,9 +39,6 @@ immichApp:
     enabled: true
     controllers:
       main:
-        pod:
-          nodeSelector:
-            node_role: edge-compute
         containers:
           main:
             resources:
@@ -70,9 +67,6 @@ immichApp:
     enabled: true
     controllers:
       main:
-        pod:
-          nodeSelector:
-            node_role: edge-compute
         containers:
           main:
             resources:
