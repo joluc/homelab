@@ -1,6 +1,7 @@
 apiVersion: v2
 name: immich
 version: 1.0.0
+appVersion: v2.5.6
 description: Immich photo and video backup solution
 
 dependencies:

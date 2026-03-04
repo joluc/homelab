@@ -3,11 +3,13 @@ immichApp:
   database:
     password: ""
 
-  # Run on VPS (edge-compute node) for better performance
+  # Image version
   controllers:
     main:
       containers:
         main:
+          image:
+            tag: v2.5.6
           env:
             DB_HOSTNAME: postgres-postgresql.postgres.svc.cluster.local
             DB_DATABASE_NAME: immich
@@ -41,6 +43,8 @@ immichApp:
       main:
         containers:
           main:
+            image:
+              tag: v2.5.6
             env:
               OAUTH_ENABLED: "true"
               OAUTH_ISSUER_URL: "" # will be overriden in homelab-secrets
@@ -76,6 +80,8 @@ immichApp:
       main:
         containers:
           main:
+            image:
+              tag: v2.5.6
             resources:
               requests:
                 cpu: 500m
