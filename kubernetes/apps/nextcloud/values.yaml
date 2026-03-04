@@ -1,0 +1,16 @@
+nextcloud:
+  # Override default values from the Nextcloud Helm chart
+  # Ref: https://github.com/nextcloud/helm/blob/main/charts/nextcloud/values.yaml
+
+  replicaCount: 1
+
+  ingress:
+    enabled: false
+    # Configure ingress settings here if needed
+
+  persistence:
+    enabled: true
+    storageClass: "local-path"
+    size: 10Gi
+
+  # Add your Nextcloud configuration here
