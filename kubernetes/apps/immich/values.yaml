@@ -41,6 +41,13 @@ immichApp:
       main:
         containers:
           main:
+            env:
+              OAUTH_ENABLED: "true"
+              OAUTH_ISSUER_URL: "" # will be overriden in homelab-secrets
+              OAUTH_CLIENT_ID: "" # will be overriden in homelab-secrets
+              OAUTH_CLIENT_SECRET: "" # will be overriden in homelab-secrets
+              OAUTH_BUTTON_TEXT: "Login with Pocket ID"
+              OAUTH_AUTO_REGISTER: "true"
             resources:
               requests:
                 cpu: 500m
