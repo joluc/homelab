@@ -1,86 +1,91 @@
-# Run on VPS (edge-compute node) for better performance
-controllers:
-  main:
-    containers:
+immichApp:
+  # Database password (override in homelab-secrets)
+  database:
+    password: ""
+
+  # Run on VPS (edge-compute node) for better performance
+  controllers:
+    main:
+      containers:
+        main:
+          env:
+            DB_HOSTNAME: postgres-postgresql.postgres.svc.cluster.local
+            DB_DATABASE_NAME: immich
+            DB_USERNAME: immich
+            DB_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: immich-db-secret
+                  key: password
+
+  immich:
+    persistence:
+      library:
+        existingClaim: immich-library
+
+  # Enable Valkey (Redis replacement)
+  valkey:
+    enabled: true
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        size: 1Gi
+        storageClass: local-path
+        accessMode: ReadWriteOnce
+
+  # Server component
+  server:
+    enabled: true
+    controllers:
       main:
-        env:
-          DB_HOSTNAME: postgres-postgresql.postgres.svc.cluster.local
-          DB_DATABASE_NAME: immich
-          DB_USERNAME: immich
-          DB_PASSWORD:
-            valueFrom:
-              secretKeyRef:
-                name: immich-db-secret
-                key: password
+        pod:
+          nodeSelector:
+            node_role: edge-compute
+        containers:
+          main:
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                cpu: 2000m
+                memory: 2Gi
+    ingress:
+      main:
+        enabled: true
+        className: traefik
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: web
+        hosts:
+          - host: "" # will be overriden in homelab-secrets
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: main
 
-immich:
-  persistence:
-    library:
-      existingClaim: immich-library
-
-# Enable Valkey (Redis replacement)
-valkey:
-  enabled: true
-  persistence:
-    data:
-      enabled: true
-      type: persistentVolumeClaim
-      size: 1Gi
-      storageClass: local-path
-      accessMode: ReadWriteOnce
-
-# Server component
-server:
-  enabled: true
-  controllers:
-    main:
-      pod:
-        nodeSelector:
-          node_role: edge-compute
-      containers:
-        main:
-          resources:
-            requests:
-              cpu: 500m
-              memory: 1Gi
-            limits:
-              cpu: 2000m
-              memory: 2Gi
-  ingress:
-    main:
-      enabled: true
-      className: traefik
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-      hosts:
-        - host: "" # will be overriden in homelab-secrets
-          paths:
-            - path: /
-              pathType: Prefix
-              service:
-                identifier: main
-
-# Machine learning component
-machine-learning:
-  enabled: true
-  controllers:
-    main:
-      pod:
-        nodeSelector:
-          node_role: edge-compute
-      containers:
-        main:
-          resources:
-            requests:
-              cpu: 500m
-              memory: 1Gi
-            limits:
-              cpu: 2000m
-              memory: 2Gi
-  persistence:
-    cache:
-      enabled: true
-      type: persistentVolumeClaim
-      size: 10Gi
-      storageClass: local-path
-      accessMode: ReadWriteMany
+  # Machine learning component
+  machine-learning:
+    enabled: true
+    controllers:
+      main:
+        pod:
+          nodeSelector:
+            node_role: edge-compute
+        containers:
+          main:
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                cpu: 2000m
+                memory: 2Gi
+    persistence:
+      cache:
+        enabled: true
+        type: persistentVolumeClaim
+        size: 10Gi
+        storageClass: local-path
+        accessMode: ReadWriteMany

@@ -5,5 +5,6 @@ description: Immich photo and video backup solution
 
 dependencies:
   - name: immich
+    alias: immichApp
     version: 0.10.3
     repository: oci://ghcr.io/immich-app/immich-charts
