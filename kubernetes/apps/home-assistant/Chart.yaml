@@ -2,3 +2,9 @@ apiVersion: v2
 name: home-assistant
 version: 1.0.0
 description: Home Assistant home automation platform
+
+dependencies:
+  - name: home-assistant
+    version: 0.3.45
+    repository: https://pajikos.github.io/home-assistant-helm-chart/
+    alias: homeAssistant
