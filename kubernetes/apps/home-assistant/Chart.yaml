@@ -7,4 +7,4 @@ dependencies:
   - name: home-assistant
     version: 0.3.45
     repository: https://pajikos.github.io/home-assistant-helm-chart/
-    alias: homeAssistant
+    alias: ha
