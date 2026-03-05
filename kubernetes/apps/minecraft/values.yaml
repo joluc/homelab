@@ -29,11 +29,11 @@ minecraft:
     port: 25565
     externalTrafficPolicy: Local
 
-  # Resource limits
+  # Resource limits (minimal for scheduling on constrained nodes)
   resources:
     requests:
       cpu: 500m
-      memory: 1Gi
+      memory: 512Mi
     limits:
       cpu: 2000m
       memory: 3Gi
