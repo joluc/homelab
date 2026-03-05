@@ -10,14 +10,12 @@ minecraft:
     difficulty: normal
     maxPlayers: 20
     serverName: "" # will be overridden in homelab-secrets
-    # Bedrock uses port 19132 UDP by default
     gamemode: survival
     levelName: world
-
-  # Service configuration
-  serviceType: LoadBalancer
-  loadBalancerIP: 10.0.10.25
-  externalTrafficPolicy: Local
+    # Service configuration for Bedrock
+    serviceType: LoadBalancer
+    loadBalancerIP: 10.0.10.25
+    externalTrafficPolicy: Local
 
   # Persistence for world data
   persistence:
