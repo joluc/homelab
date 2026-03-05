@@ -1,4 +1,11 @@
 perses:
+  config:
+    security:
+      enable_auth: true
+      cookie:
+        same_site: lax
+        secure: true
+
   image:
     registry: docker.io
     name: persesdev/perses
