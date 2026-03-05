@@ -2,6 +2,13 @@ image:
   repository: ghcr.io/paperless-ngx/paperless-ngx
   tag: "2.20.7"
 
+# Nextcloud integration
+nextcloud:
+  enabled: true
+  webdavUrl: "https://nextcloud.joluc.de/remote.php/dav/files"
+  consumeFolder: "Paperless" # Folder name in Nextcloud to watch for documents
+  # Credentials will be configured via app password or service account
+
 # PostgreSQL configuration
 postgresql:
   host: postgres-postgresql.postgres.svc.cluster.local

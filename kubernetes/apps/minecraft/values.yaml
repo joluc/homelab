@@ -22,11 +22,12 @@ minecraft:
       storageClass: local-path
       size: 10Gi
 
-  # Service with LoadBalancer
+  # Service with LoadBalancer for K3s ServiceLB
   minecraftService:
     type: LoadBalancer
     loadBalancerIP: 10.0.10.25
     port: 25565
+    externalTrafficPolicy: Local
 
   # Resource limits
   resources:
