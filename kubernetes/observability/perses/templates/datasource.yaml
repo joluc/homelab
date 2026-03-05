@@ -10,7 +10,6 @@ data:
     kind: GlobalDatasource
     metadata:
       name: prometheus-datasource
-      project: perses
     spec:
       default: true
       plugin:

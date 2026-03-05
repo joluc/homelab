@@ -9,8 +9,8 @@ data:
   project.yaml: |
     kind: Project
     metadata:
-      name: perses
+      name: infra
     spec:
       display:
-        name: Perses
-        description: Main observability project with Kubernetes, Prometheus, and Node Exporter dashboards
+        name: Infrastructure
+        description: Infrastructure monitoring with Kubernetes, Prometheus, and Node Exporter dashboards
