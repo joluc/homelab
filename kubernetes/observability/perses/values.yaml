@@ -4,6 +4,11 @@ perses:
     name: persesdev/perses
     version: latest
 
+  sidecar:
+    enabled: true
+    label: "perses.dev/dashboard"
+    labelValue: "true"
+
   ingress:
     enabled: true
     ingressClassName: traefik
