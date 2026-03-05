@@ -17,6 +17,7 @@ Internet → Cloudflare → Caddy (Gateway VPS) → K3s (Control Plane VPS)
 - **Infrastructure**: Ansible, K3s, ArgoCD
 - **Networking**: Tailscale, Caddy, Traefik
 - **Observability**: Prometheus, Grafana, OpenSearch, Jaeger
+- **Security**: UFW, fail2ban, Tailscale ACLs, audit logging
 
 ## Structure
 
@@ -41,6 +42,26 @@ ansible-playbook -i inventory playbooks/05-install-argocd.yaml
 
 # 2. ArgoCD syncs everything else from this repo
 ```
+
+## Security
+
+The infrastructure is hardened following security best practices:
+
+- **SSH**: Key-based auth only, root login disabled, fail2ban protection
+- **Firewall**: UFW enabled with IP allowlisting
+- **Network Isolation**: Tailscale ACLs restrict cross-network access
+- **Monitoring**: audit logging, security scanning, intrusion detection
+
+See [docs/SECURITY-REPORT.md](docs/SECURITY-REPORT.md) for the complete security audit and [docs/setup/SECURITY-HARDENING.md](docs/setup/SECURITY-HARDENING.md) for implementation guide.
+
+## Documentation
+
+- **[Security Summary](docs/SECURITY-SUMMARY.md)** - Start here for security overview
+- [Security Report](docs/SECURITY-REPORT.md) - Complete security audit
+- [Security Hardening Guide](docs/setup/SECURITY-HARDENING.md) - Implementation steps
+- [Security Quick Reference](docs/SECURITY-QUICK-REF.md) - Daily checklists
+- [Network Architecture](docs/network/README.md)
+- [Cloud K3s Setup](docs/setup/CLOUD-K3S-SETUP.md)
 
 ## License
 
