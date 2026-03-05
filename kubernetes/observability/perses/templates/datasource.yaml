@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: GlobalDatasource
+metadata:
+  name: prometheus-datasource
+  namespace: perses
+spec:
+  default: true
+  plugin:
+    kind: PrometheusDatasource
+    spec:
+      # Thanos Query provides unified access to all Prometheus data
+      directUrl: http://thanos-query.thanos:9090
