@@ -8,10 +8,11 @@ minecraft:
     eula: "TRUE"
     version: "LATEST"
     difficulty: normal
-    maxPlayers: 20
+    maxPlayers: 12
     serverName: "" # will be overridden in homelab-secrets
     gamemode: survival
-    levelName: world
+    levelName: "Bedrock level"
+    levelSeed: "365998300168920"
     # Service configuration for Bedrock
     serviceType: LoadBalancer
     loadBalancerIP: 10.0.10.25
