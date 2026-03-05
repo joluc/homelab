@@ -1,4 +1,4 @@
-nextcloudApp:
+app:
   # Override default values from the Nextcloud Helm chart
   # Ref: https://github.com/nextcloud/helm/blob/main/charts/nextcloud/values.yaml
 

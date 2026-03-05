@@ -5,6 +5,6 @@ description: Nextcloud - A safe home for all your data
 
 dependencies:
   - name: nextcloud
-    alias: nextcloudApp
+    alias: app
     version: 6.3.1
     repository: https://nextcloud.github.io/helm
