@@ -2,18 +2,11 @@ nextcloud:
   # Override default values from the Nextcloud Helm chart
   # Ref: https://github.com/nextcloud/helm/blob/main/charts/nextcloud/values.yaml
 
-  host: "" # Will be overridden in homelab-secrets
-  trustedDomains: [] # Will be overridden in homelab-secrets
-
   replicaCount: 1
-
-  ingress:
-    enabled: false
-    # Configure ingress settings here if needed
 
   persistence:
     enabled: true
     storageClass: "local-path"
     size: 10Gi
 
-  # Add your Nextcloud configuration here
+  # host, trustedDomains, and ingress settings are configured in homelab-secrets
