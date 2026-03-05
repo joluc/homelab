@@ -3,21 +3,21 @@ minecraft:
   nodeSelector:
     node_role: edge-compute
 
-  # Minecraft server type
+  # Minecraft Bedrock server configuration
   minecraftServer:
     eula: "TRUE"
     version: "LATEST"
-    type: "PAPER"
     difficulty: normal
     maxPlayers: 20
-    motd: "" # will be overriden in homelab-secrets
-    pvp: true
-    onlineMode: true
-    memory: 2G
-    serviceType: LoadBalancer
-    loadBalancerIP: 10.0.10.25
-    servicePort: 25565
-    externalTrafficPolicy: Local
+    serverName: "" # will be overridden in homelab-secrets
+    # Bedrock uses port 19132 UDP by default
+    gamemode: survival
+    levelName: world
+
+  # Service configuration
+  serviceType: LoadBalancer
+  loadBalancerIP: 10.0.10.25
+  externalTrafficPolicy: Local
 
   # Persistence for world data
   persistence:

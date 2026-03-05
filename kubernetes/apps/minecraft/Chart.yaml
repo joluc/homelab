@@ -1,9 +1,10 @@
 apiVersion: v2
 name: minecraft
 version: 1.0.0
-description: Minecraft Paper server
+description: Minecraft Bedrock server
 
 dependencies:
-  - name: minecraft
-    version: 5.1.2
+  - name: minecraft-bedrock
+    alias: minecraft
+    version: 2.8.4
     repository: https://itzg.github.io/minecraft-server-charts
