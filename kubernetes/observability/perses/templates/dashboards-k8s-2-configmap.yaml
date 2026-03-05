@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: perses-dashboards-kubernetes
+  name: perses-dashboards-k8s-2
   namespace: perses
   labels:
     perses.dev/dashboard: "true"
 data:
-{{- range $path, $_ := .Files.Glob "dashboards/kubernetes/*.yaml" }}
+{{- range $path, $_ := .Files.Glob "dashboards/kubernetes-2/*.yaml" }}
   {{ base $path }}: |-
 {{ $.Files.Get $path | indent 4 }}
 {{- end }}
