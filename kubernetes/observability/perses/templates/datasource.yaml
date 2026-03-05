@@ -7,9 +7,10 @@ metadata:
     perses.dev/resource: "true"
 data:
   datasource.yaml: |
-    kind: GlobalDatasource
+    kind: Datasource
     metadata:
       name: prometheus-datasource
+      project: infra
     spec:
       default: true
       plugin:
