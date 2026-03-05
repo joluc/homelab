@@ -4,7 +4,7 @@ metadata:
   name: perses-dashboards-node-exporter
   namespace: perses
   labels:
-    perses.dev/dashboard: "true"
+    perses.dev/resource: "true"
 data:
 {{- range $path, $_ := .Files.Glob "dashboards/node-exporter/*.yaml" }}
   {{ base $path }}: |-

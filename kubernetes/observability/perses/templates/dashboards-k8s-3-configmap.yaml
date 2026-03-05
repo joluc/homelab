@@ -4,7 +4,7 @@ metadata:
   name: perses-dashboards-k8s-3
   namespace: perses
   labels:
-    perses.dev/dashboard: "true"
+    perses.dev/resource: "true"
 data:
 {{- range $path, $_ := .Files.Glob "dashboards/kubernetes-3/*.yaml" }}
   {{ base $path }}: |-

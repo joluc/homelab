@@ -6,7 +6,7 @@ perses:
 
   sidecar:
     enabled: true
-    label: "perses.dev/dashboard"
+    label: "perses.dev/resource"
     labelValue: "true"
 
   ingress:

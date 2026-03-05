@@ -4,7 +4,7 @@ metadata:
   name: perses-project
   namespace: perses
   labels:
-    perses.dev/dashboard: "true"
+    perses.dev/resource: "true"
 data:
   project.yaml: |
     kind: Project

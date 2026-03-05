@@ -4,7 +4,7 @@ metadata:
   name: perses-datasource
   namespace: perses
   labels:
-    perses.dev/dashboard: "true"
+    perses.dev/resource: "true"
 data:
   datasource.yaml: |
     kind: GlobalDatasource

@@ -4,7 +4,7 @@ metadata:
   name: perses-dashboards-prometheus
   namespace: perses
   labels:
-    perses.dev/dashboard: "true"
+    perses.dev/resource: "true"
 data:
 {{- range $path, $_ := .Files.Glob "dashboards/prometheus/*.yaml" }}
   {{ base $path }}: |-
