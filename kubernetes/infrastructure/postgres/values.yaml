@@ -13,6 +13,11 @@ postgresql:
       size: 20Gi
       storageClass: local-path
 
+    # K8up backup annotations
+    podAnnotations:
+      k8up.io/backupcommand: sh -c 'pg_dumpall --clean'
+      k8up.io/file-extension: .sql
+
     # initdb scripts extracted to secrets repo
     initdb:
       scripts: {} # will be overriden in homelab-secrets

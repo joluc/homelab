@@ -1,0 +1,42 @@
+---
+# PostgreSQL backup schedule
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: postgres-backup
+  namespace: postgres
+spec:
+  backend:
+    repoPasswordSecretRef:
+      name: k8up-repo-password
+      key: password
+    s3:
+      endpoint: {{ .Values.s3.endpoint }}
+      bucket: {{ .Values.s3.bucket }}
+      accessKeyIDSecretRef:
+        name: k8up-s3-credentials
+        key: username
+      secretAccessKeySecretRef:
+        name: k8up-s3-credentials
+        key: password
+
+  # Backup PostgreSQL daily at 3 AM
+  backup:
+    schedule: '0 3 * * *'
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 2
+    podSelector:
+      matchLabels:
+        app.kubernetes.io/name: postgresql
+        app.kubernetes.io/component: primary
+
+  # Check backup integrity weekly on Sundays at 4 AM
+  check:
+    schedule: '0 4 * * 0'
+    promURL: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+
+  # Prune old backups - keep 7 daily backups
+  prune:
+    schedule: '0 5 * * *'
+    retention:
+      keepDaily: 7
