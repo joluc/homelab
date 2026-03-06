@@ -1,23 +1,24 @@
+# K8up operator configuration
 k8up:
-  # K8up operator configuration
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi
-
-  # Enable metrics for Prometheus
-  metrics:
-    serviceMonitor:
-      enabled: true
-      namespace: k8up
-
   # Timezone for backup schedules
   timezone: Europe/Amsterdam
 
-# S3 backend configuration (MinIO)
+# Enable metrics for Prometheus
+metrics:
+  serviceMonitor:
+    enabled: true
+    namespace: k8up
+
+# Operator resources
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+# S3 backend configuration (Garage)
 # Credentials will be overridden in homelab-secrets
 s3:
   endpoint: ""  # will be overridden
@@ -29,4 +30,3 @@ s3:
 # Will be overridden in homelab-secrets
 restic:
   password: ""  # will be overridden
-

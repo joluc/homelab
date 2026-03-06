@@ -23,6 +23,7 @@
         --namespace argocd
         --create-namespace
         --values {{ project_root }}/kubernetes/infrastructure/argocd/values.yaml
+        --values {{ project_root }}/../homelab-secrets/kubernetes/infrastructure/argocd/values.yaml
         --wait
 
     - name: Deploy Bootstrap ApplicationSet
