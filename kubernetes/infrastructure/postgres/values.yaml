@@ -15,7 +15,7 @@ postgresql:
 
     # K8up backup annotations
     podAnnotations:
-      k8up.io/backupcommand: sh -c 'PGPASSWORD="$POSTGRES_PASSWORD" pg_dumpall -U postgres --clean'
+      k8up.io/backupcommand: sh -c 'PGPASSWORD="$(cat $POSTGRES_PASSWORD_FILE)" pg_dumpall -U postgres --clean'
       k8up.io/file-extension: .sql
 
     # initdb scripts extracted to secrets repo
