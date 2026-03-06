@@ -15,9 +15,6 @@ obsidian:
   ingress:
     enabled: true
     ingressClassName: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/service.serversscheme: https
-      traefik.ingress.kubernetes.io/service.serverstransport: obsidian-obsidian-insecure@kubernetescrd
     host: "" # will be overriden in homelab-secrets
 
   # Resource limits
