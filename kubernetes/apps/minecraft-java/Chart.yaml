@@ -1,0 +1,10 @@
+apiVersion: v2
+name: minecraft-java
+version: 1.0.0
+description: Minecraft Java server
+
+dependencies:
+  - name: minecraft
+    alias: minecraft
+    version: 4.23.2
+    repository: https://itzg.github.io/minecraft-server-charts

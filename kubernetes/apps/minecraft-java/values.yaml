@@ -1,0 +1,33 @@
+minecraft:
+  # Run on VPS (edge-compute node)
+  nodeSelector:
+    node_role: edge-compute
+
+  # Minecraft Java server configuration
+  minecraftServer:
+    eula: "TRUE"
+    version: "LATEST"
+    type: "VANILLA"
+    difficulty: normal
+    maxPlayers: 12
+    motd: "" # will be overridden in homelab-secrets
+    # Service configuration for Java
+    serviceType: LoadBalancer
+    loadBalancerIP: 10.0.10.26
+    externalTrafficPolicy: Local
+
+  # Persistence for world data
+  persistence:
+    dataDir:
+      enabled: true
+      storageClass: local-path
+      Size: 10Gi
+
+  # Resource limits (minimal for scheduling on constrained nodes)
+  resources:
+    requests:
+      cpu: 50m
+      memory: 50Mi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
