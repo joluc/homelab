@@ -160,7 +160,7 @@ kube-prometheus-stack:
         - name: pagerduty
           pagerduty_configs:
             - routing_key: ""  # set in homelab-secrets
-              severity: '{{ .CommonLabels.severity | default "warning" }}'
+              severity: '{{ or .CommonLabels.severity "warning" }}'
               description: '{{ .CommonAnnotations.summary }}'
               details:
                 alertname: '{{ .CommonLabels.alertname }}'
