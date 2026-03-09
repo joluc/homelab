@@ -22,6 +22,11 @@ kube-prometheus-stack:
       podMonitorSelector: {}
       podMonitorNamespaceSelector: {}
 
+      # Pick up all PrometheusRules across all namespaces
+      ruleSelectorNilUsesHelmValues: false
+      ruleSelector: {}
+      ruleNamespaceSelector: {}
+
       # Storage for Prometheus data
       storageSpec:
         volumeClaimTemplate:
