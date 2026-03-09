@@ -165,5 +165,8 @@ kube-prometheus-stack:
               details:
                 alertname: '{{ .CommonLabels.alertname }}'
                 namespace: '{{ .CommonLabels.namespace }}'
-                logs: '{{ .CommonAnnotations.specter_joluc_de_logs }}'
-                dashboard: '{{ .CommonAnnotations.specter_joluc_de_dashboard }}'
+              links:
+                - href: '{{ .CommonAnnotations.specter_joluc_de_logs }}'
+                  text: 'Logs'
+                - href: '{{ .CommonAnnotations.specter_joluc_de_dashboard }}'
+                  text: 'Dashboard'
