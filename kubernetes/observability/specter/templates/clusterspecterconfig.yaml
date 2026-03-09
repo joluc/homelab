@@ -18,3 +18,4 @@ spec:
 
   defaultLabels:
     environment: {{ .Values.clusterConfig.environment | quote }}
+    indexPattern: {{ .Values.clusterConfig.indexPattern | quote }}
