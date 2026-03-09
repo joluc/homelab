@@ -1,0 +1,12 @@
+specter:
+  controller:
+    logLevel: info
+    logFormat: json
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
