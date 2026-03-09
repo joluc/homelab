@@ -146,7 +146,7 @@ kube-prometheus-stack:
         group_by: ['alertname', 'namespace']
         group_wait: 30s
         group_interval: 5m
-        repeat_interval: 4h
+        repeat_interval: 1m
         routes:
           - receiver: 'null'
             matchers:
