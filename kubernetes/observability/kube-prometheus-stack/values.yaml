@@ -161,7 +161,10 @@ kube-prometheus-stack:
         routes:
           - receiver: 'null'
             matchers:
-              - alertname = "Watchdog"
+              - alertname =~ "Watchdog|InfoInhibitor"
+          - receiver: 'null'
+            matchers:
+              - severity = "none"
           - receiver: pagerduty
             matchers:
               - severity =~ "critical|warning"
@@ -172,7 +175,7 @@ kube-prometheus-stack:
           pagerduty_configs:
             - routing_key: ""  # set in homelab-secrets
               severity: '{{ or .CommonLabels.severity "warning" }}'
-              description: '{{ .CommonAnnotations.summary }}'
+              description: '{{ or .CommonAnnotations.summary .CommonLabels.alertname }}'
               details:
                 alertname: '{{ .CommonLabels.alertname }}'
                 namespace: '{{ .CommonLabels.namespace }}'
