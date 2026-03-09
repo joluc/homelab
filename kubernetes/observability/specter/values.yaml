@@ -10,3 +10,13 @@ specter:
     requests:
       cpu: 10m
       memory: 50Mi
+
+# ClusterSpecterConfig values (overridden in homelab-secrets)
+clusterConfig:
+  environment: ""
+  indexPattern: ""
+  templates:
+    logs:
+      url: ""
+    dashboard:
+      url: ""
