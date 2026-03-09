@@ -8,13 +8,9 @@ spec:
       url: {{ .Values.clusterConfig.templates.logs.url | quote }}
       description: "View logs in OpenSearch"
 
-    metrics:
-      url: {{ .Values.clusterConfig.templates.metrics.url | quote }}
-      description: "Explore metrics in Grafana"
-
     dashboard:
       url: {{ .Values.clusterConfig.templates.dashboard.url | quote }}
-      description: "View namespace dashboard"
+      description: "View workload dashboard"
 
   defaultLabels:
     environment: {{ .Values.clusterConfig.environment | quote }}

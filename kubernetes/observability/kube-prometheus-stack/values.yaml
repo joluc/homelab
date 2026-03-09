@@ -166,5 +166,4 @@ kube-prometheus-stack:
                 alertname: '{{ .CommonLabels.alertname }}'
                 namespace: '{{ .CommonLabels.namespace }}'
                 logs: '{{ .CommonAnnotations.specter_joluc_de_logs }}'
-                metrics: '{{ .CommonAnnotations.specter_joluc_de_metrics }}'
                 dashboard: '{{ .CommonAnnotations.specter_joluc_de_dashboard }}'
