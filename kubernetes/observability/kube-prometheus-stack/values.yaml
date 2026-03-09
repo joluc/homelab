@@ -1,4 +1,9 @@
 kube-prometheus-stack:
+  # Add Specter label to all PrometheusRules
+  defaultRules:
+    labels:
+      specter.joluc.de/enabled: "true"
+
   # Enable CRD installation
   crds:
     enabled: true
