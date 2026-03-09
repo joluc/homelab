@@ -139,3 +139,32 @@ kube-prometheus-stack:
         limits:
           cpu: 200m
           memory: 256Mi
+
+    config:
+      route:
+        receiver: pagerduty
+        group_by: ['alertname', 'namespace']
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 4h
+        routes:
+          - receiver: 'null'
+            matchers:
+              - alertname = "Watchdog"
+          - receiver: pagerduty
+            matchers:
+              - severity =~ "critical|warning"
+
+      receivers:
+        - name: 'null'
+        - name: pagerduty
+          pagerduty_configs:
+            - routing_key: ""  # set in homelab-secrets
+              severity: '{{ .CommonLabels.severity | default "warning" }}'
+              description: '{{ .CommonAnnotations.summary }}'
+              details:
+                alertname: '{{ .CommonLabels.alertname }}'
+                namespace: '{{ .CommonLabels.namespace }}'
+                logs: '{{ .CommonAnnotations.specter_joluc_de_logs }}'
+                metrics: '{{ .CommonAnnotations.specter_joluc_de_metrics }}'
+                dashboard: '{{ .CommonAnnotations.specter_joluc_de_dashboard }}'
