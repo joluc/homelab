@@ -3,6 +3,12 @@ kube-prometheus-stack:
   defaultRules:
     labels:
       specter.joluc.de/enabled: "true"
+    # Disable rule groups that don't work on K3s
+    rules:
+      kubeControllerManager: false
+      kubeSchedulerAlerting: false
+      kubeSchedulerRecording: false
+      kubeProxy: false
 
   # Enable CRD installation
   crds:
