@@ -21,12 +21,11 @@ specter:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
 
-# ClusterSpecterConfig values (overridden in homelab-secrets)
-clusterConfig:
-  environment: ""
-  indexPattern: ""
-  templates:
-    logs:
-      url: ""
-    dashboard:
-      url: ""
+  # ClusterSpecterConfig via upstream template (secrets in homelab-secrets)
+  clusterConfig:
+    enabled: true
+    name: global
+    templates: {}
+    defaultLabels: {}
+    shortener:
+      enabled: false
