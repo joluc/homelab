@@ -11,6 +11,16 @@ specter:
       cpu: 10m
       memory: 50Mi
 
+  # Enable shortener and ingress (URLs/hosts configured in homelab-secrets)
+  shortener:
+    enabled: true
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+
 # ClusterSpecterConfig values (overridden in homelab-secrets)
 clusterConfig:
   environment: ""
