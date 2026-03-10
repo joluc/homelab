@@ -5,6 +5,10 @@ on:
     paths:
       - 'kubernetes/**'
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   diff:
     runs-on: ubuntu-latest
