@@ -30,7 +30,7 @@ opentelemetry-collector:
             endpoint: 0.0.0.0:4318
       k8s_events:
         auth_type: serviceAccount
-        namespaces: []  # Empty array means all namespaces
+        namespaces: []  # All namespaces
       k8sobjects:
         auth_type: serviceAccount
         objects:
