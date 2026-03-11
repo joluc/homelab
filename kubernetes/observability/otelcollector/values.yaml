@@ -51,13 +51,6 @@ opentelemetry-collector:
           - name: secrets
             mode: pull
             interval: 30s
-      journald:
-        directory: /var/log/journal
-        files: /var/log/journal/*/*.journal
-        operators:
-          - type: json_parser
-            parse_from: body
-            parse_to: attributes
       syslog:
         tcp:
           listen_address: "0.0.0.0:54526"
@@ -135,7 +128,7 @@ opentelemetry-collector:
           processors: [memory_limiter, batch]
           exporters: [debug]
         logs:
-          receivers: [otlp, filelog, syslog, k8s_events, k8sobjects, journald]
+          receivers: [otlp, filelog, syslog, k8s_events, k8sobjects]
           processors: [memory_limiter, batch]
           exporters: [opensearch, debug]
 
@@ -189,6 +182,22 @@ opentelemetry-collector:
 
   tolerations: []
 
+  clusterRole:
+    create: true
+    rules:
+      - apiGroups: [""]
+        resources:
+          - events
+          - pods
+          - services
+          - configmaps
+          - secrets
+        verbs: ["get", "list", "watch"]
+      - apiGroups: ["apps"]
+        resources:
+          - deployments
+        verbs: ["get", "list", "watch"]
+
   extraEnvs:
     - name: OPENSEARCH_PASSWORD
       valueFrom:
@@ -200,15 +209,9 @@ opentelemetry-collector:
     - name: pods
       hostPath:
         path: /var/log/pods
-    - name: journal
-      hostPath:
-        path: /var/log/journal
 
   extraVolumeMounts:
     - name: pods
       mountPath: /var/log/pods
-      readOnly: true
-    - name: journal
-      mountPath: /var/log/journal
       readOnly: true
 
