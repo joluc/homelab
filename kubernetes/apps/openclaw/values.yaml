@@ -22,21 +22,29 @@ openclaw:
       hooks:
         mappings:
           alertmanager:
-            to: wake
+            to: agent
             transform:
-              text: |
-                🚨 **Cluster Alert**
+              message: |
+                You are a Kubernetes cluster monitoring assistant. Analyze the following alert(s) from Alertmanager and provide:
+                1. A clear summary of what's wrong
+                2. The potential impact
+                3. Recommended actions to resolve it
 
+                Alert Details:
                 {{#each alerts}}
-                **{{status}}**: {{labels.alertname}}
-                {{#if labels.severity}}Severity: {{labels.severity}}{{/if}}
-                {{#if labels.namespace}}Namespace: {{labels.namespace}}{{/if}}
-                {{#if annotations.summary}}{{annotations.summary}}{{/if}}
-                {{#if annotations.description}}
-                {{annotations.description}}
-                {{/if}}
+                - Status: {{status}}
+                - Alert: {{labels.alertname}}
+                - Severity: {{labels.severity}}
+                - Namespace: {{labels.namespace}}
+                {{#if labels.pod}}- Pod: {{labels.pod}}{{/if}}
+                {{#if labels.container}}- Container: {{labels.container}}{{/if}}
+                - Summary: {{annotations.summary}}
+                - Description: {{annotations.description}}
+                {{#if annotations.runbook_url}}- Runbook: {{annotations.runbook_url}}{{/if}}
 
                 {{/each}}
+
+                Please provide a concise analysis and actionable recommendations.
 
   ingress:
     enabled: true
