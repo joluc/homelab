@@ -144,12 +144,20 @@ kube-prometheus-stack:
           - receiver: 'null'
             matchers:
               - severity = "none"
+          - receiver: krabbe
+            matchers:
+              - severity =~ "critical|warning"
+            continue: true
           - receiver: pagerduty
             matchers:
               - severity =~ "critical|warning"
 
       receivers:
         - name: 'null'
+        - name: krabbe
+          webhook_configs:
+            - url: 'http://krabbe.openclaw.svc.cluster.local:8080/webhook/alerts'
+              send_resolved: true
         - name: pagerduty
           pagerduty_configs:
             - routing_key: ""  # set in homelab-secrets
