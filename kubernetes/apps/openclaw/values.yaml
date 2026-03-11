@@ -21,7 +21,7 @@ openclaw:
             - "https://krabbe.joluc.de"
       hooks:
         mappings:
-          alertmanager:
+          - name: alertmanager
             to: agent
             transform:
               message: |
