@@ -28,6 +28,36 @@ opentelemetry-collector:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
+      k8s_events:
+        auth_type: serviceAccount
+        namespaces: []  # All namespaces
+      k8sobjects:
+        auth_type: serviceAccount
+        objects:
+          - name: pods
+            mode: pull
+            interval: 30s
+          - name: events
+            mode: watch
+          - name: deployments
+            mode: pull
+            interval: 30s
+          - name: services
+            mode: pull
+            interval: 30s
+          - name: configmaps
+            mode: pull
+            interval: 30s
+          - name: secrets
+            mode: pull
+            interval: 30s
+      journald:
+        directory: /var/log/journal
+        files: /var/log/journal/*/*.journal
+        operators:
+          - type: json_parser
+            parse_from: body
+            parse_to: attributes
       syslog:
         tcp:
           listen_address: "0.0.0.0:54526"
@@ -105,7 +135,7 @@ opentelemetry-collector:
           processors: [memory_limiter, batch]
           exporters: [debug]
         logs:
-          receivers: [otlp, filelog, syslog]
+          receivers: [otlp, filelog, syslog, k8s_events, k8sobjects, journald]
           processors: [memory_limiter, batch]
           exporters: [opensearch, debug]
 
@@ -167,18 +197,18 @@ opentelemetry-collector:
           key: password
 
   extraVolumes:
-    - name: varlogpods
+    - name: pods
       hostPath:
         path: /var/log/pods
-    - name: varlibdockercontainers
+    - name: journal
       hostPath:
-        path: /var/lib/docker/containers
+        path: /var/log/journal
 
   extraVolumeMounts:
-    - name: varlogpods
+    - name: pods
       mountPath: /var/log/pods
       readOnly: true
-    - name: varlibdockercontainers
-      mountPath: /var/lib/docker/containers
+    - name: journal
+      mountPath: /var/log/journal
       readOnly: true
 
