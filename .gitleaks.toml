@@ -1,0 +1,28 @@
+# Gitleaks Configuration
+# Customize secret scanning behavior
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allowlist for known false positives"
+
+# Ignore helm template variables and environment variable references
+regexes = [
+  '''(\$\{[A-Z_]+\})''',  # ${ENV_VAR}
+  '''\{\{\s*\.Values\.''',  # {{ .Values.* }}
+  '''\{\{\s*\$\.Values\.''',  # {{ $.Values.* }}
+]
+
+# Ignore example files
+paths = [
+  '''\.example$''',
+  '''\.yaml\.example$''',
+  '''secret\.yaml\.example$''',
+]
+
+# Ignore specific test/example passwords
+[[rules]]
+id = "generic-api-key"
+description = "Ignore test/example passwords"
+regex = '''(password|pass|passwd):\s*(test|example|changeme|placeholder)'''
