@@ -1,4 +1,6 @@
 minecraft:
+  replicaCount: 0
+
   # Run on VPS (edge-compute node)
   nodeSelector:
     node_role: edge-compute
