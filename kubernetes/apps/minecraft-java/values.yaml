@@ -103,6 +103,9 @@ minecraft:
                 - oak_planks
                 - deepslate
 
+  podAnnotations:
+    kubectl.kubernetes.io/restartedAt: "2026-03-14T20:00:00Z"
+
   # Resource limits (minimal for scheduling on constrained nodes)
   resources:
     requests:
