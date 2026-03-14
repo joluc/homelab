@@ -23,8 +23,9 @@ minecraft:
       storageClass: local-path
       Size: 10Gi
 
-  # On first startup, seed paper-world-defaults.yml with anti-xray config.
-  # Paper reads this file at launch and merges in any missing defaults.
+  # Always overwrite paper-world-defaults.yml with our anti-xray config before Paper starts.
+  # Overwrite (not conditional copy) ensures the setting applies even if Paper previously
+  # created the file with anti-xray disabled.
   initContainers:
     - name: paper-antixray-config
       image: busybox
@@ -40,7 +41,7 @@ minecraft:
         - -c
         - |
           mkdir -p /data/config
-          [ -f /data/config/paper-world-defaults.yml ] || cp /paper-config/paper-world-defaults.yml /data/config/paper-world-defaults.yml
+          cp /paper-config/paper-world-defaults.yml /data/config/paper-world-defaults.yml
       volumeMounts:
         - name: datadir
           mountPath: /data
@@ -69,7 +70,7 @@ minecraft:
           anticheat:
             anti-xray:
               enabled: true
-              engine-mode: 1
+              engine-mode: 2
               max-block-height: 64
               update-radius: 2
               lava-obscures: false
@@ -104,7 +105,7 @@ minecraft:
                 - deepslate
 
   podAnnotations:
-    kubectl.kubernetes.io/restartedAt: "2026-03-14T20:00:00Z"
+    kubectl.kubernetes.io/restartedAt: "2026-03-14T21:00:00Z"
 
   # Resource limits (minimal for scheduling on constrained nodes)
   resources:
