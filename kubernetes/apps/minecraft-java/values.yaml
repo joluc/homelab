@@ -13,6 +13,9 @@ minecraft:
     difficulty: normal
     maxPlayers: 12
     motd: "" # will be overridden in homelab-secrets
+    ops: "j0luc"
+    enableCommandBlock: true
+    spawnProtection: 0
     # Service configuration for Java
     serviceType: LoadBalancer
     loadBalancerIP: 10.0.10.26
