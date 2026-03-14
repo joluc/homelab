@@ -7,7 +7,7 @@ minecraft:
   minecraftServer:
     eula: "TRUE"
     version: "LATEST"
-    type: "VANILLA"
+    type: "PAPER"
     difficulty: normal
     maxPlayers: 12
     motd: "" # will be overridden in homelab-secrets
@@ -22,6 +22,48 @@ minecraft:
       enabled: true
       storageClass: local-path
       Size: 10Gi
+
+  # Paper config: enable anti-xray to prevent X-ray cheating
+  # engine-mode 1: replaces ore blocks with fake stone (low overhead)
+  # engine-mode 2: obfuscates all blocks until player is nearby (better protection, more CPU)
+  extraEnv:
+    PAPER_CONFIG_DEFAULTS: |
+      anticheat:
+        anti-xray:
+          enabled: true
+          engine-mode: 1
+          max-block-height: 64
+          update-radius: 2
+          lava-obscures: false
+          use-permission: false
+          hidden-blocks:
+            - copper_ore
+            - deepslate_copper_ore
+            - raw_copper_block
+            - gold_ore
+            - deepslate_gold_ore
+            - iron_ore
+            - deepslate_iron_ore
+            - raw_iron_block
+            - coal_ore
+            - deepslate_coal_ore
+            - lapis_ore
+            - deepslate_lapis_ore
+            - mossy_cobblestone
+            - obsidian
+            - chest
+            - diamond_ore
+            - deepslate_diamond_ore
+            - redstone_ore
+            - deepslate_redstone_ore
+            - clay
+            - emerald_ore
+            - deepslate_emerald_ore
+            - ender_chest
+          replacement-blocks:
+            - stone
+            - oak_planks
+            - deepslate
 
   # Resource limits (minimal for scheduling on constrained nodes)
   resources:
