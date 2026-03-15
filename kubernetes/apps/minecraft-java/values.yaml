@@ -17,7 +17,7 @@ minecraft:
     enableCommandBlock: true
     spawnProtection: 0
     viewDistance: 16
-    memory: 4096M
+    memory: 2048M
     jvmXXOpts: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
     pluginUrls:
       - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
@@ -117,11 +117,11 @@ minecraft:
   podAnnotations:
     kubectl.kubernetes.io/restartedAt: "2026-03-14T21:00:00Z"
 
-  # Resource limits (keep low requests, increase limit for headroom)
+  # Resource limits (keep low requests, reasonable limit to avoid OOM killing cluster)
   resources:
     requests:
       cpu: 50m
       memory: 50Mi
     limits:
       cpu: 2000m
-      memory: 6Gi
+      memory: 3Gi
