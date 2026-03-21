@@ -1,4 +1,6 @@
 homarr:
+  replicaCount: 0
+
   database:
     type: postgresql
 
