@@ -115,7 +115,7 @@ minecraft:
                 - deepslate
 
   podAnnotations:
-    kubectl.kubernetes.io/restartedAt: "2026-03-14T21:00:00Z"
+    kubectl.kubernetes.io/restartedAt: "2026-03-24T12:00:00Z"
 
   # Resource limits (keep low requests, reasonable limit to avoid OOM killing cluster)
   resources:
