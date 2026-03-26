@@ -21,6 +21,8 @@ minecraft:
     jvmXXOpts: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
     pluginUrls:
       - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
+      - https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar
+      - https://github.com/ViaVersion/ViaVersion/releases/download/5.7.2/ViaVersion-5.7.2.jar
     # Service configuration for Java
     serviceType: LoadBalancer
     loadBalancerIP: 10.0.10.26
@@ -113,6 +115,14 @@ minecraft:
                 - stone
                 - oak_planks
                 - deepslate
+
+  # Expose Prometheus exporter plugin port
+  extraPorts:
+    - name: metrics
+      containerPort: 9940
+      protocol: TCP
+      service:
+        enabled: false
 
   podAnnotations:
     kubectl.kubernetes.io/restartedAt: "2026-03-24T12:00:00Z"
