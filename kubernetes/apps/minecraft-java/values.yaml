@@ -22,7 +22,6 @@ minecraft:
     pluginUrls:
       - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
       - https://github.com/sladkoff/minecraft-prometheus-exporter/releases/download/v3.1.2/minecraft-prometheus-exporter-3.1.2.jar
-      - https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.8.1-SNAPSHOT%2B935/PAPER/ViaVersion-5.8.1-SNAPSHOT.jar
     # Service configuration for Java
     serviceType: LoadBalancer
     loadBalancerIP: 10.0.10.26

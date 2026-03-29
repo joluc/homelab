@@ -103,3 +103,37 @@ spec:
     schedule: '0 5 * * *'
     retention:
       keepDaily: 7
+---
+# Minecraft Java backup schedule
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: minecraft-java-backup
+  namespace: minecraft-java
+spec:
+  backend:
+    repoPasswordSecretRef:
+      name: k8up-repo-password
+      key: password
+    s3:
+      endpoint: {{ .Values.s3.endpoint }}
+      bucket: {{ .Values.s3.bucket }}
+      accessKeyIDSecretRef:
+        name: k8up-s3-credentials
+        key: username
+      secretAccessKeySecretRef:
+        name: k8up-s3-credentials
+        key: password
+
+  backup:
+    schedule: '0 2 * * *'
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 2
+
+  check:
+    schedule: '0 4 * * 4'
+
+  prune:
+    schedule: '0 5 * * *'
+    retention:
+      keepDaily: 7
