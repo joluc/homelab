@@ -8,7 +8,7 @@ minecraft:
   # Minecraft Java server configuration
   minecraftServer:
     eula: "TRUE"
-    version: "26.1"
+    version: "LATEST"
     type: "PAPER"
     difficulty: normal
     maxPlayers: 12
