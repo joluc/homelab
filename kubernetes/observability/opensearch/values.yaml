@@ -68,6 +68,8 @@ cluster:
       replicas: 1
       version: 3.5.0
       enableTls: false
+      pluginsList:
+        - https://github.com/joluc/opensearch-link/releases/download/v3.5.0.0/opensearch-link-3.5.0.0.zip
       additionalConfig:
         opensearch_security.auth.type: "openid"
         opensearch_security.openid.connect_url: "" # Will be set in homelab-secrets
