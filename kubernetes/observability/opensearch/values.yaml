@@ -72,6 +72,7 @@ cluster:
         - https://github.com/joluc/opensearch-link/releases/download/v3.5.0.0/opensearch-link-3.5.0.0.zip
       additionalConfig:
         opensearch_security.auth.type: "openid"
+        opensearch_security.auth.unauthenticated_routes: '[ "/api/link" ]'
         opensearch_security.openid.connect_url: "" # Will be set in homelab-secrets
         opensearch_security.openid.client_id: "" # Will be set in homelab-secrets
         opensearch_security.openid.client_secret: "" # Will be set in homelab-secrets
