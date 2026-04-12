@@ -104,22 +104,12 @@ kube-prometheus-stack:
     # Admin credentials (change these!)
     adminPassword: "" # will be overriden in homelab-secrets
 
-    # Use Thanos Query as the default Prometheus datasource
-    defaultDatasourceEnabled: false
-    additionalDataSources:
-      - name: Thanos
-        type: prometheus
-        url: http://thanos-query-frontend.thanos.svc.cluster.local:9090
-        access: proxy
-        isDefault: true
-      - name: Prometheus (local)
-        type: prometheus
-        url: http://kube-prometheus-stack-prometheus.kube-prometheus-stack.svc.cluster.local:9090
-        access: proxy
-        isDefault: false
-
-    # Dashboard sidecar configuration - allow UI dashboard creation/editing
+    # Point the default Prometheus datasource at Thanos Query
     sidecar:
+      datasources:
+        defaultDatasourceEnabled: true
+        isDefaultDatasource: true
+        url: http://thanos-query-frontend.thanos.svc.cluster.local:9090
       dashboards:
         provider:
           allowUiUpdates: true
