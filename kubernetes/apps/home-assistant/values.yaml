@@ -31,3 +31,6 @@ ha:
       memory: 1Gi
 
   hostNetwork: true
+
+  nodeSelector:
+    kubernetes.io/hostname: pi-01

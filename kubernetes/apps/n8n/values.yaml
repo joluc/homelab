@@ -19,6 +19,9 @@ resources:
     cpu: 1000m
     memory: 1Gi
 
+nodeSelector:
+  node-role.kubernetes.io/worker: "true"
+
 env:
   N8N_PORT: "5678"
   N8N_HOST: "" # will be overriden in homelab-secrets

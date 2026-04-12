@@ -19,6 +19,9 @@ resources:
     cpu: 500m
     memory: 512Mi
 
+nodeSelector:
+  node-role.kubernetes.io/worker: "true"
+
 env:
   CMD_DB_URL: "" # will be overriden in homelab-secrets
   CMD_DOMAIN: "" # will be overriden in homelab-secrets

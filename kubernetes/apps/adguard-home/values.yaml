@@ -23,3 +23,6 @@ resources:
   limits:
     cpu: 200m
     memory: 256Mi
+
+nodeSelector:
+  kubernetes.io/hostname: pi-01

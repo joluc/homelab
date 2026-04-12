@@ -14,6 +14,9 @@ resources:
     cpu: 500m
     memory: 512Mi
 
+nodeSelector:
+  node-role.kubernetes.io/worker: "true"
+
 env:
   # Database connection
   DATABASE_URL: "" # will be overriden in homelab-secrets
