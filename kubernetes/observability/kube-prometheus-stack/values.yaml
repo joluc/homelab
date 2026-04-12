@@ -163,3 +163,11 @@ kube-prometheus-stack:
                   text: 'Logs'
                 - href: '{{ .CommonAnnotations.specter_joluc_de_dashboard }}'
                   text: 'Dashboard'
+
+# Thanos object storage (Garage S3)
+thanosObjstore:
+  bucket: thanos
+  endpoint: garage.garage.svc.cluster.local:3900
+  accessKey: ""   # will be overridden in homelab-secrets
+  secretKey: ""   # will be overridden in homelab-secrets
+  insecure: true
