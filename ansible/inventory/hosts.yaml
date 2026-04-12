@@ -10,4 +10,9 @@ all:
           ansible_host: "{{ control_plane_ip }}"
     workers:
       hosts:
-        # Raspberry Pis will be added here later
+        pi-01:
+          ansible_host: "{{ pi_01_ip }}"
+        pi-02:
+          ansible_host: "{{ pi_02_ip }}"
+        pi-03:
+          ansible_host: "{{ pi_03_ip }}"

@@ -33,7 +33,7 @@
           - htop
           - apt-transport-https
           - ca-certificates
-          - software-properties-common
+          - iptables
         state: present
         update_cache: yes
 

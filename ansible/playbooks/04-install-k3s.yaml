@@ -14,3 +14,21 @@
       until: nodes.rc == 0
       retries: 30
       delay: 2
+
+- name: Join K3s Workers
+  hosts: workers
+  become: true
+  vars:
+    k3s_url: "https://100.97.29.99:6443"
+  tasks:
+    - name: Install K3s Agent
+      shell: curl -sfL https://get.k3s.io | K3S_URL={{ k3s_url }} K3S_TOKEN={{ k3s_node_token }} sh -
+      args:
+        creates: /usr/local/bin/k3s-agent
+
+    - name: Wait for K3s agent to be running
+      command: systemctl is-active k3s-agent
+      register: k3s_agent_status
+      until: k3s_agent_status.rc == 0
+      retries: 30
+      delay: 5

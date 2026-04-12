@@ -3,9 +3,9 @@
   hosts: all
   become: true
   vars:
-    admin_user: deploy
-    admin_ssh_keys: []  # Add your SSH public keys here
-    allowed_ssh_ips: []  # Add your admin IPs here (e.g., ['1.2.3.4'])
+    admin_user: joluc
+    admin_ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHj/yF9Hg8t8oZvYNrdWCPUuraNDaiC4RdBXwJKDsOVU schwarze.jonathan@gmail.com"
 
   tasks:
     - name: Ensure admin user exists
@@ -58,6 +58,16 @@
         regexp: '^#?PasswordAuthentication'
         line: 'PasswordAuthentication no'
         state: present
+      notify: restart sshd
+
+    - name: Configure SSH - Disable password authentication in cloud-init drop-in
+      lineinfile:
+        path: /etc/ssh/sshd_config.d/50-cloud-init.conf
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
+      when: ansible_service_mgr is defined
+      ignore_errors: yes
       notify: restart sshd
 
     - name: Configure SSH - Enable public key authentication
@@ -186,7 +196,7 @@
         path: /etc/sysctl.d/99-security.conf
         regexp: '^net.ipv4.ip_forward'
         line: 'net.ipv4.ip_forward = 1'
-      when: "'gateways' in group_names"
+      when: "'gateways' in group_names or 'control_plane' in group_names or 'workers' in group_names"
       notify: reload sysctl
 
     - name: Configure audit rules
@@ -243,14 +253,11 @@
         - { direction: 'incoming', policy: 'deny' }
         - { direction: 'outgoing', policy: 'allow' }
 
-    - name: Allow SSH from specific IPs
+    - name: Allow SSH
       ufw:
         rule: allow
         port: '22'
         proto: tcp
-        from_ip: "{{ item }}"
-      loop: "{{ allowed_ssh_ips }}"
-      when: allowed_ssh_ips | length > 0
 
     - name: Allow Tailscale
       ufw:
@@ -279,6 +286,30 @@
         port: '6443'
         proto: tcp
         from_ip: 100.64.0.0/10
+      when: "'control_plane' in group_names"
+
+    - name: Control Plane - Allow Traefik HTTP/HTTPS
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - '80'
+        - '443'
+      when: "'control_plane' in group_names"
+
+    - name: Control Plane - Allow Minecraft Java
+      ufw:
+        rule: allow
+        port: '25565'
+        proto: tcp
+      when: "'control_plane' in group_names"
+
+    - name: Control Plane - Allow Minecraft Bedrock
+      ufw:
+        rule: allow
+        port: '19132'
+        proto: udp
       when: "'control_plane' in group_names"
 
     - name: Enable UFW
@@ -323,7 +354,7 @@
   handlers:
     - name: restart sshd
       systemd:
-        name: sshd
+        name: ssh
         state: restarted
 
     - name: restart fail2ban

@@ -1,6 +1,6 @@
 ---
 - name: Setup Tailscale
-  hosts: all
+  hosts: gateways:control_plane
   become: true
   vars:
     # tailscale_auth_key is defined in group_vars/secret.yaml (encrypted) or passed via CLI
@@ -31,7 +31,7 @@
         reload: yes
 
     - name: Bring Tailscale up based on auth key
-      command: tailscale up --auth-key={{ tailscale_auth_key }}
+      command: tailscale up --auth-key={{ tailscale_auth_key }} --accept-routes
       when: tailscale_auth_key is defined and tailscale_auth_key | length > 0
       register: tailscale_up
       changed_when: "'Success' in tailscale_up.stdout or 'Logged in' in tailscale_up.stdout"
