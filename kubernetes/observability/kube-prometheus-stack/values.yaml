@@ -60,8 +60,9 @@ kube-prometheus-stack:
       thanos:
         image: quay.io/thanos/thanos:v0.37.1
         objectStorageConfig:
-          name: thanos-objstore-config
-          key: objstore.yml
+          existingSecret:
+            name: thanos-objstore-config
+            key: objstore.yml
 
     # Enable Thanos components for querying from object storage
     thanosService:
