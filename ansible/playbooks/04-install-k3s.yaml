@@ -3,8 +3,26 @@
   hosts: control_plane
   become: true
   tasks:
-    - name: Install K3s Server (Disable Traefik, we deploy custom)
-      shell: curl -sfL https://get.k3s.io | sh -s - server --write-kubeconfig-mode 644 --disable=traefik
+    - name: Create K3s config directory
+      file:
+        path: /etc/rancher/k3s
+        state: directory
+        mode: "0755"
+
+    - name: Write K3s server config
+      copy:
+        dest: /etc/rancher/k3s/config.yaml
+        content: |
+          # K3s server configuration
+          write-kubeconfig-mode: "644"
+          disable:
+            - traefik
+          node-ip: 100.97.29.99
+          flannel-iface: tailscale0
+        mode: "0644"
+
+    - name: Install K3s Server
+      shell: curl -sfL https://get.k3s.io | sh -s - server
       args:
         creates: /usr/local/bin/k3s
 

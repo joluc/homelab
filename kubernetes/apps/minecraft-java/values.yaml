@@ -1,9 +1,9 @@
 minecraft:
   replicaCount: 1
 
-  # Run on VPS (edge-compute node)
+  # Run on VPS (amd64, heavy workload)
   nodeSelector:
-    node_role: edge-compute
+    kubernetes.io/hostname: control-01
 
   # Minecraft Java server configuration
   minecraftServer:
