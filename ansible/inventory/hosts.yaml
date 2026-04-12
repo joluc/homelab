@@ -16,3 +16,7 @@ all:
           ansible_host: "{{ pi_02_ip }}"
         pi-03:
           ansible_host: "{{ pi_03_ip }}"
+        pi-04:
+          ansible_host: "{{ pi_04_ip }}"
+        pi-05:
+          ansible_host: "{{ pi_05_ip }}"
