@@ -17,7 +17,7 @@ minecraft:
     enableCommandBlock: true
     spawnProtection: 0
     viewDistance: 16
-    memory: 2048M
+    memory: 3072M
     jvmXXOpts: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
     pluginUrls:
       - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
@@ -130,4 +130,4 @@ minecraft:
       memory: 50Mi
     limits:
       cpu: 2000m
-      memory: 3Gi
+      memory: 4Gi
