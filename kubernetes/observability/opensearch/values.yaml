@@ -88,6 +88,29 @@ cluster:
         uiSettings.overrides.home:useNewHomePage: "true"
         uiSettings.overrides.query:enhancements:enabled: "true"
 
+  # Ingress
+  ingress:
+    dashboards:
+      enabled: true
+      className: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+      hosts:
+        - host: "" # will be overridden in homelab-secrets
+          paths:
+            - path: /
+              pathType: Prefix
+    opensearch:
+      enabled: true
+      className: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+      hosts:
+        - host: "" # will be overridden in homelab-secrets
+          paths:
+            - path: /
+              pathType: Prefix
+
   # ISM Policies - defined at cluster level, not cluster.cluster
   ismPolicies:
     - name: logs-retention-policy
