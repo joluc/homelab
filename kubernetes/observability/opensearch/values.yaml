@@ -64,7 +64,6 @@ cluster:
           name: opensearch-security-config
 
     dashboards:
-      enabled: true
       replicas: 1
       version: 3.5.0
       pluginsList:
