@@ -81,6 +81,7 @@ cluster:
         data_source.enabled: "true"
         workspace.enabled: "true"
         savedObjects.permission.enabled: "true"
+        opensearchDashboards.dashboardAdmin.users: '["joluc"]'
         opensearch.ignoreVersionMismatch: "true"
         data.savedQueriesNewUI.enabled: "true"
         explore.enabled: "true"
