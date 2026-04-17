@@ -33,7 +33,7 @@ cluster:
 
     nodePools:
       - component: nodes
-        replicas: 1
+        replicas: 2
         diskSize: "200Gi"
         roles:
           - "cluster_manager"
