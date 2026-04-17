@@ -77,6 +77,17 @@ cluster:
         opensearch_security.openid.client_id: "" # Will be set in homelab-secrets
         opensearch_security.openid.client_secret: "" # Will be set in homelab-secrets
         opensearch_security.openid.base_redirect_url: "" # Will be set in homelab-secrets
+        # Enable new Dashboards experience (https://github.com/opensearch-project/OpenSearch-Dashboards/issues/10490)
+        data_source.enabled: "true"
+        workspace.enabled: "true"
+        savedObjects.permission.enabled: "true"
+        opensearch.ignoreVersionMismatch: "true"
+        data.savedQueriesNewUI.enabled: "true"
+        explore.enabled: "true"
+        opensearchDashboards.branding.useExpandedHeader: "false"
+        uiSettings.overrides.theme:version: v9
+        uiSettings.overrides.home:useNewHomePage: "true"
+        uiSettings.overrides.query:enhancements:enabled: "true"
 
   # ISM Policies - defined at cluster level, not cluster.cluster
   ismPolicies:
