@@ -1,0 +1,28 @@
+image:
+  repository: nousresearch/hermes-agent
+  tag: latest
+  pullPolicy: Always
+
+replicaCount: 1
+
+nodeSelector:
+  kubernetes.io/hostname: control-01
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+
+persistence:
+  storageClass: local-path
+  size: 5Gi
+
+secrets:
+  openaiApiKey: ""          # will be overridden in homelab-secrets
+  telegramBotToken: ""      # will be overridden in homelab-secrets
+
+config:
+  customEndpoint: ""        # will be overridden in homelab-secrets (http://192.168.1.217:8080/v1)
