@@ -3,8 +3,8 @@ name: openclaw
 description: OpenClaw wrapper chart
 type: application
 version: 0.1.0
-appVersion: "2026.2.25"
+appVersion: "2026.4.21"
 dependencies:
   - name: openclaw
-    version: 0.1.11
+    version: 0.1.13
     repository: https://chrisbattarbee.github.io/openclaw-helm

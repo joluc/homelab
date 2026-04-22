@@ -3,7 +3,8 @@ openclaw:
   fullnameOverride: "krabbe"
 
   image:
-    tag: "2026.2.25"
+    repository: "joluc/krabbe"
+    tag: "2026.4.21"
 
   openclaw:
     agents:
