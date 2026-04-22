@@ -25,4 +25,3 @@ secrets:
 
 config:
   telegramAllowedUsers: ""  # will be overridden in homelab-secrets
-  customEndpoint: ""        # will be overridden in homelab-secrets (http://192.168.1.217:8080/v1)
