@@ -23,7 +23,6 @@ spec:
         - name: hermes-agent
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["hermes"]
           args: ["gateway", "run"]
           ports:
             - name: http
