@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: {{ .Chart.Name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 data:
+  TELEGRAM_ALLOWED_USERS: {{ .Values.config.telegramAllowedUsers | quote }}
   {{- if .Values.config.customEndpoint }}
   HERMES_CUSTOM_ENDPOINT: {{ .Values.config.customEndpoint | quote }}
   {{- end }}
