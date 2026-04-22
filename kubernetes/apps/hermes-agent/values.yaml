@@ -21,7 +21,6 @@ persistence:
   size: 5Gi
 
 secrets:
-  openaiApiKey: ""          # will be overridden in homelab-secrets
   telegramBotToken: ""      # will be overridden in homelab-secrets
 
 config:
