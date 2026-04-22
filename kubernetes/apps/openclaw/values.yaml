@@ -9,10 +9,17 @@ openclaw:
   openclaw:
     agents:
       defaults:
-        model: "openai-codex/gpt-5.3-codex"
+        model: "llama-local"
         thinkingDefault: "low"
         timeoutSeconds: 600
     configOverrides:
+      ai:
+        providers:
+          - name: llama-local
+            type: openai-compatible
+            baseUrl: "http://192.168.1.217:8080/v1"
+            models:
+              - name: llama-local
       browser:
         cdpUrl: "http://localhost:9222"
       gateway:
