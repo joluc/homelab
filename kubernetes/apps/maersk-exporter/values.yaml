@@ -12,7 +12,7 @@ maersk-exporter:
     requestTimeout: "30s"
 
   credentials:
-    existingSecret: "maersk-exporter-credentials"
+    existingSecret: ""
 
   serviceMonitor:
     enabled: true
