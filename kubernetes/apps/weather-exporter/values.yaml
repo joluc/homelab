@@ -4,7 +4,7 @@ weather-exporter:
 
   image:
     repository: ghcr.io/joluc/weather-exporter
-    tag: "0.2.0"
+    tag: "0.3.0"
 
   serviceMonitor:
     enabled: true
@@ -14,11 +14,13 @@ weather-exporter:
 
   config:
     cities:
-      - "Leipzig:51.33,12.37@dwd"
+      - "Leipzig:51.33,12.37@dwd,dwd-pollen"
       - "Copenhagen:55.67,12.56@yr"
 
     providers:
       dwd:
+        enabled: true
+      dwdPollen:
         enabled: true
       yr:
         userAgent: ""
