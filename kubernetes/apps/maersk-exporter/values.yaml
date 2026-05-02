@@ -1,0 +1,40 @@
+maersk-exporter:
+  nameOverride: "maersk-exporter"
+  fullnameOverride: "maersk-exporter"
+
+  image:
+    repository: ghcr.io/joluc/maersk-exporter
+    tag: "1.0.0"
+
+  config:
+    vesselNameFilter: "MAERSK"
+    vesselsRefreshInterval: "30m"
+    requestTimeout: "30s"
+
+  credentials:
+    existingSecret: "maersk-exporter-credentials"
+
+  serviceMonitor:
+    enabled: true
+    labels:
+      prometheus: kube-prometheus
+    interval: 30s
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                  - arm64

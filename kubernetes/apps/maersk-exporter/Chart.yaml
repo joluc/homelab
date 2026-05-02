@@ -1,0 +1,10 @@
+apiVersion: v2
+name: maersk-exporter
+description: Maersk Exporter wrapper chart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+dependencies:
+  - name: maersk-exporter
+    version: "1.0.0"
+    repository: "oci://ghcr.io/joluc/charts"
