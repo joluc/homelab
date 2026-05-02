@@ -4,7 +4,7 @@ cph-metro-exporter:
 
   image:
     repository: ghcr.io/joluc/cph-metro-exporter
-    tag: "1.0.1"
+    tag: "1.0.2"
 
   config:
     scrapeInterval: "30m"
