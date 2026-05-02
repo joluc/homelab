@@ -4,7 +4,7 @@ cph-metro-exporter:
 
   image:
     repository: ghcr.io/joluc/cph-metro-exporter
-    tag: "1.0.0"
+    tag: "1.0.1"
 
   config:
     scrapeInterval: "30m"
@@ -27,6 +27,3 @@ cph-metro-exporter:
     requests:
       cpu: 50m
       memory: 64Mi
-
-  nodeSelector:
-    kubernetes.io/arch: amd64
