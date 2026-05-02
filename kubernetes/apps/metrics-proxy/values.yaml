@@ -4,7 +4,7 @@ metrics-proxy:
 
   image:
     repository: ghcr.io/joluc/metrics-proxy
-    tag: "0.1.1"
+    tag: "0.2.0"
 
   ingress:
     enabled: true
@@ -14,6 +14,37 @@ metrics-proxy:
         paths:
           - path: /
             pathType: Prefix
+
+  config:
+    metrics:
+      - id: water_islands_brygge
+        label: "Water · Islands Brygge"
+        unit: "°C"
+        query: 'badevand_water_temperature_celsius{site_id="badevand_Islands_Brygge_Havnebad"}'
+      - id: air_copenhagen
+        label: "Air · Copenhagen"
+        unit: "°C"
+        query: 'weather_temperature_celsius{city="Copenhagen"}'
+      - id: pi_temps
+        label: "Pi Temps · Cluster"
+        unit: "°C"
+        query: 'node_thermal_zone_temp{type="cpu-thermal"}'
+      - id: icebreakers_moving
+        label: "Icebreakers · Baltic"
+        unit: "ships"
+        query: 'count(icebreaker_speed_over_ground_knots > 0)'
+      - id: pods_running
+        label: "Pods · Homelab"
+        unit: "pods"
+        query: 'count(kube_pod_status_phase{phase="Running"})'
+      - id: cluster_cpu
+        label: "CPU · Cluster"
+        unit: "%"
+        query: '100 * (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])))'
+      - id: network_rx
+        label: "Traffic In · Cluster"
+        unit: "MB/s"
+        query: 'sum(rate(node_network_receive_bytes_total{device=~"eth.*|enp.*"}[5m])) / 1024 / 1024'
 
   resources:
     limits:
