@@ -4,7 +4,7 @@ metrics-proxy:
 
   image:
     repository: ghcr.io/joluc/metrics-proxy
-    tag: "0.1.0"
+    tag: "0.1.1"
 
   ingress:
     enabled: true
