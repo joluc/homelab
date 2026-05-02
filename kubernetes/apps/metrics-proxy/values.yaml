@@ -1,0 +1,24 @@
+metrics-proxy:
+  nameOverride: "metrics-proxy"
+  fullnameOverride: "metrics-proxy"
+
+  image:
+    repository: ghcr.io/joluc/metrics-proxy
+    tag: "0.1.0"
+
+  ingress:
+    enabled: true
+    className: traefik
+    hosts:
+      - host: metrics-proxy.joluc.de
+        paths:
+          - path: /
+            pathType: Prefix
+
+  resources:
+    limits:
+      cpu: 50m
+      memory: 64Mi
+    requests:
+      cpu: 10m
+      memory: 32Mi

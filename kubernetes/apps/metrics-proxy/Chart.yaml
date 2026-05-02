@@ -1,0 +1,10 @@
+apiVersion: v2
+name: metrics-proxy
+description: Metrics proxy wrapper chart
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: metrics-proxy
+    version: "0.1.0"
+    repository: "oci://ghcr.io/joluc/charts"
