@@ -4,7 +4,7 @@ weather-exporter:
 
   image:
     repository: ghcr.io/joluc/weather-exporter
-    tag: "0.3.1"
+    tag: "0.3.2"
 
   serviceMonitor:
     enabled: true
@@ -38,3 +38,14 @@ weather-exporter:
     requests:
       cpu: 100m
       memory: 64Mi
+
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                  - arm64

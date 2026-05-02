@@ -27,3 +27,14 @@ cph-metro-exporter:
     requests:
       cpu: 50m
       memory: 64Mi
+
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                  - arm64

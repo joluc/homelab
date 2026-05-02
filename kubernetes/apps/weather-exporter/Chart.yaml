@@ -2,9 +2,9 @@ apiVersion: v2
 name: weather-exporter
 description: Weather Exporter wrapper chart
 type: application
-version: 0.3.1
-appVersion: "0.3.1"
+version: 0.3.2
+appVersion: "0.3.2"
 dependencies:
   - name: weather-exporter
-    version: "0.3.1"
+    version: "0.3.2"
     repository: "oci://ghcr.io/joluc/charts"
