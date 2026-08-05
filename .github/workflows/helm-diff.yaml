@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR branch
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v6.1.0
         with:
           path: pr
 
       - name: Checkout main branch
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v6.1.0
         with:
           ref: main
           path: main
