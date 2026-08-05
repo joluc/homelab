@@ -3,11 +3,15 @@
   "extends": ["config:recommended"],
 
   "kubernetes": {
-    "fileMatch": ["kubernetes/.+/Chart\\.yaml$"]
+    "managerFilePatterns": [
+      "/kubernetes/.+/Chart\\.yaml$/"
+    ]
   },
 
   "helm-values": {
-    "fileMatch": ["kubernetes/.+/values\\.yaml$"]
+    "managerFilePatterns": [
+      "/kubernetes/.+/values\\.yaml$/"
+    ]
   },
 
   "packageRules": [
