@@ -12,6 +12,10 @@ operator:
       requests:
         cpu: 10m
         memory: 64Mi
+  # 2.8.4 introduced a validating webhook that needs cert-manager for TLS.
+  # We don't run cert-manager, so disable the webhook entirely.
+  webhook:
+    enabled: false
 
 cluster:
   enabled: true
