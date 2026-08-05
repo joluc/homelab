@@ -13,11 +13,27 @@ persistence:
 
 resources:
   requests:
-    cpu: 50m
-    memory: 64Mi
-  limits:
-    cpu: 200m
+    cpu: 100m
     memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 384Mi
+
+# Pocket-ID is on the critical path for every OIDC login across the cluster.
+# Keep it off the 1GB Pi 3 nodes (pi-04, pi-05) where it was OOM-throttled to
+# 5s+ token exchange latency, breaking Paperless (5s read timeout).
+nodeSelector:
+  node-role.kubernetes.io/worker: "true"
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+                - pi-04
+                - pi-05
 
 env:
   APP_URL: "" # will be overriden in homelab-secrets
