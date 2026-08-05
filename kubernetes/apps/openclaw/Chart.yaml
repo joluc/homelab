@@ -6,5 +6,5 @@ version: 0.1.0
 appVersion: "2026.4.21"
 dependencies:
   - name: openclaw
-    version: 0.1.13
+    version: 0.1.15
     repository: https://chrisbattarbee.github.io/openclaw-helm

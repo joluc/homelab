@@ -5,5 +5,5 @@ description: OpenTelemetry Collector for observability pipeline
 
 dependencies:
   - name: opentelemetry-collector
-    version: 0.110.3
+    version: 0.167.0
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts

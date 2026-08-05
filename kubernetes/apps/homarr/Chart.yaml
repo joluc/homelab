@@ -5,5 +5,5 @@ description: Homarr customizable dashboard
 
 dependencies:
   - name: homarr
-    version: "8.13.0"
+    version: "8.25.0"
     repository: https://homarr-labs.github.io/charts
