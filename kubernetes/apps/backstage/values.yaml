@@ -10,6 +10,10 @@ backstage:
 
   # Backstage application config
   backstage:
+    # Scaled to 0 — custom image joluc/backstage-custom:latest is not
+    # published, pod ran ImagePullBackOff for 60 days.
+    replicas: 0
+
     # Use custom image with OIDC support
     image:
       registry: docker.io

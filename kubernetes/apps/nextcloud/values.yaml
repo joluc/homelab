@@ -9,4 +9,27 @@ app:
     storageClass: "local-path"
     size: 10Gi
 
+  # Nextcloud is Apache + PHP + occ init: too heavy for 1GB Pi 3 nodes (pi-04, pi-05)
+  # which kills the pod before the liveness probe passes. Pin to Pi 4+ workers.
+  nodeSelector:
+    node-role.kubernetes.io/worker: "true"
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                  - pi-04
+                  - pi-05
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
   # host, trustedDomains, and ingress settings are configured in homelab-secrets
