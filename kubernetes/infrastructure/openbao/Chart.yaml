@@ -5,5 +5,5 @@ description: OpenBao secrets management for homelab
 
 dependencies:
   - name: openbao
-    version: 0.25.4
+    version: 0.28.6
     repository: https://openbao.github.io/openbao-helm

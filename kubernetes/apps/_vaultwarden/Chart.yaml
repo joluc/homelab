@@ -5,5 +5,5 @@ description: Vaultwarden self-hosted Bitwarden server
 
 dependencies:
   - name: vaultwarden
-    version: 1.3.0
+    version: 1.4.0
     repository: https://gissilabs.github.io/charts

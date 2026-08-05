@@ -5,5 +5,5 @@ description: Traefik ingress controller for K3s homelab
 
 dependencies:
   - name: traefik
-    version: 39.0.1
+    version: 39.0.9
     repository: https://traefik.github.io/charts

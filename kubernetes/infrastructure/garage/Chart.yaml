@@ -5,5 +5,5 @@ description: Garage S3-compatible object storage
 
 dependencies:
   - name: garage
-    version: 0.2.1
+    version: 0.7.1
     repository: https://datahub-local.github.io/garage-helm
