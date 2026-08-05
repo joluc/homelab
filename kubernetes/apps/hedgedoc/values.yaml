@@ -1,6 +1,6 @@
 image:
   repository: quay.io/hedgedoc/hedgedoc
-  tag: "1.10.0-alpine"
+  tag: "1.11.1-alpine"
 
 ingress:
   enabled: true
