@@ -72,6 +72,17 @@ cluster:
       version: 3.7.0
       pluginsList:
         - https://github.com/joluc/opensearch-link/releases/download/v3.7.0.0/opensearch-link-3.7.0.0.zip
+      # Dashboards image is ~1GB and needs decent RAM. Keep off 1GB Pi 3 nodes.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values:
+                      - pi-04
+                      - pi-05
       additionalConfig:
         opensearch_security.auth.type: "openid"
         opensearch_security.auth.unauthenticated_routes: '[ "/api/link", "/api/reporting/stats" ]'
