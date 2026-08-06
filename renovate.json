@@ -28,6 +28,12 @@
       "schedule": ["every weekend"],
       "automerge": false,
       "labels": ["dependencies", "docker"]
+    },
+    {
+      "description": "opensearch-operator 3.x drops kube-rbac-proxy and requires cert-manager; pinned at 2.8.4 until we install cert-manager",
+      "matchDatasources": ["helm"],
+      "matchPackageNames": ["opensearch-operator"],
+      "allowedVersions": "< 3.0.0"
     }
   ],
 
