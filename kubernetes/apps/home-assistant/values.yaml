@@ -1,7 +1,7 @@
 ha:
   image:
     repository: ghcr.io/home-assistant/home-assistant
-    tag: "2026.7.4"
+    tag: "2026.8.0"
 
   ingress:
     enabled: true
