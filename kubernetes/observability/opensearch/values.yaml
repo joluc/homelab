@@ -22,14 +22,14 @@ cluster:
   cluster:
     name: opensearch
     general:
-      version: 3.5.0
+      version: 3.7.0
       httpPort: 9200
       vendor: opensearch
       serviceName: opensearch
       monitoring:
         enable: true
         scrapeInterval: 30s
-        pluginUrl: https://github.com/opensearch-project/opensearch-prometheus-exporter/releases/download/3.5.0.0/prometheus-exporter-3.5.0.0.zip
+        pluginUrl: https://github.com/opensearch-project/opensearch-prometheus-exporter/releases/download/3.7.0.0/prometheus-exporter-3.7.0.0.zip
         tlsConfig:
           insecureSkipVerify: true
       additionalConfig:
@@ -69,9 +69,9 @@ cluster:
 
     dashboards:
       replicas: 1
-      version: 3.5.0
+      version: 3.7.0
       pluginsList:
-        - https://github.com/joluc/opensearch-link/releases/download/v3.5.0.0/opensearch-link-3.5.0.0.zip
+        - https://github.com/joluc/opensearch-link/releases/download/v3.7.0.0/opensearch-link-3.7.0.0.zip
       additionalConfig:
         opensearch_security.auth.type: "openid"
         opensearch_security.auth.unauthenticated_routes: '[ "/api/link", "/api/reporting/stats" ]'
