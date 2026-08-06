@@ -1,4 +1,0 @@
-apiVersion: v2
-name: unifi
-version: 1.0.0
-description: UniFi Controller for network management
