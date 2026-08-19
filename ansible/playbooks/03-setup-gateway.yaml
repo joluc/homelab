@@ -5,7 +5,9 @@
   vars:
     # Email is defined in group_vars/secret.yaml
     target_upstreams: "{{ groups['control_plane'] | map('extract', hostvars, ['ansible_host']) | list }}"
-    # Add subdomains here as you deploy services
+    # Add subdomains here as you deploy services.
+    # Entries can be either a bare string (routes to the control-plane on :80)
+    # or a mapping { name, upstream } where upstream is host:port.
     subdomains:
       - analytics
       - app
@@ -19,14 +21,18 @@
       - ha
       - home
       - jaeger
+      - { name: kino,          upstream: "192.168.1.102:8096" }
       - mc
+      - { name: metrics-proxy, upstream: "100.97.29.99:80" }
       - movies
       - n8n
+      - { name: nas,           upstream: "192.168.1.102:5000" }
       - notes
       - opensearch
       - perses
       - photos
       - portal
+      - preview
       - prometheus
       - pyroscope
       - sentry
@@ -81,8 +87,10 @@
           }
 
           {% for sub in subdomains %}
-          {{ sub }}.joluc.de {
-              reverse_proxy http://{{ target_upstreams[0] }}:80 {
+          {% set name = sub.name if sub is mapping else sub %}
+          {% set upstream = sub.upstream if sub is mapping else target_upstreams[0] ~ ':80' %}
+          {{ name }}.joluc.de {
+              reverse_proxy http://{{ upstream }} {
                   header_up Host {host}
                   header_up X-Real-IP {remote_host}
                   header_up X-Forwarded-For {remote_host}
