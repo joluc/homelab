@@ -1,0 +1,4 @@
+apiVersion: v2
+name: website-preview
+version: 1.0.0
+description: Internal preview of the future joluc.de Hugo site
