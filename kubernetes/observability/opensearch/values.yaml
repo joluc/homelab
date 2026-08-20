@@ -5,6 +5,12 @@ userPasswords: {}
 operator:
   enabled: true
   manager:
+    # Chart 2.8.4 defaults to 3.0.0-alpha (the only 3.x image on Docker Hub,
+    # 2026-01-26). The chart release "opensearch-operator-3.0.2" is Helm-only;
+    # no matching container tag exists upstream. Pin explicitly so we don't
+    # drift when Docker Hub `latest` changes.
+    image:
+      tag: "3.0.0-alpha"
     resources:
       limits:
         cpu: 500m
@@ -26,6 +32,9 @@ cluster:
       httpPort: 9200
       vendor: opensearch
       serviceName: opensearch
+      # 2-node homelab cluster cannot drain shards (nowhere to move them).
+      # Chart default is true; explicitly disable so rolling upgrades don't wedge.
+      drainDataNodes: false
       monitoring:
         enable: true
         scrapeInterval: 30s
@@ -72,17 +81,19 @@ cluster:
       version: 3.7.0
       pluginsList:
         - https://github.com/joluc/opensearch-link/releases/download/v3.7.0.0/opensearch-link-3.7.0.0.zip
-      # Dashboards image is ~1GB and needs decent RAM. Keep off 1GB Pi 3 nodes.
+      # Dashboards 3.7.0 is built on AL2023 (glibc requires ARMv8.2-A + crypto).
+      # Only pi-01 is a Pi 5 (BCM2712); pi-02..pi-05 are Pi 4 (BCM2711, ARMv8.0-A)
+      # and crash with "Fatal glibc error". Pin dashboards to Pi 5 (or amd64 control-01).
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
                   - key: kubernetes.io/hostname
-                    operator: NotIn
+                    operator: In
                     values:
-                      - pi-04
-                      - pi-05
+                      - pi-01
+                      - control-01
       additionalConfig:
         opensearch_security.auth.type: "openid"
         opensearch_security.auth.unauthenticated_routes: '[ "/api/link", "/api/reporting/stats" ]'
