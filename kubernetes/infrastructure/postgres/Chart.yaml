@@ -5,5 +5,5 @@ description: Shared PostgreSQL Config
 
 dependencies:
   - name: postgresql
-    version: 18.8.6
+    version: 18.8.17
     repository: https://charts.bitnami.com/bitnami

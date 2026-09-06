@@ -5,5 +5,5 @@ description: Pyroscope continuous profiling
 
 dependencies:
   - name: pyroscope
-    version: 2.2.0
+    version: 2.2.1
     repository: https://grafana.github.io/helm-charts

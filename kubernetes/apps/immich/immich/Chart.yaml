@@ -8,7 +8,7 @@ appVersion: v2.0.0
 dependencies:
 - name: common
   repository: https://bjw-s-labs.github.io/helm-charts
-  version: 5.0.1
+  version: 5.1.0
 description: A chart to power Immich (immich.app) running on kubernetes
 home: https://immich.app/
 icon: https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg
