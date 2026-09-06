@@ -1,6 +1,6 @@
 image:
   repository: clickhouse/clickhouse-server
-  tag: 26.7.3.19-alpine
+  tag: 26.8.2.7-alpine
 
 auth:
   username: "default"
