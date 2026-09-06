@@ -5,5 +5,5 @@ description: Argo CD GitOps Operator
 
 dependencies:
   - name: argo-cd
-    version: 10.3.0
+    version: 10.8.1
     repository: https://argoproj.github.io/argo-helm
