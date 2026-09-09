@@ -26,4 +26,4 @@ secrets:
 config:
   telegramAllowedUsers: ""  # will be overridden in homelab-secrets
   inferenceProvider: "openai-codex"
-  inferenceModel: "gpt-5.1-codex"  # ChatGPT-account Codex supports gpt-5-codex / gpt-5.1-codex only
+  inferenceModel: "gpt-5.5"  # ChatGPT Plus Codex: gpt-5.3-codex/gpt-5.4 currently broken (OpenAI-side, Nov 2026); gpt-5.5 works

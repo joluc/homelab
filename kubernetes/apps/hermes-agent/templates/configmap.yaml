@@ -8,4 +8,4 @@ metadata:
 data:
   TELEGRAM_ALLOWED_USERS: {{ .Values.config.telegramAllowedUsers | quote }}
   HERMES_INFERENCE_PROVIDER: {{ .Values.config.inferenceProvider | default "openai-codex" | quote }}
-  HERMES_INFERENCE_MODEL: {{ .Values.config.inferenceModel | default "gpt-5.1-codex" | quote }}
+  HERMES_INFERENCE_MODEL: {{ .Values.config.inferenceModel | default "gpt-5.5" | quote }}
