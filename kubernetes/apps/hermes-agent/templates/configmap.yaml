@@ -7,4 +7,5 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
 data:
   TELEGRAM_ALLOWED_USERS: {{ .Values.config.telegramAllowedUsers | quote }}
-  HERMES_INFERENCE_PROVIDER: "openai-codex"
+  HERMES_INFERENCE_PROVIDER: {{ .Values.config.inferenceProvider | default "openai-codex" | quote }}
+  HERMES_INFERENCE_MODEL: {{ .Values.config.inferenceModel | default "gpt-5.1-codex" | quote }}
