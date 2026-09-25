@@ -5,5 +5,5 @@ description: Perses lightweight Prometheus dashboards
 
 dependencies:
   - name: perses
-    version: 0.23.1
+    version: 0.23.2
     repository: https://perses.github.io/helm-charts
