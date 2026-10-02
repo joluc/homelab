@@ -9,6 +9,6 @@ dependencies:
     repository: https://opensearch-project.github.io/opensearch-k8s-operator/
     alias: operator
   - name: opensearch-cluster
-    version: 3.3.0
+    version: 3.3.5
     repository: https://opensearch-project.github.io/opensearch-k8s-operator/
     alias: cluster
