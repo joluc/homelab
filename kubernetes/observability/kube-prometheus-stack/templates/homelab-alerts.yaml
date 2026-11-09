@@ -29,9 +29,9 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "Node {{ $labels.instance }} root filesystem below 20% free ({{ $value | printf \"%.1f\" }}%)"
+            summary: "Node {{`{{ $labels.instance }}`}} root filesystem below 20% free ({{`{{ $value | printf \"%.1f\" }}`}}%)"
             description: |
-              {{ $labels.instance }} root FS is {{ $value | printf "%.1f" }}% free. The kubelet taints the node with
+              {{`{{ $labels.instance }}`}} root FS is {{`{{ $value | printf "%.1f" }}`}}% free. The kubelet taints the node with
               DiskPressure once <15% free, which evicts pods and blocks scheduling (hit this 2026-11-05 with control-01
               → Postgres and Spliit outage). Reclaim space now.
 
@@ -45,9 +45,9 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Node {{ $labels.instance }} root filesystem critical: {{ $value | printf \"%.1f\" }}% free"
+            summary: "Node {{`{{ $labels.instance }}`}} root filesystem critical: {{`{{ $value | printf \"%.1f\" }}`}}% free"
             description: |
-              {{ $labels.instance }} is at {{ $value | printf "%.1f" }}% free. kubelet DiskPressure eviction is imminent
+              {{`{{ $labels.instance }}`}} is at {{`{{ $value | printf "%.1f" }}`}}% free. kubelet DiskPressure eviction is imminent
               or already active. Pods with local PVs on this node cannot be rescheduled elsewhere.
 
         - alert: NodeDiskPressure
@@ -56,9 +56,9 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Node {{ $labels.node }} under DiskPressure (kubelet is evicting pods)"
+            summary: "Node {{`{{ $labels.node }}`}} under DiskPressure (kubelet is evicting pods)"
             description: |
-              kubelet on {{ $labels.node }} has set DiskPressure=True. New pods cannot schedule here and existing pods
+              kubelet on {{`{{ $labels.node }}`}} has set DiskPressure=True. New pods cannot schedule here and existing pods
               are being evicted to reclaim space. Clean up disk usage immediately.
 
         - alert: NodeNotReady
@@ -68,9 +68,9 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Node {{ $labels.node }} has been NotReady for 15m"
+            summary: "Node {{`{{ $labels.node }}`}} has been NotReady for 15m"
             description: |
-              {{ $labels.node }} is NotReady. Workloads pinned to this node (local PVs, hostNetwork, node selectors)
+              {{`{{ $labels.node }}`}} is NotReady. Workloads pinned to this node (local PVs, hostNetwork, node selectors)
               are stranded.
 
     # ----------------------------------------------------------------------
@@ -110,9 +110,9 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Alertmanager failing to deliver {{ $labels.integration }} notifications"
+            summary: "Alertmanager failing to deliver {{`{{ $labels.integration }}`}} notifications"
             description: |
-              Alertmanager has been failing to deliver notifications via {{ $labels.integration }}
+              Alertmanager has been failing to deliver notifications via {{`{{ $labels.integration }}`}}
               for 15 minutes. You may be missing alerts. Check the Alertmanager logs and verify the
               receiver config is still valid.
 
@@ -132,11 +132,11 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} crash-looping ({{ $value | printf \"%.0f\" }} restarts/15m)"
+            summary: "Pod {{`{{ $labels.namespace }}`}}/{{`{{ $labels.pod }}`}} crash-looping ({{`{{ $value | printf \"%.0f\" }}`}} restarts/15m)"
             description: |
-              {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) has restarted
-              {{ $value | printf "%.0f" }} times in the last 15 minutes. Check kubectl logs
-              -n {{ $labels.namespace }} {{ $labels.pod }} --previous.
+              {{`{{ $labels.namespace }}`}}/{{`{{ $labels.pod }}`}} ({{`{{ $labels.container }}`}}) has restarted
+              {{`{{ $value | printf "%.0f" }}`}} times in the last 15 minutes. Check kubectl logs
+              -n {{`{{ $labels.namespace }}`}} {{`{{ $labels.pod }}`}} --previous.
 
         - alert: PodNotReadyLong
           # Catches the "stuck 0/1 Running forever" case that bit Spliit.
@@ -148,9 +148,9 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been NotReady for 1h"
+            summary: "Pod {{`{{ $labels.namespace }}`}}/{{`{{ $labels.pod }}`}} has been NotReady for 1h"
             description: |
-              {{ $labels.namespace }}/{{ $labels.pod }} is Running but failing its readiness probe.
+              {{`{{ $labels.namespace }}`}}/{{`{{ $labels.pod }}`}} is Running but failing its readiness probe.
               The Service won't route traffic to it (for multi-replica deployments) or probes are
               misconfigured (for single-replica, like what hit Spliit 2026-10-26).
 
@@ -164,10 +164,10 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has unavailable replicas for 1h"
+            summary: "Deployment {{`{{ $labels.namespace }}`}}/{{`{{ $labels.deployment }}`}} has unavailable replicas for 1h"
             description: |
-              {{ $labels.deployment }} has {{ $value }} unavailable replica(s). Either the rollout is
-              stuck or the pods can't start. kubectl -n {{ $labels.namespace }} describe deployment {{ $labels.deployment }}.
+              {{`{{ $labels.deployment }}`}} has {{`{{ $value }}`}} unavailable replica(s). Either the rollout is
+              stuck or the pods can't start. kubectl -n {{`{{ $labels.namespace }}`}} describe deployment {{`{{ $labels.deployment }}`}}.
 
     # ----------------------------------------------------------------------
     # Storage — catches silent PV overruns (local-path doesn't enforce the
@@ -186,9 +186,9 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} below 15% free ({{ $value | printf \"%.1f\" }}%)"
+            summary: "PVC {{`{{ $labels.namespace }}`}}/{{`{{ $labels.persistentvolumeclaim }}`}} below 15% free ({{`{{ $value | printf \"%.1f\" }}`}}%)"
             description: |
-              PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} is {{ $value | printf "%.1f" }}% free.
+              PVC {{`{{ $labels.namespace }}`}}/{{`{{ $labels.persistentvolumeclaim }}`}} is {{`{{ $value | printf "%.1f" }}`}}% free.
               If it's backed by local-path, it can grow past the claim size and fill the host — that's how
               opensearch-nodes-1 broke control-01 on 2026-11-05.
 
@@ -207,9 +207,9 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "{{ $value }} backup pod(s) stuck Pending in {{ $labels.namespace }} for 2h"
+            summary: "{{`{{ $value }}`}} backup pod(s) stuck Pending in {{`{{ $labels.namespace }}`}} for 2h"
             description: |
-              Backup jobs in {{ $labels.namespace }} have been Pending for over 2 hours. K8up/backup
+              Backup jobs in {{`{{ $labels.namespace }}`}} have been Pending for over 2 hours. K8up/backup
               jobs typically finish in minutes — something is wrong with scheduling or storage.
 
         - alert: BackupJobFailed
@@ -219,9 +219,9 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Backup job {{ $labels.namespace }}/{{ $labels.job_name }} failed"
+            summary: "Backup job {{`{{ $labels.namespace }}`}}/{{`{{ $labels.job_name }}`}} failed"
             description: |
-              {{ $labels.namespace }}/{{ $labels.job_name }} finished with a failure. You may not have
+              {{`{{ $labels.namespace }}`}}/{{`{{ $labels.job_name }}`}} finished with a failure. You may not have
               a recent backup for whatever this job protects.
 
     # ----------------------------------------------------------------------
