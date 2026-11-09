@@ -16,9 +16,7 @@ spec:
     - name: homelab-node-health
       interval: 30s
       rules:
-        # Fire well before the kubelet starts evicting. kubelet taints at
-        # ~85% used (nodefs.available < 15%); we page at 20% free so there's
-        # time to react before Postgres and friends get knocked off their node.
+        # Warning tier: heads-up to reclaim space before it becomes urgent.
         - alert: NodeDiskLow
           expr: |
             (
@@ -29,12 +27,9 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "Node {{`{{ $labels.instance }}`}} root filesystem below 20% free ({{`{{ $value | printf \"%.1f\" }}`}}%)"
-            description: |
-              {{`{{ $labels.instance }}`}} root FS is {{`{{ $value | printf "%.1f" }}`}}% free. The kubelet taints the node with
-              DiskPressure once <15% free, which evicts pods and blocks scheduling (hit this 2026-11-05 with control-01
-              → Postgres and Spliit outage). Reclaim space now.
+            summary: "{{`{{ $labels.instance }}`}} root FS at {{`{{ $value | printf \"%.1f\" }}`}}% free (kubelet evicts at 15%)"
 
+        # Critical tier: kubelet will start evicting pods within minutes.
         - alert: NodeDiskCritical
           expr: |
             (
@@ -45,10 +40,7 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Node {{`{{ $labels.instance }}`}} root filesystem critical: {{`{{ $value | printf \"%.1f\" }}`}}% free"
-            description: |
-              {{`{{ $labels.instance }}`}} is at {{`{{ $value | printf "%.1f" }}`}}% free. kubelet DiskPressure eviction is imminent
-              or already active. Pods with local PVs on this node cannot be rescheduled elsewhere.
+            summary: "{{`{{ $labels.instance }}`}} root FS CRITICAL at {{`{{ $value | printf \"%.1f\" }}`}}% free — DiskPressure imminent"
 
         - alert: NodeDiskPressure
           expr: kube_node_status_condition{condition="DiskPressure",status="true"} == 1
