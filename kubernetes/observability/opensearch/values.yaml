@@ -122,7 +122,7 @@ cluster:
   ismPolicies:
     - name: logs-retention-policy
       defaultState: hot
-      description: "Logs policy: rollover at 40GB primary shard, delete after 7d retention"
+      description: "Logs policy - rollover at 40GB primary shard, delete after 7d retention"
       states:
         - name: hot
           actions:
