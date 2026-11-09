@@ -137,7 +137,7 @@ kube-prometheus-stack:
 
     config:
       route:
-        receiver: pagerduty
+        receiver: telegram
         group_by: ['alertname', 'namespace']
         group_wait: 30s
         group_interval: 5m
@@ -149,25 +149,18 @@ kube-prometheus-stack:
           - receiver: 'null'
             matchers:
               - severity = "none"
-          - receiver: pagerduty
+          - receiver: telegram
             matchers:
               - severity =~ "critical|warning"
 
       receivers:
         - name: 'null'
-        - name: pagerduty
-          pagerduty_configs:
-            - routing_key: ""  # set in homelab-secrets
-              severity: '{{ or .CommonLabels.severity "warning" }}'
-              description: '{{ or .CommonAnnotations.summary .CommonLabels.alertname }}'
-              details:
-                alertname: '{{ .CommonLabels.alertname }}'
-                namespace: '{{ .CommonLabels.namespace }}'
-              links:
-                - href: '{{ .CommonAnnotations.specter_joluc_de_logs }}'
-                  text: 'Logs'
-                - href: '{{ .CommonAnnotations.specter_joluc_de_dashboard }}'
-                  text: 'Dashboard'
+        - name: telegram
+          telegram_configs:
+            - bot_token: ""  # set in homelab-secrets
+              chat_id: 0     # set in homelab-secrets
+              parse_mode: HTML
+              send_resolved: true
 
 # Thanos object storage (Garage S3)
 thanosObjstore:

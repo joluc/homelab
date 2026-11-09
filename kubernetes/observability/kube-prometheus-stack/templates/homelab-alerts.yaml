@@ -1,0 +1,70 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: homelab-node-health
+  namespace: kube-prometheus-stack
+  labels:
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: homelab-node-health
+      interval: 30s
+      rules:
+        # Fire well before the kubelet starts evicting. kubelet taints at
+        # ~85% used (nodefs.available < 15%); we page at 20% free so there's
+        # time to react before Postgres and friends get knocked off their node.
+        - alert: NodeDiskLow
+          expr: |
+            (
+              node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|nsfs|squashfs",mountpoint="/"}
+              / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|nsfs|squashfs",mountpoint="/"}
+            ) * 100 < 20
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Node {{ $labels.instance }} root filesystem below 20% free ({{ $value | printf \"%.1f\" }}%)"
+            description: |
+              {{ $labels.instance }} root FS is {{ $value | printf "%.1f" }}% free. The kubelet taints the node with
+              DiskPressure once <15% free, which evicts pods and blocks scheduling (hit this 2026-11-05 with control-01
+              → Postgres and Spliit outage). Reclaim space now.
+
+        - alert: NodeDiskCritical
+          expr: |
+            (
+              node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|nsfs|squashfs",mountpoint="/"}
+              / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|nsfs|squashfs",mountpoint="/"}
+            ) * 100 < 10
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node {{ $labels.instance }} root filesystem critical: {{ $value | printf \"%.1f\" }}% free"
+            description: |
+              {{ $labels.instance }} is at {{ $value | printf "%.1f" }}% free. kubelet DiskPressure eviction is imminent
+              or already active. Pods with local PVs on this node cannot be rescheduled elsewhere.
+
+        - alert: NodeDiskPressure
+          expr: kube_node_status_condition{condition="DiskPressure",status="true"} == 1
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node {{ $labels.node }} under DiskPressure (kubelet is evicting pods)"
+            description: |
+              kubelet on {{ $labels.node }} has set DiskPressure=True. New pods cannot schedule here and existing pods
+              are being evicted to reclaim space. Clean up disk usage immediately.
+
+        - alert: NodeNotReady
+          expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node {{ $labels.node }} has been NotReady for 10m"
+            description: |
+              {{ $labels.node }} is NotReady. Workloads pinned to this node (local PVs, hostNetwork, node selectors)
+              are stranded.
