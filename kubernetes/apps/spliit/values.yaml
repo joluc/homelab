@@ -17,6 +17,19 @@ resources:
 nodeSelector:
   node-role.kubernetes.io/worker: "true"
 
+# Keep Spliit off Pi 3 nodes (pi-04, pi-05): 1GB RAM can't fit Next.js at
+# 512Mi limit without OOM. Falls back to Pi 4/5 (2GB+) workers only.
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+                - pi-04
+                - pi-05
+
 env:
   # Database connection
   DATABASE_URL: "" # will be overriden in homelab-secrets
