@@ -46,7 +46,11 @@ cluster:
 
     nodePools:
       - component: nodes
-        replicas: 2
+        # Scaled to 1 after pi-05 went NotReady 2026-10-25 and nodes-1 PV on
+        # control-01 ballooned to 619 GB, triggering disk-pressure eviction
+        # of Postgres and other control-plane workloads. Bring back to 2 only
+        # when a second durable data node is available.
+        replicas: 1
         diskSize: "200Gi"
         roles:
           - "cluster_manager"
@@ -118,16 +122,16 @@ cluster:
   ismPolicies:
     - name: logs-retention-policy
       defaultState: hot
-      description: "Logs policy with 1-year retention and 10GB rollover"
+      description: "Logs policy: rollover at 40GB primary shard, delete after 7d retention"
       states:
         - name: hot
           actions:
             - rollover:
-                minSize: 10gb
+                minPrimaryShardSize: 40gb
           transitions:
             - stateName: delete
               conditions:
-                minIndexAge: 365d
+                minIndexAge: 7d
         - name: delete
           actions:
             - delete: {}
@@ -177,6 +181,7 @@ cluster:
             number_of_replicas: 0
             refresh_interval: 5s
             codec: best_compression
+            plugins.index_state_management.policy_id: logs-retention-policy
         mappings:
           properties:
             "@timestamp":
