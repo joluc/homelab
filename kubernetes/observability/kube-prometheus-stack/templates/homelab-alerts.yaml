@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: homelab-node-health
+  name: homelab-critical
   namespace: kube-prometheus-stack
   labels:
     app.kubernetes.io/instance: kube-prometheus-stack
@@ -10,6 +10,9 @@ metadata:
     release: kube-prometheus-stack
 spec:
   groups:
+    # ----------------------------------------------------------------------
+    # Node health — catch disk pressure early, know when nodes fall off.
+    # ----------------------------------------------------------------------
     - name: homelab-node-health
       interval: 30s
       rules:
@@ -22,7 +25,7 @@ spec:
               node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|nsfs|squashfs",mountpoint="/"}
               / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|nsfs|squashfs",mountpoint="/"}
             ) * 100 < 20
-          for: 10m
+          for: 30m
           labels:
             severity: warning
           annotations:
@@ -38,7 +41,7 @@ spec:
               node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|nsfs|squashfs",mountpoint="/"}
               / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|nsfs|squashfs",mountpoint="/"}
             ) * 100 < 10
-          for: 2m
+          for: 5m
           labels:
             severity: critical
           annotations:
@@ -49,7 +52,7 @@ spec:
 
         - alert: NodeDiskPressure
           expr: kube_node_status_condition{condition="DiskPressure",status="true"} == 1
-          for: 1m
+          for: 5m
           labels:
             severity: critical
           annotations:
@@ -59,12 +62,194 @@ spec:
               are being evicted to reclaim space. Clean up disk usage immediately.
 
         - alert: NodeNotReady
-          expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+          # Ignore pi-05 — known broken, don't spam. Remove once it's back.
+          expr: kube_node_status_condition{condition="Ready",status="true",node!="pi-05"} == 0
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node {{ $labels.node }} has been NotReady for 15m"
+            description: |
+              {{ $labels.node }} is NotReady. Workloads pinned to this node (local PVs, hostNetwork, node selectors)
+              are stranded.
+
+    # ----------------------------------------------------------------------
+    # Observability-stack deadman — if these go silent, the stack itself is
+    # broken and you'd otherwise never find out. The Watchdog receiver is
+    # inverted: fires when things are HEALTHY, so Telegram goes quiet means
+    # something broke. That's why we need explicit alerts on AM/Prom too.
+    # ----------------------------------------------------------------------
+    - name: homelab-observability-deadman
+      interval: 30s
+      rules:
+        - alert: AlertmanagerDown
+          expr: absent(up{job="kube-prometheus-stack-alertmanager"} == 1)
           for: 10m
           labels:
             severity: critical
           annotations:
-            summary: "Node {{ $labels.node }} has been NotReady for 10m"
+            summary: "Alertmanager has been unreachable for 10m"
             description: |
-              {{ $labels.node }} is NotReady. Workloads pinned to this node (local PVs, hostNetwork, node selectors)
-              are stranded.
+              Prometheus cannot scrape Alertmanager. If this fires via another channel (webhook),
+              check kubectl -n kube-prometheus-stack get pod | grep alertmanager. If this fires
+              nowhere, the stack is fully broken — check cluster health manually.
+
+        - alert: PrometheusDown
+          expr: absent(up{job="kube-prometheus-stack-prometheus"} == 1)
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus has been down for 10m"
+            description: |
+              Prometheus is not reporting itself as up. No metrics being collected cluster-wide.
+
+        - alert: AlertmanagerNotificationFailures
+          expr: rate(alertmanager_notifications_failed_total[10m]) > 0
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Alertmanager failing to deliver {{ $labels.integration }} notifications"
+            description: |
+              Alertmanager has been failing to deliver notifications via {{ $labels.integration }}
+              for 15 minutes. You may be missing alerts. Check the Alertmanager logs and verify the
+              receiver config is still valid.
+
+    # ----------------------------------------------------------------------
+    # Workload health — critical-only. Catches hard failures without paging
+    # on every transient blip.
+    # ----------------------------------------------------------------------
+    - name: homelab-workload-health
+      interval: 30s
+      rules:
+        - alert: PodCrashLooping
+          # 3+ restarts in 15min on a non-completed pod = real problem
+          expr: |
+            increase(kube_pod_container_status_restarts_total[15m]) > 3
+            and on(namespace, pod) kube_pod_status_phase{phase="Running"} == 1
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} crash-looping ({{ $value | printf \"%.0f\" }} restarts/15m)"
+            description: |
+              {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) has restarted
+              {{ $value | printf "%.0f" }} times in the last 15 minutes. Check kubectl logs
+              -n {{ $labels.namespace }} {{ $labels.pod }} --previous.
+
+        - alert: PodNotReadyLong
+          # Catches the "stuck 0/1 Running forever" case that bit Spliit.
+          # Namespace-filtered so long-lived utility pods (backup jobs, etc) don't spam.
+          expr: |
+            kube_pod_status_ready{condition="false"} == 1
+            unless on(namespace, pod) kube_pod_status_phase{phase=~"Succeeded|Failed"} == 1
+          for: 1h
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been NotReady for 1h"
+            description: |
+              {{ $labels.namespace }}/{{ $labels.pod }} is Running but failing its readiness probe.
+              The Service won't route traffic to it (for multi-replica deployments) or probes are
+              misconfigured (for single-replica, like what hit Spliit 2026-10-26).
+
+        - alert: DeploymentRolloutStuck
+          expr: |
+            (
+              kube_deployment_status_replicas_unavailable > 0
+              and on(namespace, deployment) kube_deployment_spec_replicas > 0
+            )
+          for: 1h
+          labels:
+            severity: critical
+          annotations:
+            summary: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has unavailable replicas for 1h"
+            description: |
+              {{ $labels.deployment }} has {{ $value }} unavailable replica(s). Either the rollout is
+              stuck or the pods can't start. kubectl -n {{ $labels.namespace }} describe deployment {{ $labels.deployment }}.
+
+    # ----------------------------------------------------------------------
+    # Storage — catches silent PV overruns (local-path doesn't enforce the
+    # claim size, which is how opensearch-nodes-1 ballooned to 619 GB).
+    # ----------------------------------------------------------------------
+    - name: homelab-storage
+      interval: 30s
+      rules:
+        - alert: PersistentVolumeAlmostFull
+          expr: |
+            (
+              kubelet_volume_stats_available_bytes
+              / kubelet_volume_stats_capacity_bytes
+            ) * 100 < 15
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} below 15% free ({{ $value | printf \"%.1f\" }}%)"
+            description: |
+              PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} is {{ $value | printf "%.1f" }}% free.
+              If it's backed by local-path, it can grow past the claim size and fill the host — that's how
+              opensearch-nodes-1 broke control-01 on 2026-11-05.
+
+    # ----------------------------------------------------------------------
+    # Backups — if K8up stops working you lose your safety net silently.
+    # ----------------------------------------------------------------------
+    - name: homelab-backups
+      interval: 30s
+      rules:
+        - alert: BackupJobsPending
+          expr: |
+            count by (namespace) (
+              kube_pod_status_phase{phase="Pending", pod=~".*backup.*"}
+            ) > 0
+          for: 2h
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $value }} backup pod(s) stuck Pending in {{ $labels.namespace }} for 2h"
+            description: |
+              Backup jobs in {{ $labels.namespace }} have been Pending for over 2 hours. K8up/backup
+              jobs typically finish in minutes — something is wrong with scheduling or storage.
+
+        - alert: BackupJobFailed
+          expr: |
+            kube_job_status_failed{job_name=~".*backup.*"} > 0
+          for: 1h
+          labels:
+            severity: critical
+          annotations:
+            summary: "Backup job {{ $labels.namespace }}/{{ $labels.job_name }} failed"
+            description: |
+              {{ $labels.namespace }}/{{ $labels.job_name }} finished with a failure. You may not have
+              a recent backup for whatever this job protects.
+
+    # ----------------------------------------------------------------------
+    # OpenSearch cluster — the one that started this whole incident. Fire
+    # loud when it's red or missing data nodes, stay quiet on yellow (homelab
+    # often runs yellow on purpose with single-replica = 0).
+    # ----------------------------------------------------------------------
+    - name: homelab-opensearch
+      interval: 30s
+      rules:
+        - alert: OpenSearchClusterRed
+          expr: opensearch_cluster_status{cluster="opensearch"} == 2
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: "OpenSearch cluster is RED for 15m"
+            description: |
+              The homelab OpenSearch cluster is red — at least one primary shard is unassigned.
+              Logs ingestion will fail. Check: kubectl -n opensearch exec opensearch-nodes-0 -c
+              opensearch -- curl -sk -u admin:$PW 'https://localhost:9200/_cluster/health?pretty'
+
+        - alert: OpenSearchDataNodeMissing
+          expr: opensearch_cluster_number_of_data_nodes{cluster="opensearch"} < 1
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "OpenSearch has no data nodes"
+            description: |
+              OpenSearch cluster reports zero data nodes. Ingestion and queries are offline.
