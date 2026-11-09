@@ -9,6 +9,7 @@
     # Entries can be either a bare string (routes to the control-plane on :80)
     # or a mapping { name, upstream } where upstream is host:port.
     subdomains:
+      - alertmanager
       - analytics
       - app
       - argocd
@@ -36,6 +37,8 @@
       - prometheus
       - pyroscope
       - sentry
+      - specter
+      - spliit
       - status
       - unifi
       - vault
