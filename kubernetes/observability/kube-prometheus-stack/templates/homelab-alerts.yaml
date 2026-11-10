@@ -54,8 +54,7 @@ spec:
               are being evicted to reclaim space. Clean up disk usage immediately.
 
         - alert: NodeNotReady
-          # Ignore pi-05 — known broken, don't spam. Remove once it's back.
-          expr: kube_node_status_condition{condition="Ready",status="true",node!="pi-05"} == 0
+          expr: kube_node_status_condition{condition="Ready",status="true"} == 0
           for: 15m
           labels:
             severity: critical
@@ -132,9 +131,13 @@ spec:
 
         - alert: PodNotReadyLong
           # Catches the "stuck 0/1 Running forever" case that bit Spliit.
-          # Namespace-filtered so long-lived utility pods (backup jobs, etc) don't spam.
+          # Excludes:
+          #   - svclb-*: k3s ServiceLB DaemonSet pods are often "NotReady" on
+          #     nodes where the Service doesn't actually route — noisy by design.
+          #   - openbao-0: intentionally sealed after restart (manual unseal
+          #     required). Alert on sealed-for-too-long separately if needed.
           expr: |
-            kube_pod_status_ready{condition="false"} == 1
+            kube_pod_status_ready{condition="false",pod!~"svclb-.*|openbao-0"} == 1
             unless on(namespace, pod) kube_pod_status_phase{phase=~"Succeeded|Failed"} == 1
           for: 1h
           labels:
