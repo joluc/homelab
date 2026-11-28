@@ -1,6 +1,6 @@
 image:
   repository: adguard/adguardhome
-  tag: v0.107.78
+  tag: v1.0.0
 
 ingress:
   enabled: true
